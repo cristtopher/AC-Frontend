@@ -1,0 +1,15 @@
+<div class="notifications top-right"></div>
+
+<div class="wrapper">
+  <div class="page-wrapper">
+    <home-left-sidebar [currentUser]="currentUser"></home-left-sidebar>
+    
+    <home-top-header [currentUser]="currentUser"></home-top-header>
+    
+    <div class="content-wrapper">
+      <div class="content-dimmer"></div>
+    
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

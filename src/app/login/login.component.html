@@ -1,0 +1,29 @@
+<div class="wrapper">
+  <div class="page-wrapper">
+    <div class="log-in-wrapper">
+      <h1 class="log-in-title">Welcome to <strong class="text-primary">Varello</strong>Admin<br><small>Please enter your details</small></h1>
+
+      <form role="form" (submit)="login($event, email.value, password.value)">        
+        <div class="form-group">
+          <input type="email" #email class="form-control input-lg" placeholder="Please enter your email address...">
+        </div>
+        <div class="form-group">
+          <input type="password" #password class="form-control input-lg" id="password" placeholder="And your password..."> 
+        </div>
+        <div class="form-group">
+          <input type="checkbox" id="remember_me" data-icheck>
+          <label for="remember_me" class="icheck-label">
+            Keep me signed in
+          </label>
+        </div>
+        <button type="submit" class="btn btn-transparent btn-lg btn-transparent-primary btn-block">
+          Log In
+        </button>
+        <ul class="login-bottom-links">
+          <li><a href="">Forgot your password?</a></li>
+          <li><a href="">Need an account?</a></li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</div>
