@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
@@ -7,10 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
+  
   constructor() { }
 
   ngOnInit() {
     console.log('Trying to render Dashboard Component');
+        
   }
+
+  
 
 }

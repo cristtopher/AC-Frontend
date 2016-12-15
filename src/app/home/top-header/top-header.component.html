@@ -7,18 +7,15 @@
     <div class="container-fluid">
       
       <div class="navbar-header">
-        <button type="button" class="navbar-sidebar-toggle" data-toggle-sidebar>
-        <span class="typcn typcn-arrow-left visible-sidebar-sm-open"></span>
-        <span class="typcn typcn-arrow-right visible-sidebar-sm-closed"></span>
-        <span class="typcn typcn-arrow-left visible-sidebar-md-open"></span>
-        <span class="typcn typcn-arrow-right visible-sidebar-md-closed"></span>
+        <button type="button" class="navbar-sidebar-toggle" (click)="toggleSidebar()">
+          <span class="typcn typcn-arrow-left visible-sidebar-sm-open"></span>
+          <span class="typcn typcn-arrow-right visible-sidebar-sm-closed"></span>
+          <span class="typcn typcn-arrow-left visible-sidebar-md-open"></span>
+          <span class="typcn typcn-arrow-right visible-sidebar-md-closed"></span>
         </button>
       </div>
       
       <ul class="nav navbar-nav navbar-right" data-dropdown-in="flipInX" data-dropdown-out="zoomOut">
-        <!-- <li class="hidden-sm hidden-xs hidden-md"><a href="index.html#">Welcome to <strong>Varello</strong>Admin.</a></li> -->
-        <li class="hidden-sm hidden-xs hidden-md"><a href="index.html#">Welcome <strong>{{ currentUser?.name }}</strong></a></li>               
-      
         <li class="item-feed dropdown">
           <a href="index.html#" class="item-feed-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-bell"></span> <span class="badge badge-danger item-feed-badge">7</span></a>
         </li>

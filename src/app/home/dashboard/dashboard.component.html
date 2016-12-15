@@ -13,7 +13,10 @@
 </header>
 
 <div class="container-fluid">
+  
+  <!-- row -->
   <div class="row">
+      
     <div class="col-lg-4">
       <div class="widget widget-default widget-fluctuation">
         <header class="widget-header">
@@ -46,6 +49,7 @@
         </div>
       </div>
     </div>
+    
     <div class="col-sm-6 col-lg-4">
       <div class="widget widget-statistic widget-purple">
         <header class="widget-statistic-header">Closed support cases</header>
@@ -57,22 +61,45 @@
       </div>
     </div>
   </div>
+  <!-- end row -->
+  
+  
+  <!-- row -->
   <div class="row">
-    <div class="col-lg-8">
+    <!-- pie-chart -->
+    <div class="col-lg-3">
       <div class="widget widget-default">
         <header class="widget-header">
           Website Registrations
           <div class="widget-header-actions">
-            <span class="widget-header-action fa fa-cog"></span>
             <span data-close-widget class="widget-header-action fa fa-close"></span>
           </div>
         </header>
-        <div class="widget-body widget-body-md">
-          <canvas id="graph-monthly-registrations" class="widget-graph-md"></canvas>
+        <div class="widget-body">
+          <dashboard-pie-chart></dashboard-pie-chart>
         </div>
       </div>
     </div>
-    <div class="col-lg-4">
+    
+    <!-- bar-chart -->
+    <div class="col-lg-6">
+      <div class="widget widget-default">
+        <header class="widget-header">
+          Dedicated Server Load
+          <div class="widget-header-actions">
+            <span data-close-widget class="widget-header-action fa fa-close"></span>
+          </div>
+        </header>
+        
+        <div class="widget-body">
+          <dashboard-bar-chart></dashboard-bar-chart>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- other default -->
+    <!-- <div class="col-lg-4">
       <div class="widget widget-default">
         <header class="widget-header">
           Dedicated Server Load
@@ -106,8 +133,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+    
   </div>
+  <!-- end row -->
+  
+  
   <div class="row">
 
 

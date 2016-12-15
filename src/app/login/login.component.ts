@@ -4,6 +4,8 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
 import { AuthService } from '../shared/auth/auth.service';
 
+declare var $: any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,6 +19,7 @@ export class LoginComponent implements OnInit {
   }
   
   ngOnInit() {
+    
   }
 
   login($event, email, password) {    
@@ -28,5 +31,8 @@ export class LoginComponent implements OnInit {
                     });
   }
 
+  rememberMeToggle(event) {        
+    console.log('remember me clicked!');
+  }
 
 }

@@ -1,10 +1,5 @@
 $(document).ready(function()
 {
-    $('[data-icheck]').iCheck({
-        checkboxClass: 'icheckbox_flat-blue',
-        radioClass: 'iradio_flat-blue',
-        // increaseArea: '20%' // optional
-    });
     var $contentWrapper = $('.content-wrapper');
     var $sidebars = $('.left-sidebar');
     var $window = $(window);
@@ -27,14 +22,6 @@ $(document).ready(function()
     $('#login-hidden').fadeIn(1150);
 
     $(window).resize(onWindowResize);
-    $('[data-toggle-sidebar]').click(function()
-    {
-        if ($(window).width() < 769) {
-            $('body').toggleClass('sidebar-open-sm');
-        } else {
-            $('body').toggleClass('sidebar-closed-md');
-        }
-    });
 
     $('[data-subnav-toggle]').click(function()
     {
@@ -43,11 +30,11 @@ $(document).ready(function()
 
     Chart.defaults.global.defaultColor = 'rgba(255, 255, 255, 1)';
     Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 1)';
-    Chart.defaults.global.legend.display = false;
+//    Chart.defaults.global.legend.display = false;
 
     Chart.defaults.global.title.fontColor = '#FFFFFF';
 
-    $graphMonthlyRegistrations = document.getElementById("graph-monthly-registrations");
+/*    $graphMonthlyRegistrations = document.getElementById("graph-monthly-registrations");
 
     if ($graphMonthlyRegistrations !== null) {
         $graphMonthlyRegistrations = $graphMonthlyRegistrations.getContext("2d");
@@ -85,7 +72,7 @@ $(document).ready(function()
                 scaleShowVerticalLines: false,
             }
         });
-    }
+    }*/
 
     $(".piety-pie").peity("pie", {
         fill: ["#1f7491", "#363a3c"]

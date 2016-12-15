@@ -1,7 +1,9 @@
 import { environment } from '../../../environments/environment';
 
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 import { Response } from '@angular/http';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+
 import { AuthHttp } from 'angular2-jwt';
 
 import { Observable } from 'rxjs/Rx';
@@ -9,7 +11,10 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
+import { AuthService } from '../auth/auth.service';
+
 import { User } from './user.model'
+
 
 @Injectable()
 export class UserService extends User {
@@ -34,3 +39,20 @@ export class UserService extends User {
   } 
 
 }
+
+
+@Injectable()
+export class CurrentUserResolve implements Resolve<User> {
+  constructor(private authService: AuthService) {}
+
+  resolve(route: ActivatedRouteSnapshot) {
+    return this.authService.getProfile();
+  }
+}
+
+
+export const USER_PROVIDERS: Provider[] = [
+  { provide: UserService, useClass: UserService },
+  { provide: CurrentUserResolve, useClass: CurrentUserResolve }
+];
+

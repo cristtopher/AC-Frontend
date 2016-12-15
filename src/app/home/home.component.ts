@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { AuthService } from '../shared/auth/auth.service';
 
 import { User } from '../shared/user/user.model';
 
@@ -12,13 +12,16 @@ import { User } from '../shared/user/user.model';
 })
 export class HomeComponent implements OnInit {
   currentUser: User;
-  
-  constructor(private authService: AuthService) { 
-    this.authService.getProfile().subscribe( user => this.currentUser);
+    
+  constructor(private route: ActivatedRoute) {     
   }
 
   ngOnInit() {
-    console.log('Using home component');    
+    this.currentUser = this.route.snapshot.data['currentUser'];
+    
+    console.log(`Home.currentUser: ${this.currentUser}`)
+    
+    
   }
 
 }
