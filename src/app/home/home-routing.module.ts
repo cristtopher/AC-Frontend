@@ -1,12 +1,11 @@
 import { NgModule }     from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home.component';
+import { HomeComponent }      from './home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { CanActivateAuthGuard } from '../shared/auth/auth-guard.service';
-import { CurrentUserResolve } from '../shared/user/user.service';
-
+import { CurrentUserResolve }   from '../shared/user/user.providers';
 
 @NgModule({
   imports: [

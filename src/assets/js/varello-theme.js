@@ -34,46 +34,6 @@ $(document).ready(function()
 
     Chart.defaults.global.title.fontColor = '#FFFFFF';
 
-/*    $graphMonthlyRegistrations = document.getElementById("graph-monthly-registrations");
-
-    if ($graphMonthlyRegistrations !== null) {
-        $graphMonthlyRegistrations = $graphMonthlyRegistrations.getContext("2d");
-
-        myLineChart = new Chart($graphMonthlyRegistrations, {
-            type: 'line',
-            data: {
-                labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'],
-                datasets: [{
-                    label: 'Monthly Website Registrations',
-                    data: [0, 260, 516, 373, 892, 1194, 1485],
-                    lineTension: 0.1,
-                    backgroundColor: "rgba(75,192,192,0.4)",
-                    borderColor: "#1cabdb",
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: "#1cabdb",
-                    pointBackgroundColor: "#fff",
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "#1cabdb",
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    backgroundColor: '#484c4e'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scaleFontColor : "#FFFFFF",
-                scaleShowVerticalLines: false,
-            }
-        });
-    }*/
-
     $(".piety-pie").peity("pie", {
         fill: ["#1f7491", "#363a3c"]
     });

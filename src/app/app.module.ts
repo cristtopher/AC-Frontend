@@ -7,7 +7,7 @@ import { HomeModule } from './home/home.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AUTH_PROVIDERS } from 'angular2-jwt';
-import { USER_PROVIDERS } from './shared/user/user.service';
+import { USER_PROVIDERS } from './shared/user/user.providers';
 
 import { CanActivateAuthGuard } from './shared/auth/auth-guard.service';
 import { AuthService } from './shared/auth/auth.service';

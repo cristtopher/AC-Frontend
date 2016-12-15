@@ -3,23 +3,25 @@ import { environment } from '../../../environments/environment';
 import { Injectable, Provider } from '@angular/core';
 import { Response } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-
 import { AuthHttp } from 'angular2-jwt';
-
+import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Rx';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { AuthService } from '../auth/auth.service';
-
 import { User } from './user.model'
-
 
 @Injectable()
 export class UserService extends User {
+  
+  socket: any;
+  
   constructor(private authHttp: AuthHttp) { 
     super();
+    
+    this.socket = io(environment.API_BASEURL);
     
     console.log(environment.API_BASEURL);
   }
@@ -40,7 +42,6 @@ export class UserService extends User {
 
 }
 
-
 @Injectable()
 export class CurrentUserResolve implements Resolve<User> {
   constructor(private authService: AuthService) {}
@@ -49,7 +50,6 @@ export class CurrentUserResolve implements Resolve<User> {
     return this.authService.getProfile();
   }
 }
-
 
 export const USER_PROVIDERS: Provider[] = [
   { provide: UserService, useClass: UserService },
