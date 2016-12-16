@@ -3,7 +3,6 @@ import { Http, Response, Headers } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { AuthHttp, tokenNotExpired } from 'angular2-jwt';
-import * as io from 'socket.io-client';
 
 import { environment } from '../../../environments/environment';
 
@@ -15,9 +14,7 @@ import 'rxjs/add/operator/mergeMap';
 
 @Injectable()
 export class AuthService {
-  
-  socket: any;
-  
+    
   constructor(private router: Router, private http: Http, private authHttp: AuthHttp) {
     
   }
@@ -31,21 +28,9 @@ export class AuthService {
                     .map((res: Response) => {
                       let json = JSON.parse(res.text());
                       
-                      console.log(`response: ${res.text()}`)
-                      
                       if (!json.fail) {
-                          localStorage.setItem("id_token", json.token);
+                        localStorage.setItem("id_token", json.token);
                       }
-    
-                      this.socket = io(environment.API_BASEURL, {
-                        // Send auth token on connection, you will need to DI the Auth service above
-                        query: 'token=' + json.token,
-                        path: '/socket.io-client'
-                      });
-                      
-                      this.socket.on('connect', () => console.log('Connected to socket.io :D'));
-                      this.socket.on('user:remove', item => console.log(`user ${item} removed. notification via socket.io`));
-                      this.socket.on('user:save', item => console.log(`user ${item} saved. notification via socket.io`));
                       
                       return json.token;
                     });
@@ -59,6 +44,10 @@ export class AuthService {
   
   loggedIn() {
     return tokenNotExpired();
+  }
+
+  getAccessToken() {
+    return localStorage.getItem("id_token");
   }
   
 	getProfile(): Observable<User> {

@@ -11,6 +11,7 @@ import { USER_PROVIDERS } from './shared/user/user.providers';
 
 import { CanActivateAuthGuard } from './shared/auth/auth-guard.service';
 import { AuthService } from './shared/auth/auth.service';
+import { SocketService } from './shared/socket/socket.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -31,6 +32,7 @@ import { HomeComponent } from './home/home.component';
   providers: [
     AUTH_PROVIDERS,
     AuthService,
+    SocketService,
     USER_PROVIDERS,
     CanActivateAuthGuard
   ],

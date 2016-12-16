@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { UserService } from '../../shared/user/user.providers';
 
 @Component({
   selector: 'dashboard',
@@ -7,13 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
   
-  constructor() { }
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit() {
     console.log('Trying to render Dashboard Component');
-        
+    
+    
   }
 
   

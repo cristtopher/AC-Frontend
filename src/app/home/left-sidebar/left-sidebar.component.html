@@ -2,80 +2,101 @@
   
   <section class="sidebar-user-panel">
     <div id="user-panel-slide-toggleable">
-      <div class="user-panel-profile-picture">
-        <img src="/assets/images/user-1-profile.jpg" alt="Tyrone G">
-      </div>
-      <span class="user-panel-logged-in-text"><span class="fa fa-circle-o text-success user-panel-status-icon"></span> Logged in as <strong>{{currentUser.name}}</strong></span>
+      
+      <div class="user-panel-profile-picture"><img src="/assets/images/user-1-profile.jpg"></div>
+    
+      <span class="user-panel-logged-in-text"><span class="fa fa-circle-o text-success user-panel-status-icon"></span> Ingresado como <strong>{{currentUser.name}}</strong></span>
+      
       <a href="app-pages/profile/update" class="user-panel-action-link"><span class="fa fa-pencil"></span> Manage your account</a>
     </div>
   </section>
   
   <ul class="sidebar-nav">
-    <li class="sidebar-nav-heading">
-      Components
-    </li>
-    <li class="sidebar-nav-link  active ">
-      <a [routerLink]="['dashboard']">
-        <span class="typcn typcn-home sidebar-nav-link-logo"></span> Dashboard
-      </a>
-    </li>
     
-    <li class="sidebar-nav-link ">
-      <a href="widgets">
-      <span class="typcn typcn-shopping-bag sidebar-nav-link-logo"></span> Widgets <span class="badge badge-primary sidebar-nav-link-badge">6</span>
-      </a>
-    </li>
-    
-    <li class="sidebar-nav-link sidebar-nav-link-group ">
-      <a data-subnav-toggle>
-      <span class="typcn typcn-document sidebar-nav-link-logo"></span> Application Pages
-      <span class="fa fa-chevron-right subnav-toggle-icon subnav-toggle-icon-closed"></span>
-      <span class="fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened"></span>
-      </a>
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-link">
-          <a href="log-in">
-          <span class="typcn typcn-key sidebar-nav-link-logo"></span> Log In
-          </a>
-        </li>
-        <li class="sidebar-nav-link">
-          <a href="forgot-password">
-          <span class="typcn typcn-key-outline sidebar-nav-link-logo"></span> Forgot Password
-          </a>
-        </li>
-        <li class="sidebar-nav-link">
-          <a href="sign-up">
-          <span class="typcn typcn-plus-outline sidebar-nav-link-logo"></span> Sign Up
-          </a>
-        </li>
-        <li class="sidebar-nav-link ">
-          <a href="app-pages/inbox">
-          <span class="typcn typcn-folder-open sidebar-nav-link-logo"></span> Inbox <span class="badge badge-info sidebar-nav-link-badge">99+</span>
-          </a>
-        </li>
-      </ul>
-    </li>
-    
-    
-    <li class="sidebar-nav-heading">
-      Fundamentals
-    </li>
-    
-    
-    <li class="sidebar-nav-link ">
-      <a href="tables">
-      <span class="typcn typcn-th-small sidebar-nav-link-logo"></span> Tables
-      </a>
-    </li>
-        
-    <li class="sidebar-nav-link ">
-      <a href="chart-js">
-      <span class="typcn typcn-chart-line sidebar-nav-link-logo"></span> Chart.js <span class="badge badge-danger sidebar-nav-link-badge">3</span>
-      </a>
-    </li>
-    
-    
+    <!-- Admin Section -->
+    <div *ngIf="currentUser.role === 'admin'">
+      <li class="sidebar-nav-heading">Administración</li>
+      
+      <li class="sidebar-nav-link center">
+        <span class="typcn sidebar-nav-link-logo"></span> Empresa: 
+        <select>
+          <option>Empresa 1</option>
+          <option>Empresa 2</option>
+          <option>Empresa 3</option>
+        </select>
+      </li>
+            
+      <sidebar-group-section [sectionName]="'Empresas'" [iconClass]="'typcn-group'">
+        <sidebar-section
+          [linkTo]="'listCompanies'"
+          [sectionName]="'Lista Empresas'" 
+          [iconClass]="'typcn-group'"></sidebar-section>
 
+        <sidebar-section
+          [linkTo]="'addCompany'"
+          [sectionName]="'Crear Empresa'" 
+          [iconClass]="'typcn-user-add'"></sidebar-section>
+      </sidebar-group-section>
+      
+      <sidebar-group-section [sectionName]="'Usuarios'" [iconClass]="'typcn-user-outline'">
+        <sidebar-section
+          [linkTo]="'listUsers'"
+          [sectionName]="'Lista Usuarios'" 
+          [iconClass]="'typcn-user-add-outline'"></sidebar-section>
+
+        <sidebar-section
+          [linkTo]="'addUser'"
+          [sectionName]="'Crear Usuario'" 
+          [iconClass]="'typcn-user-outline'"></sidebar-section>
+      </sidebar-group-section>
+  
+    </div>    
+    
+    
+    <!-- Supervisor Section -->
+    <div *ngIf="currentUser.role === 'supervisor'">
+      <li class="sidebar-nav-heading">Supervisores</li>
+      
+      
+      <li class="sidebar-nav-link ">
+        <a href="tables">
+        <span class="typcn typcn-th-small sidebar-nav-link-logo"></span> Tables
+        </a>
+      </li>
+        
+      <li class="sidebar-nav-link ">
+        <a href="chart-js">
+        <span class="typcn typcn-chart-line sidebar-nav-link-logo"></span> Chart.js <span class="badge badge-danger sidebar-nav-link-badge">3</span>
+        </a>
+      </li>
+    </div>
+    
+    <!-- User Section -->
+    <li class="sidebar-nav-heading">
+      General
+    </li>    
+    
+    <sidebar-section
+      [linkTo]="'dashboard'"
+      [sectionName]="'Dashboard'" 
+      [iconClass]="'typcn-chart-line'" 
+      [badgeClass]="'badge-primary'" 
+      [badgeValue]="3">
+    </sidebar-section>
+  
+    <sidebar-section
+      [linkTo]="'logbook'"
+      [sectionName]="'Bitacora'" 
+      [iconClass]="'typcn-contacts'">
+    </sidebar-section>
+    
+  
+    <sidebar-section
+      [linkTo]="'manualRegister'"
+      [sectionName]="'Registro Manual'" 
+      [iconClass]="'typcn-document-add'">
+    </sidebar-section>
+  
   </ul>
   
 </aside>

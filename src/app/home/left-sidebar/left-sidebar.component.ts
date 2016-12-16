@@ -9,7 +9,7 @@ import { User } from '../../shared/user/user.model';
   styleUrls: ['./left-sidebar.component.css']
 })
 export class LeftSidebarComponent implements OnInit {
-  @Input() currentUser: User;
+  currentUser: User;
   
   constructor(private route: ActivatedRoute) {
   }
@@ -18,5 +18,8 @@ export class LeftSidebarComponent implements OnInit {
     this.currentUser = this.route.snapshot.data['currentUser'];
   }
 
+  toggleMenu() {
+    //$(this).parent().toggleClass('open');  
+  }
 
 }

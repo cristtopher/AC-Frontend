@@ -12,6 +12,8 @@ import { TopHeaderComponent } from './top-header/top-header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BarChartComponent } from './dashboard/bar-chart/bar-chart.component';
 import { PieChartComponent } from './dashboard/pie-chart/pie-chart.component';
+import { SectionComponent } from './left-sidebar/section/section.component';
+import { GroupSectionComponent } from './left-sidebar/group-section/group-section.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { PieChartComponent } from './dashboard/pie-chart/pie-chart.component';
     TopHeaderComponent,
     DashboardComponent,
     BarChartComponent,
-    PieChartComponent
+    PieChartComponent,
+    SectionComponent,
+    GroupSectionComponent
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'dashboard-pie-chart',
   templateUrl: './pie-chart.component.html',
@@ -19,11 +20,10 @@ export class PieChartComponent implements OnInit {
 
   // events
   public chartClicked(e:any):void {
-    console.log(e);
   }
 
   public chartHovered(e:any):void {
-    console.log(e);
+
   }
   
 

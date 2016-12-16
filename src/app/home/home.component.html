@@ -2,15 +2,13 @@
 
 <div class="wrapper">
   <div class="page-wrapper">
-    
-    <home-left-sidebar [currentUser]="'currentUser'"></home-left-sidebar>
+    <home-left-sidebar></home-left-sidebar>
     
     <home-top-header></home-top-header>
     
-    <div class="content-wrapper">
-      <div class="content-dimmer"></div>
-    
+    <div class="content-wrapper">    
       <router-outlet></router-outlet>
     </div>
+    
   </div>
 </div>

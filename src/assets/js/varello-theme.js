@@ -23,10 +23,10 @@ $(document).ready(function()
 
     $(window).resize(onWindowResize);
 
-    $('[data-subnav-toggle]').click(function()
+/*    $('[data-subnav-toggle]').click(function()
     {
         $(this).parent().toggleClass('open');
-    });
+    });*/
 
     Chart.defaults.global.defaultColor = 'rgba(255, 255, 255, 1)';
     Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 1)';

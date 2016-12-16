@@ -4,26 +4,29 @@ import { Injectable, Provider } from '@angular/core';
 import { Response } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
-import * as io from 'socket.io-client';
+
 import { Observable } from 'rxjs/Rx';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { AuthService } from '../auth/auth.service';
+import { SocketService } from '../socket/socket.service';
+
 import { User } from './user.model'
+
+//-------------------------------------------------------
+//                      Services
+//-------------------------------------------------------
+
 
 @Injectable()
 export class UserService extends User {
   
   socket: any;
   
-  constructor(private authHttp: AuthHttp) { 
+  constructor(private authHttp: AuthHttp, private socketService: SocketService) { 
     super();
-    
-    this.socket = io(environment.API_BASEURL);
-    
-    console.log(environment.API_BASEURL);
   }
   
   getUsers() {
@@ -34,6 +37,15 @@ export class UserService extends User {
                     })
                     .catch(this.handleError);
   }
+  
+  syncUpdates(): Observable<any> {
+    return this.socketService.get('user')
+    .map((event) => {
+      event.item = new User().fromJSON(event.item);
+      
+      return event;
+    });
+  }
 
   private handleError(error: Response) {
     console.error(error);
@@ -41,6 +53,11 @@ export class UserService extends User {
   } 
 
 }
+
+//-------------------------------------------------------
+//                      Resolvers
+//-------------------------------------------------------
+
 
 @Injectable()
 export class CurrentUserResolve implements Resolve<User> {
@@ -50,6 +67,13 @@ export class CurrentUserResolve implements Resolve<User> {
     return this.authService.getProfile();
   }
 }
+
+
+
+//-------------------------------------------------------
+//                      Providers
+//-------------------------------------------------------
+
 
 export const USER_PROVIDERS: Provider[] = [
   { provide: UserService, useClass: UserService },

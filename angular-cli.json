@@ -39,8 +39,7 @@
         "../node_modules/icheck/icheck.min.js",
         "../node_modules/chart.js/dist/Chart.min.js",
         "../node_modules/fullcalendar/dist/fullcalendar.min.js",
-        "../node_modules/summernote/dist/summernote.min.js",
-        "assets/js/varello-theme.js"
+        "../node_modules/summernote/dist/summernote.min.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
