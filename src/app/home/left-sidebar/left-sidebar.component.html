@@ -16,15 +16,6 @@
     <!-- Admin Section -->
     <div *ngIf="currentUser.role === 'admin'">
       <li class="sidebar-nav-heading">Administración</li>
-      
-      <li class="sidebar-nav-link center">
-        <span class="typcn sidebar-nav-link-logo"></span> Empresa: 
-        <select>
-          <option>Empresa 1</option>
-          <option>Empresa 2</option>
-          <option>Empresa 3</option>
-        </select>
-      </li>
             
       <sidebar-group-section [sectionName]="'Empresas'" [iconClass]="'typcn-group'">
         <sidebar-section
@@ -95,8 +86,7 @@
       [linkTo]="'manualRegister'"
       [sectionName]="'Registro Manual'" 
       [iconClass]="'typcn-document-add'">
-    </sidebar-section>
-  
+    </sidebar-section>  
   </ul>
   
 </aside>
