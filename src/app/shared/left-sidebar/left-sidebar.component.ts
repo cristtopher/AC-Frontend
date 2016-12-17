@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { User } from '../../shared/user/user.model';
 
 
@@ -9,13 +8,13 @@ import { User } from '../../shared/user/user.model';
   styleUrls: ['./left-sidebar.component.css']
 })
 export class LeftSidebarComponent implements OnInit {
-  currentUser: User;
+  @Input() currentUser: User;
   
-  constructor(private route: ActivatedRoute) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.currentUser = this.route.snapshot.data['currentUser'];
+
   }
 
   toggleMenu() {

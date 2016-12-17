@@ -1,8 +1,8 @@
 import { NgModule }     from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { HomeComponent }      from './home.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminComponent }      from './admin.component';
+import { ListUsersComponent } from './list-users/list-users.component';
 
 import { CanActivateAuthGuard } from '../shared/auth/auth-guard.service';
 import { CurrentUserResolve }   from '../shared/user/user.providers';
@@ -10,16 +10,16 @@ import { CurrentUserResolve }   from '../shared/user/user.providers';
 @NgModule({
   imports: [
     RouterModule.forChild([{ 
-      path: 'home', 
-      component: HomeComponent,
+      path: 'admin', 
+      component: AdminComponent,
       canActivate: [CanActivateAuthGuard],
       resolve: { currentUser: CurrentUserResolve },
       children: [{
           path: '',
-          component: DashboardComponent
+          component: ListUsersComponent
         }, {
-          path: 'dashboard',
-          component: DashboardComponent
+          path: 'users',
+          component: ListUsersComponent
         }]
     }])
   ],
@@ -27,4 +27,4 @@ import { CurrentUserResolve }   from '../shared/user/user.providers';
     RouterModule
   ]
 })
-export class HomeRoutingModule { }
+export class AdminRoutingModule { }

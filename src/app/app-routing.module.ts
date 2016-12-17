@@ -2,6 +2,7 @@ import { NgModule }     from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
+import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/login.component';
 
 
@@ -10,6 +11,7 @@ import { LoginComponent } from './login/login.component';
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: 'home', component: HomeComponent },
+      { path: 'admin', component: AdminComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ])
   ],
