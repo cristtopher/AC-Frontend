@@ -16,7 +16,7 @@ import { CurrentUserResolve }   from '../shared/user/user.providers';
       resolve: { currentUser: CurrentUserResolve },
       children: [{
           path: '',
-          component: DashboardComponent
+          redirectTo: 'dashboard'
         }, {
           path: 'dashboard',
           component: DashboardComponent

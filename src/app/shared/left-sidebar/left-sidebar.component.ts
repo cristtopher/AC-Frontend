@@ -3,7 +3,7 @@ import { User } from '../../shared/user/user.model';
 
 
 @Component({
-  selector: 'home-left-sidebar',
+  selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
   styleUrls: ['./left-sidebar.component.css']
 })

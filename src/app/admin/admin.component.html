@@ -2,16 +2,39 @@
 
 <div class="wrapper">
   <div class="page-wrapper">
-    <home-left-sidebar [currentUser]="currentUser"></home-left-sidebar>
     
-    <home-top-header></home-top-header>
+      <app-top-header [title]="'AdminPanel'"></app-top-header>
     
-    <div class="content-wrapper">
+      <app-left-sidebar [currentUser]="currentUser">
+        <li class="sidebar-nav-heading">Administración</li>
+          
+        <sidebar-group-section [sectionName]="'Empresas'" [iconClass]="'typcn-group'">
+          <sidebar-section
+            [linkTo]="'companies'"
+            [sectionName]="'Lista Empresas'" 
+            [iconClass]="'typcn-group'"></sidebar-section>
 
-      <p>
-        admin works!
-      </p>
-       
+          <sidebar-section
+            [linkTo]="'addCompany'"
+            [sectionName]="'Crear Empresa'" 
+            [iconClass]="'typcn-user-add'"></sidebar-section>
+        </sidebar-group-section>
+    
+        <sidebar-group-section [sectionName]="'Usuarios'" [iconClass]="'typcn-user-outline'">
+          <sidebar-section
+            [linkTo]="'users'"
+            [sectionName]="'Lista Usuarios'" 
+            [iconClass]="'typcn-user-add-outline'"></sidebar-section>
+
+          <sidebar-section
+            [linkTo]="'addUser'"
+            [sectionName]="'Crear Usuario'" 
+            [iconClass]="'typcn-user-outline'"></sidebar-section>
+        </sidebar-group-section>
+      </app-left-sidebar>
+    
+    
+    <div class="content-wrapper">       
       <router-outlet></router-outlet>
     </div>
     

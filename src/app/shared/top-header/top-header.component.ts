@@ -1,24 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { User } from '../../shared/user/user.model';
 import { AuthService } from '../../shared/auth/auth.service';
 
 declare var $: any;
 
 @Component({
-  selector: 'home-top-header',
+  selector: 'app-top-header',
   templateUrl: './top-header.component.html',
   styleUrls: ['./top-header.component.css']
 })
 export class TopHeaderComponent implements OnInit {
-  currentUser: User;
-  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
-
-  ngOnInit() {
-    this.currentUser = this.route.snapshot.data['currentUser'];
+  @Input() title: string = "";
+  
+  splittedTitle: string[];
+  
+  constructor(private router: Router, private authService: AuthService) {
     
-    console.log(`TopHeaderComponent.currentUser: ${this.currentUser.name}`);
+  }
+
+  ngOnInit() {    
+    // only get first 2 words from CamelCase'd title    
+    this.splittedTitle = this.title.replace(/([A-Z])/g, ' $1').split(" ").slice(1,3);
+    while(this.splittedTitle.length < 2 ) this.splittedTitle.push("");
   }
 
   logout() {

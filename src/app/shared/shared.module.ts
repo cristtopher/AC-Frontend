@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
-import { BarChartComponent } from './bar-chart/bar-chart.component';
-import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { TopHeaderComponent } from './top-header/top-header.component';
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar.component';
 import { SectionComponent } from './left-sidebar/section/section.component';
@@ -16,8 +14,6 @@ import { SharedComponent } from './shared.component';
 @NgModule({
   declarations: [
     SharedComponent,
-    BarChartComponent,
-    PieChartComponent,
     LeftSidebarComponent,
     TopHeaderComponent,
     SectionComponent,
@@ -30,8 +26,6 @@ import { SharedComponent } from './shared.component';
   ],
   exports: [
     SharedComponent,
-    BarChartComponent,
-    PieChartComponent,
     LeftSidebarComponent,
     TopHeaderComponent,
     SectionComponent,

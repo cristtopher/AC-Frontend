@@ -2,9 +2,50 @@
 
 <div class="wrapper">
   <div class="page-wrapper">
-    <home-left-sidebar></home-left-sidebar>
+    <app-top-header [title]="'ControlAccess'"></app-top-header>
     
-    <home-top-header></home-top-header>
+    
+    <app-left-sidebar [currentUser]="currentUser">
+      
+      <div *ngIf="currentUser.role === 'supervisor'">
+        <li class="sidebar-nav-heading">Supervisores</li>
+        
+        <li class="sidebar-nav-link ">
+          <a href="tables">
+          <span class="typcn typcn-th-small sidebar-nav-link-logo"></span> Tables
+          </a>
+        </li>
+        
+        <li class="sidebar-nav-link ">
+          <a href="chart-js">
+          <span class="typcn typcn-chart-line sidebar-nav-link-logo"></span> Chart.js <span class="badge badge-danger sidebar-nav-link-badge">3</span>
+          </a>
+        </li>
+      </div>
+        
+      <li class="sidebar-nav-heading">General</li>    
+      <sidebar-section
+        [linkTo]="'dashboard'"
+        [sectionName]="'Dashboard'" 
+        [iconClass]="'typcn-chart-line'" 
+        [badgeClass]="'badge-primary'" 
+        [badgeValue]="3">
+      </sidebar-section>
+
+      <sidebar-section
+        [linkTo]="'logbook'"
+        [sectionName]="'Bitacora'" 
+        [iconClass]="'typcn-contacts'">
+      </sidebar-section>
+
+
+      <sidebar-section
+        [linkTo]="'manualRegister'"
+        [sectionName]="'Registro Manual'" 
+        [iconClass]="'typcn-document-add'">
+      </sidebar-section>
+    </app-left-sidebar>
+    
     
     <div class="content-wrapper">    
       <router-outlet></router-outlet>

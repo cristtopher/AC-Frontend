@@ -2,11 +2,8 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 col-md-9">
-        <h1 class="page-header-heading"><span class="typcn typcn-home page-header-heading-icon"></span> Sales Dashboard <small>As admin user</small></h1>
-        <p class="page-header-description">This page provides an overview of revenue from your application, based on <a href="index.html#">varying time periods</a>.</p>
-      </div>
-      <div class="col-xs-12 col-md-3">
-        <button type="button" class="btn btn-transparent btn-xl btn-faded pull-right visible-lg visible-md"><span class="fa fa-paint-brush"></span> Settings</button>
+        <h1 class="page-header-heading"><span class="typcn typcn-chart-line page-header-heading-icon"></span> Dashboard <small>Empresa: {{currentUser.company}}</small></h1>
+        <p class="page-header-description">La siguiente pagina provee un resumen de los registros de acceso.</p>
       </div>
     </div>
   </div>
@@ -19,44 +16,44 @@
         
     <div class="col-sm-6 col-lg-3">
       <div class="widget widget-statistic widget-primary">
-        <header class="widget-statistic-header">Profit this quarter</header>
+        <header class="widget-statistic-header">En Planta</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">$27,294</span>
-          <span class="widget-statistic-description">That's <strong>$2,593 more</strong> than this quarter last year</span>
-          <span class="widget-statistic-icon fa fa-credit-card-alt"></span>
+          <span class="widget-statistic-value">43</span>
+          <span class="widget-statistic-description">Numero  <strong>total</strong> de personas en planta</span>
+          <span class="widget-statistic-icon fa fa-industry"></span>
         </div>
       </div>
     </div>
     
     <div class="col-sm-6 col-lg-3">
       <div class="widget widget-statistic widget-purple">
-        <header class="widget-statistic-header">Closed support cases</header>
+        <header class="widget-statistic-header">Empleados</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">59%</span>
-          <span class="widget-statistic-description">That's <strong>12 less</strong> than this time last week</span>
-          <span class="widget-statistic-icon fa fa-support"></span>
+          <span class="widget-statistic-value">30%</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>empleados</strong> en planta</span>
+          <span class="widget-statistic-icon fa fa-user"></span>
         </div>
       </div>
     </div>
     
     <div class="col-sm-6 col-lg-3">
       <div class="widget widget-statistic widget-primary">
-        <header class="widget-statistic-header">Profit this quarter</header>
+        <header class="widget-statistic-header">Contratistas</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">$27,294</span>
-          <span class="widget-statistic-description">That's <strong>$2,593 more</strong> than this quarter last year</span>
-          <span class="widget-statistic-icon fa fa-credit-card-alt"></span>
+          <span class="widget-statistic-value">13%</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>contratistas</strong> en planta</span>
+          <span class="widget-statistic-icon fa fa-user-o"></span>
         </div>
       </div>
     </div>
     
     <div class="col-sm-6 col-lg-3">
       <div class="widget widget-statistic widget-purple">
-        <header class="widget-statistic-header">Closed support cases</header>
+        <header class="widget-statistic-header">Visitas</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">59%</span>
-          <span class="widget-statistic-description">That's <strong>12 less</strong> than this time last week</span>
-          <span class="widget-statistic-icon fa fa-support"></span>
+          <span class="widget-statistic-value">57%</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>visitas</strong> en planta</span>
+          <span class="widget-statistic-icon fa fa-eye"></span>
         </div>
       </div>
     </div>
@@ -71,14 +68,18 @@
     <div class="col-sm-6 col-lg-3">
       <div class="widget widget-default">
         <header class="widget-header">
-          Website Registrations
+          Grafico 1
           <div class="widget-header-actions">
             <span data-close-widget class="widget-header-action fa fa-close"></span>
           </div>
         </header>
+        
         <div class="widget-body">
-          <dashboard-pie-chart></dashboard-pie-chart>
+          <div style="display: block">            
+            <canvas baseChart [chartType]="'pie'" [labels]="pieChart1.labels" [data]="pieChart1.data"></canvas>
+          </div>          
         </div>
+        
       </div>
     </div>
     
@@ -87,14 +88,18 @@
     <div class="col-sm-6 col-lg-3">
       <div class="widget widget-default">
         <header class="widget-header">
-          Website Registrations
+          Grafico 2
           <div class="widget-header-actions">
             <span data-close-widget class="widget-header-action fa fa-close"></span>
           </div>
         </header>
+        
         <div class="widget-body">
-          <dashboard-pie-chart></dashboard-pie-chart>
+          <div style="display: block">            
+            <canvas baseChart [chartType]="'pie'" [labels]="pieChart2.labels" [data]="pieChart2.data"></canvas>
+          </div>          
         </div>
+        
       </div>
     </div>
     
@@ -102,14 +107,21 @@
     <div class="col-sm-6 col-lg-6">
       <div class="widget widget-default">
         <header class="widget-header">
-          Dedicated Server Load
+          Grafico 3
           <div class="widget-header-actions">
             <span data-close-widget class="widget-header-action fa fa-close"></span>
           </div>
         </header>
         
         <div class="widget-body">
-          <dashboard-bar-chart></dashboard-bar-chart>
+          <div style="display: block">
+            <canvas baseChart
+                    [datasets]="barChart.series"
+                    [labels]="barChart.labels"
+                    [options]="{ scaleShowVerticalLines: false, responsive: true }"
+                    [legend]="true"
+                    [chartType]="'bar'"></canvas>  
+          </div>
         </div>
       </div>
     </div>
@@ -228,7 +240,5 @@
       </table>
     </div>
   </div>
-  <footer class="content-wrapper-footer">
-    &copy; Copyright 2016 VarelloAdmin. Crafted with <span class="fa fa-heart"></span> by <a href="http://www.varellothemes.com" target="_blank">Varello Themes</a>.
-  </footer>
+
 </div>
