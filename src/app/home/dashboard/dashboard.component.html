@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 col-md-9">
-        <h1 class="page-header-heading"><span class="typcn typcn-chart-line page-header-heading-icon"></span> Dashboard <small>Empresa: {{currentUser.company}}</small></h1>
+        <h1 class="page-header-heading"><span class="typcn typcn-chart-line page-header-heading-icon"></span> Dashboard <small>Empresa: {{currentUser.company.name}}</small></h1>
         <p class="page-header-description">La siguiente pagina provee un resumen de los registros de acceso.</p>
       </div>
     </div>
@@ -26,7 +26,7 @@
     </div>
     
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-purple">
+      <div class="widget widget-statistic widget-success">
         <header class="widget-statistic-header">Empleados</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">30%</span>
@@ -37,7 +37,7 @@
     </div>
     
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-primary">
+      <div class="widget widget-statistic widget-faded-blue">
         <header class="widget-statistic-header">Contratistas</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">13%</span>

@@ -31,7 +31,5 @@ import { SharedComponent } from './shared.component';
     SectionComponent,
     GroupSectionComponent
   ]
-  
-  
 })
 export class SharedModule { }

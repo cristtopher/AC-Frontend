@@ -10,8 +10,8 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { AuthService } from '../auth/auth.service';
 import { SocketService } from '../socket/socket.service';
+import { AuthService } from '../auth/auth.service';
 
 import { User } from './user.model'
 
@@ -22,7 +22,6 @@ import { User } from './user.model'
 
 @Injectable()
 export class UserService extends User {
-  
   socket: any;
   
   constructor(private authHttp: AuthHttp, private socketService: SocketService) { 
@@ -61,7 +60,8 @@ export class UserService extends User {
 
 @Injectable()
 export class CurrentUserResolve implements Resolve<User> {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private socketService: SocketService) {}
+  // ugly way to lazily initialize socketService via injecting socketService when /users/me is requested (Can be improved...)
 
   resolve(route: ActivatedRouteSnapshot) {
     return this.authService.getProfile();
@@ -69,14 +69,11 @@ export class CurrentUserResolve implements Resolve<User> {
 }
 
 
-
 //-------------------------------------------------------
 //                      Providers
 //-------------------------------------------------------
-
 
 export const USER_PROVIDERS: Provider[] = [
   { provide: UserService, useClass: UserService },
   { provide: CurrentUserResolve, useClass: CurrentUserResolve }
 ];
-

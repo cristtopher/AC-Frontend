@@ -12,7 +12,7 @@ export class SocketService {
   private socket: any;
   
   constructor(private authService: AuthService) {
-    var token: string = authService.getAccessToken();
+    let token: string = authService.getAccessToken();
     
     if(!token) { return; }
     
