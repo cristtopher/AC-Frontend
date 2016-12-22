@@ -1,26 +1,50 @@
 # Universal Web Platform
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.22-1.
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Structure
 
-## Code scaffolding
+```
+├── ./e2e                                     - end to end tests
+└── ./src
+    ├── ./src/app                             -  Application root module
+    │   ├── ./src/app/admin                   -  Admin section module (admins will be redirected here after login sucessfully)
+    │   │   └── ./src/app/admin/list-users    -  List users component to list and manage platform users
+    │   ├── ./src/app/home                    -  Home section module (users and supervisors will be redirected here after login sucessfully)
+    │   │   └── ./src/app/home/dashboard      -  Dashboard component (holds metrtics and plots)
+    │   ├── ./src/app/login                   -  Login component to handle login page
+    │   └── ./src/app/shared                  -  Shared module which contains a bunch of components & providers used widely in the application
+    │       ├── ./src/app/shared/auth         -  Auth service which contains auth related logic
+    │       ├── ./src/app/shared/left-sidebar -  Application left-side component 
+    │       ├── ./src/app/shared/socket       -  Socket service for socket.io handling
+    │       ├── ./src/app/shared/top-header   -  Application top-header component 
+    │       ├── ./src/app/shared/user         -  User service (User API mapping)
+    │       └── ./src/app/shared/utils        -  Several utilities
+    ├── ./src/assets                          -  App assets not mantained by NPM
+    └── ./src/environments                    -  Environment related configurations (i.e: API_URL) 
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class`.
+## Getting Started
 
-## Build
+### Prerequisites
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+- [Git](https://git-scm.com/)
+- [nvm](https://github.com/creationix/nvm) (highly recomended)
+- [Node.js and npm](nodejs.org) node lts/boron (`nvm install lts/boron`)
+- [angular-cli](https://github.com/angular/angular-cli) (version 1.0.0-beta.22-1)
 
-## Running unit tests
+### Installation for development
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Run `npm install` to install server dependencies.
+3. Run `ng serve` in order to build and start a server which host static content.
 
-## Running end-to-end tests
+## Building for production
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+1. Run `ng build --prod` for building. Production ready static files will be stored under `./dist` directory
+
+## Testing
+
+- Static code analysis: `ng lint`
+- Run tests (w/ code coverage): `ng test --code-coverage`
 
 ## Further help
 
