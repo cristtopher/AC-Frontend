@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { HomeComponent }      from './home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { PeopleManagementComponent } from './people-management/people-management.component';
 
 import { CanActivateAuthGuard } from '../shared/auth/auth-guard.service';
 import { CurrentUserResolve }   from '../shared/user/user.providers';
@@ -20,6 +21,9 @@ import { CurrentUserResolve }   from '../shared/user/user.providers';
         }, {
           path: 'dashboard',
           component: DashboardComponent
+        }, {
+          path: 'peopleManagement',
+          component: PeopleManagementComponent
         }]
     }])
   ],

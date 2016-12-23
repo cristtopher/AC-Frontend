@@ -8,19 +8,12 @@
     <app-left-sidebar [currentUser]="currentUser">
       
       <div *ngIf="currentUser.role === 'supervisor'">
-        <li class="sidebar-nav-heading">Supervisores</li>
-        
-        <li class="sidebar-nav-link ">
-          <a href="tables">
-          <span class="typcn typcn-th-small sidebar-nav-link-logo"></span> Tables
-          </a>
-        </li>
-        
-        <li class="sidebar-nav-link ">
-          <a href="chart-js">
-          <span class="typcn typcn-chart-line sidebar-nav-link-logo"></span> Chart.js <span class="badge badge-danger sidebar-nav-link-badge">3</span>
-          </a>
-        </li>
+        <li class="sidebar-nav-heading">Administración</li>
+          <sidebar-section
+            [linkTo]="'peopleManagement'"
+            [sectionName]="'Visitas'" 
+            [iconClass]="'typcn-group-outline'">
+          </sidebar-section>
       </div>
         
       <li class="sidebar-nav-heading">General</li>    
@@ -44,6 +37,9 @@
         [sectionName]="'Registro Manual'" 
         [iconClass]="'typcn-document-add'">
       </sidebar-section>
+      
+      
+      
     </app-left-sidebar>
     
     
