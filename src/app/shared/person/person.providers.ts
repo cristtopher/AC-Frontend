@@ -13,7 +13,7 @@ import 'rxjs/add/operator/catch';
 import { SocketService } from '../socket/socket.service';
 import { AuthService } from '../auth/auth.service';
 
-import { Person } from './Person.model'
+import { Person } from './person.model'
 
 //-------------------------------------------------------
 //                      Services
