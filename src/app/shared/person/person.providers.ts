@@ -62,7 +62,16 @@ export class PersonService extends Person {
                         })
                         .catch(this.handleError);
   }
-
+  
+  updatePerson(person: Person): Observable<any> {
+    return this.authHttp.put(`${environment.API_BASEURL}/api/persons/${person._id}`, person)
+                        .map(res => {
+                          let json = res.json();
+                  
+                          return new Person().fromJSON(json);
+                        })
+                        .catch(this.handleError);
+  }
 
   private handleError(error: Response) {
     console.error(error);

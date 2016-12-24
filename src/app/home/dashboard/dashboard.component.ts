@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { User } from '../../shared/user/user.model';
+import { Person } from '../../shared/person/person.model';
+import { PersonService } from '../../shared/person/person.providers';
+// import { Register } from '../../shared/register/register.model';
+// import { RegisterService } from '../../shared/person/person.model';
+
+import { SocketService } from '../../shared/socket/socket.service';
 
 @Component({
   selector: 'dashboard',
@@ -9,7 +14,7 @@ import { User } from '../../shared/user/user.model';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  currentUser: User;
+  registers: any;
   
   pieChart1 = {
     labels: ['A', 'B', 'C'],
@@ -29,11 +34,17 @@ export class DashboardComponent implements OnInit {
     ]
   }
   
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private personService: PersonService, private socketService: SocketService) {
+    this.socketService.get('register')
+                      .subscribe((event) => {
+                        if (event.action == "save")   { return  }
+                        if (event.action == "remove") { return  }
+                      });
   }
 
   ngOnInit() {
-    console.log('Trying to render Dashboard Component');
-    this.currentUser = this.route.snapshot.data['currentUser'] || this.route.parent.snapshot.data['currentUser'];
+    
   }
+  
+  
 }

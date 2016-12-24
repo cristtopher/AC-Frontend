@@ -1,7 +1,11 @@
-export class Serializable {
+export class Serializable {    
+    clone(obj) {
+      for (var propName in obj)
+        this[propName] = obj[propName];
+      return this;
+    }
+    
     fromJSON(json) {
-        for (var propName in json)
-            this[propName] = json[propName];
-        return this;
+      return this.clone(json);
     }
 }

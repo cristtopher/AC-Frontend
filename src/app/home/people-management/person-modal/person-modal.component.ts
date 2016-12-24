@@ -9,7 +9,7 @@ import { PersonService } from '../../../shared/person/person.providers';
 
 
 export class PersonModalContext extends BSModalContext {
-    constructor(public rut: string, public name: string, public company: string) {
+    constructor(public person: Person) {
       super();
     }
   }
@@ -26,27 +26,21 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
     this.context = dialog.context;
     this.context.showClose = true;
     dialog.setCloseGuard(this);
-
-    console.log(`context = ${JSON.stringify(this.context)}`);    
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
     
   createPerson(){
-    return this.personService.createPerson(<Person> {
-      rut: this.context.rut,
-      name: this.context.name,
-      company: this.context.company
-    })
-    .toPromise()
-    .then((person) => this.dialog.close(person))
+    return this.personService.createPerson(this.context.person)
+                             .toPromise()
+                             .then((person) => this.dialog.close(person))
   }
   
   updatePerson(){
-    return new Promise<any>((resolve) => resolve("asdsd"))
-    .then(() => this.dialog.close(this.context));    
-  }
+    return this.personService.updatePerson(this.context.person)
+                             .toPromise()
+                             .then((person) => this.dialog.close(person))
+   }
   
   closeModal() {
     return this.dialog.close();
