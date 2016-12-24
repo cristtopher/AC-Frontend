@@ -10,7 +10,6 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { SocketService } from '../socket/socket.service';
 import { AuthService } from '../auth/auth.service';
 
 import { User } from './user.model'
@@ -24,28 +23,25 @@ import { User } from './user.model'
 export class UserService extends User {
   socket: any;
   
-  constructor(private authHttp: AuthHttp, private socketService: SocketService) { 
+  constructor(private authHttp: AuthHttp) { 
     super();
   }
   
   getUsers() {
     return this.authHttp.get(`${environment.API_BASEURL}/api/users`)
-                    .map(res => {
-                      console.log(res.text());
-                      return res;
-                    })
-                    .catch(this.handleError);
+                        .map(res => {
+                          let json = res.json();
+                          
+                          return json.map(u => new User().fromJSON(u));
+                        })
+                        .catch(this.handleError);
   }
   
-  syncUpdates(): Observable<any> {
-    return this.socketService.get('user')
-    .map((event) => {
-      event.item = new User().fromJSON(event.item);
-      
-      return event;
-    });
+  deleteUser(user: User){
+    return this.authHttp.delete(`${environment.API_BASEURL}/api/users/${user._id}`)
+                        .catch(this.handleError);
   }
-
+  
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
@@ -60,8 +56,7 @@ export class UserService extends User {
 
 @Injectable()
 export class CurrentUserResolve implements Resolve<User> {
-  constructor(private authService: AuthService, private socketService: SocketService) {}
-  // ugly way to lazily initialize socketService via injecting socketService when /users/me is requested (Can be improved...)
+  constructor(private authService: AuthService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
     return this.authService.getProfile();

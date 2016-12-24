@@ -26,7 +26,7 @@ export class AuthService {
     
     return this.http.post(`${environment.API_BASEURL}/auth/local`, {email: username, password: password}, new Headers({ 'Content-Type': 'application/json' }))
                     .map((res: Response) => {
-                      let json = JSON.parse(res.text());
+                      let json = res.json();
                       
                       if (!json.fail) {
                         localStorage.setItem("id_token", json.token);
@@ -53,9 +53,9 @@ export class AuthService {
 	getProfile(): Observable<User> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/users/me`)
               .map((res: Response) => {
-                let jsonResponse = JSON.parse(res.text());
+                let json = res.json();
                 
-                let user = new User().fromJSON(jsonResponse);
+                let user = new User().fromJSON(json);
                 console.log(`getProfile: ${user}`)
                 
                 return user;

@@ -1,12 +1,12 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { UserService } from './user.providers';
+import { PERSON_PROVIDERS } from './person.providers';
 
-describe('Service: User', () => {
+describe('Providers: Person', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UserService]
+      providers: [PERSON_PROVIDERS]
     });
   });
 

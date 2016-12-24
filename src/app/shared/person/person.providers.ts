@@ -28,10 +28,16 @@ export class PersonService extends Person {
     super();
   }
   
-  getVisits(): Observable<any[]> {
+  deletePerson(person: Person): Observable<any> {
+    return this.authHttp.delete(`${environment.API_BASEURL}/api/persons/${person._id}`)
+                        .catch(this.handleError);
+  }
+  
+  getVisits(): Observable<Person[]> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/persons?visit=1`)
             .map(res => {
-              let json = JSON.parse(res.text());
+              let json = res.json();
+              
               return json.map(p => new Person().fromJSON(p));
             })
             .catch(this.handleError);
@@ -40,21 +46,23 @@ export class PersonService extends Person {
   getPersons(): Observable<Person[]> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/persons`)
                 .map(res => {
-                  let json = JSON.parse(res.text());
+                  let json = res.json();
                   
                   return json.map(p => new Person().fromJSON(p));
                 })
                 .catch(this.handleError);
   }
   
-  syncUpdates(): Observable<any> {
-    return this.socketService.get('person')
-    .map((event) => {
-      event.item = new Person().fromJSON(event.item);
-      
-      return event;
-    });
+  createPerson(person: Person): Observable<any> {
+    return this.authHttp.post(`${environment.API_BASEURL}/api/persons`, person)
+                        .map(res => {
+                          let json = res.json();
+                  
+                          return new Person().fromJSON(json);
+                        })
+                        .catch(this.handleError);
   }
+
 
   private handleError(error: Response) {
     console.error(error);
