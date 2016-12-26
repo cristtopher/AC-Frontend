@@ -10,7 +10,6 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { SocketService } from '../socket/socket.service';
 import { AuthService } from '../auth/auth.service';
 
 import { Person } from './person.model'
@@ -21,18 +20,15 @@ import { Person } from './person.model'
 
 
 @Injectable()
-export class PersonService extends Person {
-  socket: any;
+export class PersonService {
   
-  constructor(private authHttp: AuthHttp, private socketService: SocketService) { 
-    super();
-  }
+  constructor(private authHttp: AuthHttp) { }
   
   deletePerson(person: Person): Observable<any> {
     return this.authHttp.delete(`${environment.API_BASEURL}/api/persons/${person._id}`)
                         .catch(this.handleError);
   }
-  
+    
   getVisits(): Observable<Person[]> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/persons?visit=1`)
             .map(res => {
@@ -43,7 +39,7 @@ export class PersonService extends Person {
             .catch(this.handleError);
   }
   
-  getPersons(): Observable<Person[]> {
+  get(): Observable<Person[]> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/persons`)
                 .map(res => {
                   let json = res.json();
@@ -85,23 +81,10 @@ export class PersonService extends Person {
 //-------------------------------------------------------
 
 
-@Injectable()
-export class PeopleResolve implements Resolve<Person[]> {
-  constructor(private personService: PersonService, private socketService: SocketService) {}
-  // ugly way to lazily initialize socketService via injecting socketService when /users/me is requested (Can be improved...)
-
-  resolve(route: ActivatedRouteSnapshot) {
-    return this.personService.getPersons();
-  }
-}
-
-
-
 //-------------------------------------------------------
 //                      Providers
 //-------------------------------------------------------
 
 export const PERSON_PROVIDERS: Provider[] = [
-  { provide: PersonService, useClass: PersonService },
-  { provide: PeopleResolve, useClass: PeopleResolve }
+  { provide: PersonService, useClass: PersonService }
 ];

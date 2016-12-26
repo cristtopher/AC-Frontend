@@ -1,13 +1,12 @@
 import { Serializable } from '../utils/serializable';
 
-
 export class Person extends Serializable {
-  _id: number;
+  _id: string;
   rut: string;
   name: string;
-  company: any;
+  companyName: string;
   
   constructor() {
     super();  
-  }
+  }  
 };

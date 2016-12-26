@@ -1,11 +1,7 @@
 import { Serializable } from '../utils/serializable';
 
-
-export class User extends Serializable {
+export class Company extends Serializable {
   _id: string;
-  name: string;
-  role: string;
-  company: any;
   
   constructor() {
     super();  

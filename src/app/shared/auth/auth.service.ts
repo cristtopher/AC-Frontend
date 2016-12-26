@@ -15,9 +15,7 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 export class AuthService {
     
-  constructor(private router: Router, private http: Http, private authHttp: AuthHttp) {
-    
-  }
+  constructor(private router: Router, private http: Http, private authHttp: AuthHttp) { }
   
   login(username: string, password: string): Observable<any> {
     console.log(`username: ${username}`);

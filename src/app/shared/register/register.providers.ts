@@ -12,7 +12,7 @@ import 'rxjs/add/operator/catch';
 
 import { AuthService } from '../auth/auth.service';
 
-import { User } from './user.model'
+import { Register } from './register.model'
 
 //-------------------------------------------------------
 //                      Services
@@ -20,22 +20,17 @@ import { User } from './user.model'
 
 
 @Injectable()
-export class UserService {
+export class RegisterService {
   
   constructor(private authHttp: AuthHttp) { }
   
-  getUsers() {
-    return this.authHttp.get(`${environment.API_BASEURL}/api/users`)
+  get(): Observable<Register[]> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/registers`)
                         .map(res => {
                           let json = res.json();
-                          
-                          return json.map(u => new User().fromJSON(u));
+              
+                          return json.map(p => new Register().fromJSON(p));
                         })
-                        .catch(this.handleError);
-  }
-  
-  deleteUser(user: User){
-    return this.authHttp.delete(`${environment.API_BASEURL}/api/users/${user._id}`)
                         .catch(this.handleError);
   }
   
@@ -51,21 +46,11 @@ export class UserService {
 //-------------------------------------------------------
 
 
-@Injectable()
-export class CurrentUserResolve implements Resolve<User> {
-  constructor(private authService: AuthService) {}
-
-  resolve(route: ActivatedRouteSnapshot) {
-    return this.authService.getProfile();
-  }
-}
-
 
 //-------------------------------------------------------
 //                      Providers
 //-------------------------------------------------------
 
-export const USER_PROVIDERS: Provider[] = [
-  { provide: UserService, useClass: UserService },
-  { provide: CurrentUserResolve, useClass: CurrentUserResolve }
+export const REGISTER_PROVIDERS: Provider[] = [
+  { provide: RegisterService, useClass: RegisterService }
 ];

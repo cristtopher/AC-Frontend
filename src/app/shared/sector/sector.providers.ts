@@ -12,7 +12,7 @@ import 'rxjs/add/operator/catch';
 
 import { AuthService } from '../auth/auth.service';
 
-import { User } from './user.model'
+import { Sector } from './sector.model'
 
 //-------------------------------------------------------
 //                      Services
@@ -20,24 +20,9 @@ import { User } from './user.model'
 
 
 @Injectable()
-export class UserService {
-  
+export class SectorService {
+
   constructor(private authHttp: AuthHttp) { }
-  
-  getUsers() {
-    return this.authHttp.get(`${environment.API_BASEURL}/api/users`)
-                        .map(res => {
-                          let json = res.json();
-                          
-                          return json.map(u => new User().fromJSON(u));
-                        })
-                        .catch(this.handleError);
-  }
-  
-  deleteUser(user: User){
-    return this.authHttp.delete(`${environment.API_BASEURL}/api/users/${user._id}`)
-                        .catch(this.handleError);
-  }
   
   private handleError(error: Response) {
     console.error(error);
@@ -51,21 +36,11 @@ export class UserService {
 //-------------------------------------------------------
 
 
-@Injectable()
-export class CurrentUserResolve implements Resolve<User> {
-  constructor(private authService: AuthService) {}
-
-  resolve(route: ActivatedRouteSnapshot) {
-    return this.authService.getProfile();
-  }
-}
-
 
 //-------------------------------------------------------
 //                      Providers
 //-------------------------------------------------------
 
-export const USER_PROVIDERS: Provider[] = [
-  { provide: UserService, useClass: UserService },
-  { provide: CurrentUserResolve, useClass: CurrentUserResolve }
+export const SECTOR_PROVIDERS: Provider[] = [
+  { provide: SectorService, useClass: SectorService }
 ];

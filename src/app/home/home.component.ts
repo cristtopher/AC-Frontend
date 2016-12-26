@@ -18,13 +18,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.route.snapshot.data['currentUser'];
-    
-    console.log(`Home.currentUser: ${this.currentUser}`)
-    
+        
     Chart.defaults.global.title.fontColor = '#FFFFFF';
     Chart.defaults.global.defaultColor = 'rgba(255, 255, 255, 1)';
     Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 1)';
-    
   }
 
 }

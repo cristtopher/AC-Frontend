@@ -18,7 +18,7 @@
       <div class="widget widget-statistic widget-primary">
         <header class="widget-statistic-header">En Planta</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">43</span>
+          <span class="widget-statistic-value">{{ statistics.totalRegisters }}</span>
           <span class="widget-statistic-description">Numero  <strong>total</strong> de personas en planta</span>
           <span class="widget-statistic-icon fa fa-industry"></span>
         </div>
@@ -69,9 +69,6 @@
       <div class="widget widget-default">
         <header class="widget-header">
           Grafico 1
-          <div class="widget-header-actions">
-            <span data-close-widget class="widget-header-action fa fa-close"></span>
-          </div>
         </header>
         
         <div class="widget-body">
@@ -89,9 +86,6 @@
       <div class="widget widget-default">
         <header class="widget-header">
           Grafico 2
-          <div class="widget-header-actions">
-            <span data-close-widget class="widget-header-action fa fa-close"></span>
-          </div>
         </header>
         
         <div class="widget-body">
@@ -108,9 +102,6 @@
       <div class="widget widget-default">
         <header class="widget-header">
           Grafico 3
-          <div class="widget-header-actions">
-            <span data-close-widget class="widget-header-action fa fa-close"></span>
-          </div>
         </header>
         
         <div class="widget-body">
@@ -139,29 +130,19 @@
             <tr>
               <th>#</th>
               <th>Hora</th>
+              <th>Sector</th>
               <th>Nombre</th>
               <th>Tipo persona</th>
             </tr> 
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>2010-10-12 13:00:00</td>
-              <td>Otto</td>
-              <td>Contratista</td>
+            <tr *ngFor="let register of registers; let i = index">
+              <th scope="row">{{ (i + 1) }}</th>
+              <td>{{ register.time | date:"medium" }}</td>
+              <td>{{ register.sector.name }}</td>
+              <td>{{ register.person.name }}</td>
+              <td>Contratista (hardcoded...)</td>
             </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>2010-10-12 13:00:00</td>
-              <td>Thornton</td>
-              <td>Empleado</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th> 
-              <td>2010-10-12 13:00:00</td> 
-              <td>the Bird</td> 
-              <td>Empleado</td> 
-            </tr> 
           </tbody> 
         </table> 
       </div>

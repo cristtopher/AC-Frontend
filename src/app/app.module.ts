@@ -11,8 +11,10 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AUTH_PROVIDERS } from 'angular2-jwt';
 import { USER_PROVIDERS } from './shared/user/user.providers';
+import { COMPANY_PROVIDERS } from './shared/company/company.providers';
+import { SECTOR_PROVIDERS } from './shared/sector/sector.providers';
+import { REGISTER_PROVIDERS } from './shared/register/register.providers';
 import { PERSON_PROVIDERS } from './shared/person/person.providers';
-
 
 import { CanActivateAuthGuard } from './shared/auth/auth-guard.service';
 import { AuthService } from './shared/auth/auth.service';
@@ -40,6 +42,9 @@ import { LoginComponent } from './login/login.component';
     AuthService,
     SocketService,
     USER_PROVIDERS,
+    COMPANY_PROVIDERS,
+    SECTOR_PROVIDERS,
+    REGISTER_PROVIDERS,
     PERSON_PROVIDERS,
     CanActivateAuthGuard
   ],
