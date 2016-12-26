@@ -45,7 +45,7 @@ export class PeopleManagementComponent implements OnInit {
   }
 
   deleteVisit(visit: Person){
-    this.personService.deletePerson(visit);
+    this.personService.deletePerson(visit).subscribe();
   }
 
   createVisit() {
