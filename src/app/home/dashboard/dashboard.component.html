@@ -139,8 +139,8 @@
             <tr *ngFor="let register of registers; let i = index">
               <th scope="row">{{ (i + 1) }}</th>
               <td>{{ register.time | date:"medium" }}</td>
-              <td>{{ register.sector.name }}</td>
-              <td>{{ register.person.name }}</td>
+              <td>{{ register.sector?.name }}</td>
+              <td>{{ register.person?.name }}</td>
               <td>Contratista (hardcoded...)</td>
             </tr>
           </tbody> 
