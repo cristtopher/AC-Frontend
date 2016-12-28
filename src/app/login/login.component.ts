@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
     
   }
 
-  login($event, email, password) {    
-    this.authService.login(email, password)
+  login($event, rut, password) {    
+    this.authService.login(rut, password)
                     .flatMap(() => this.authService.getProfile())
                     .subscribe((user: User) => {
                       if(!this.authService.loggedIn()) { return; }

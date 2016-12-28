@@ -22,7 +22,7 @@ export class AuthService {
     console.log(`password: ${password}`);
     console.log(`environment.API_BASEURL: ${environment.API_BASEURL}`)
     
-    return this.http.post(`${environment.API_BASEURL}/auth/local`, {email: username, password: password}, new Headers({ 'Content-Type': 'application/json' }))
+    return this.http.post(`${environment.API_BASEURL}/auth/local`, {rut: username, password: password}, new Headers({ 'Content-Type': 'application/json' }))
                     .map((res: Response) => {
                       let json = res.json();
                       
