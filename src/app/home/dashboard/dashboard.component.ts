@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Register } from '../../shared/register/register.model';
@@ -13,7 +13,8 @@ import { SocketService } from '../../shared/socket/socket.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit {  
+  currentUser: any;
   registers: Register[];
   
   statistics = {

@@ -6,7 +6,20 @@
 
       <span class="user-panel-logged-in-text"><span class="fa fa-circle-o text-success user-panel-status-icon"></span> Ingresado como <strong>{{currentUser.name}}</strong></span>
       
-      <a href="app-pages/profile/update" class="user-panel-action-link"><span class="fa fa-pencil"></span> Editar cuenta de usuario</a>
+      <!-- <span class="user-panel-role-badge"><span class="badge badge-faded-blue">{{currentUser.role}}</span></span> -->      
+      <div class="form-group" *ngIf="currentUser.role === 'user'">      
+          <select class="form-control" (change)="changeSector($event.target.value)" [(ngModel)]="currentUser.currentSector">
+              <option *ngFor="let sector of sectors" [ngValue]="sector">{{sector.name}}</option>
+          </select>
+      </div>
+            
+      <h4 [ngSwitch]="currentUser.role">
+        <span class="label btn-transparent label-primary" *ngSwitchCase="'supervisor'">Supervisor</span>
+        <span class="label label-success" *ngSwitchCase="'admin'">Administrador</span>
+        <span class="label label-primary" *ngSwitchCase="'!user'">{{currentUser.role}}</span>
+      </h4>
+      
+      
     </div>
   </section>
   

@@ -24,7 +24,7 @@ export class UserService {
   
   constructor(private authHttp: AuthHttp) { }
   
-  getUsers() {
+  get() {
     return this.authHttp.get(`${environment.API_BASEURL}/api/users`)
                         .map(res => {
                           let json = res.json();
@@ -55,7 +55,7 @@ export class UserService {
 export class CurrentUserResolve implements Resolve<User> {
   constructor(private authService: AuthService) {}
 
-  resolve(route: ActivatedRouteSnapshot) {
+  resolve(route: ActivatedRouteSnapshot) {    
     return this.authService.getProfile();
   }
 }

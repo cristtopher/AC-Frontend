@@ -5,7 +5,7 @@
     <app-top-header [title]="'ControlAccess'"></app-top-header>
     
     
-    <app-left-sidebar [currentUser]="currentUser">
+    <app-left-sidebar [currentUser]="currentUser" [sectors]="sectors">
       
       <div *ngIf="currentUser.role === 'supervisor'">
         <li class="sidebar-nav-heading">Administración</li>

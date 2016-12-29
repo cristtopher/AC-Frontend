@@ -7,6 +7,7 @@ import { PeopleManagementComponent } from './people-management/people-management
 
 import { CanActivateAuthGuard } from '../shared/auth/auth-guard.service';
 import { CurrentUserResolve }   from '../shared/user/user.providers';
+import { SectorsResolve }   from '../shared/sector/sector.providers';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { CurrentUserResolve }   from '../shared/user/user.providers';
       path: 'home', 
       component: HomeComponent,
       canActivate: [CanActivateAuthGuard],
-      resolve: { currentUser: CurrentUserResolve },
+      resolve: { currentUser: CurrentUserResolve, sectors: SectorsResolve },
       children: [{
           path: '',
           redirectTo: 'dashboard'
