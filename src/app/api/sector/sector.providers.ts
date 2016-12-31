@@ -13,6 +13,7 @@ import 'rxjs/add/operator/catch';
 import { AuthService } from '../auth/auth.service';
 
 import { Sector } from './sector.model'
+import { Register } from '../register/register.model'
 
 //-------------------------------------------------------
 //                      Services
@@ -25,21 +26,26 @@ export class SectorService {
 
   constructor(private authHttp: AuthHttp) { }
 
-  get(query: Object = {}) {
+  get(query: Object = {}): Observable<Sector[]> {
     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors${queryString ? '?' + queryString : ''}`)
-                        .map(res => {
-                          let json = res.json();
-                
-                          return json.map(u => new Sector().fromJSON(u));
-                        })
+                        .map(res => <Sector[]> res.json())
                         .do(sectors => {
                           if (!this.currentSector.getValue()) {
                             this.currentSector.next(sectors[0]);
                           }
                         })
                         .catch(this.handleError);
+  }
+  
+  getRegisters(sector: Sector, query: Object = {}): Observable<Register[]> {
+    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+    
+    return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/registers${queryString ? '?' + queryString : ''}`)
+                        .map(res => <Register[]> res.json())
+                        .catch(this.handleError);
+    
   }
   
   setCurrentSector(sector: Sector) {

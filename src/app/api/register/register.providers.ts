@@ -24,13 +24,11 @@ export class RegisterService {
   
   constructor(private authHttp: AuthHttp) { }
   
-  get(): Observable<Register[]> {
-    return this.authHttp.get(`${environment.API_BASEURL}/api/registers`)
-                        .map(res => {
-                          let json = res.json();
-              
-                          return json.map(p => new Register().fromJSON(p));
-                        })
+  get(query: Object = {}): Observable<Register[]> {
+    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+        
+    return this.authHttp.get(`${environment.API_BASEURL}/api/registers${queryString ? '?' + queryString : ''}`)
+                        .map(res => <Register[]> res.json())
                         .catch(this.handleError);
   }
   

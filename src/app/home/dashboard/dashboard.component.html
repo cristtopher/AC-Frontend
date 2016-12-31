@@ -64,33 +64,15 @@
   
   <!-- row -->
   <div class="row">
+        
     <!-- pie-chart -->
-    <div class="col-sm-6 col-lg-3">
+    <div class="col-sm-4 col-lg-4">
       <div class="widget widget-default">
-        <header class="widget-header">
-          Grafico 1
-        </header>
+        <header class="widget-header">Distribución por perfil</header>
         
         <div class="widget-body">
           <div style="display: block">            
-            <canvas baseChart [chartType]="'pie'" [labels]="pieChart1.labels" [data]="pieChart1.data"></canvas>
-          </div>          
-        </div>
-        
-      </div>
-    </div>
-    
-    
-    <!-- pie-chart -->
-    <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-default">
-        <header class="widget-header">
-          Grafico 2
-        </header>
-        
-        <div class="widget-body">
-          <div style="display: block">            
-            <canvas baseChart [chartType]="'pie'" [labels]="pieChart2.labels" [data]="pieChart2.data"></canvas>
+            <canvas baseChart [chartType]="'pie'" [labels]="profileDistPieChart.labels" [data]="profileDistPieChart.data"></canvas>
           </div>          
         </div>
         
@@ -98,17 +80,15 @@
     </div>
     
     <!-- bar-chart -->
-    <div class="col-sm-6 col-lg-6">
+    <div class="col-sm-8 col-lg-8">
       <div class="widget widget-default">
-        <header class="widget-header">
-          Grafico 3
-        </header>
+        <header class="widget-header">Eventos por dia</header>
         
         <div class="widget-body">
           <div style="display: block">
             <canvas baseChart
-                    [datasets]="barChart.series"
-                    [labels]="barChart.labels"
+                    [datasets]="registersPerWeekBarChart.series"
+                    [labels]="registersPerWeekBarChart.labels"
                     [options]="{ scaleShowVerticalLines: false, responsive: true }"
                     [legend]="true"
                     [chartType]="'bar'"></canvas>  
@@ -124,24 +104,26 @@
   <div class="row">    
     <div class="col-lg-12">
       <div class="panel panel-default">  
-        <div class="panel-heading">Ultimos 15 Ingresos</div>  
+        <div class="panel-heading">Ultimos 15 registros</div>  
         <table class="table"> 
           <thead> 
             <tr>
               <th>#</th>
-              <th>Hora</th>
-              <th>Sector</th>
               <th>Nombre</th>
-              <th>Tipo persona</th>
+              <th>Tipo</th>
+              <th colspan="2">Entrada</th>
+              <th colspan="2">Salida</th>
             </tr> 
           </thead>
           <tbody>
             <tr *ngFor="let register of registers; let i = index">
               <th scope="row">{{ (i + 1) }}</th>
-              <td>{{ register.time | date:"medium" }}</td>
-              <td>{{ register.sector?.name }}</td>
               <td>{{ register.person?.name }}</td>
-              <td>Contratista (hardcoded...)</td>
+              <td>{{ register.person?.type }}</td>
+              <td>{{ register.entryTime | date:"medium" }}</td>
+              <td>{{ register.entrySector?.name }}</td>
+              <td>{{ register.departTime ? (register.departTime | date:"medium") : '-' }}</td>
+              <td>{{ register.departSector ? register.departSector?.name : '-' }}</td>
             </tr>
           </tbody> 
         </table> 

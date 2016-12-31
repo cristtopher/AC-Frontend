@@ -34,11 +34,7 @@ export class UserService {
      let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/users${queryString ? '?' + queryString : ''}`)
-                        .map(res => {
-                          let json = res.json();
-                          
-                          return json.map(u => new User().fromJSON(u));
-                        })
+                        .map(res => <User[]> res.json())
                         .catch(this.handleError);
   }
   

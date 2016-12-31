@@ -28,26 +28,21 @@ export class DashboardComponent implements OnInit {
     contractorsPercentage: null,
     visitorsPercentage: null
   }
-  
-  pieChart1 = {
-    labels: ['A', 'B', 'C'],
-    data: [300, 500, 100]
-  }
-  
-  pieChart2 = {
+
+  profileDistPieChart = {
     labels: ['Planta', 'Contratistas', 'Visitas'],
     data: [200, 100, 300]
   }
     
-  barChart = {
-    labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
+  registersPerWeekBarChart = {
+    labels: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
     series: [
       {label: 'Entradas', data: [65, 59, 80, 81, 56, 55, 40]},
       {label: 'Salidas', data: [28, 48, 40, 19, 86, 27, 90]}
     ]
   }
   
-  constructor(private route: ActivatedRoute, private registerService: RegisterService, private socketService: SocketService, private sectorService: SectorService) { }
+  constructor(private route: ActivatedRoute, private socketService: SocketService, private sectorService: SectorService) { }
 
   ngOnInit() {
     this.socketService.get('register')
@@ -57,13 +52,18 @@ export class DashboardComponent implements OnInit {
                         
                         this.recalculateStatistics();
                       });
-                  
-    this.registerService.get().subscribe(registers => {
-      this.registers = registers;
-      this.recalculateStatistics();
-    });
-    
-    this.sectorService.currentSector.subscribe(currentSector => this.currentSector = currentSector);
+      
+    this.sectorService.currentSector
+                      .switchMap(currentSector => {
+                        this.currentSector = currentSector;
+                        return this.sectorService.getRegisters(this.currentSector, { top: 15 })
+                      })
+                      .subscribe(registers => {
+                        this.registers = registers;
+                        this.recalculateStatistics();
+                      });
+
+                      
     
   }
   

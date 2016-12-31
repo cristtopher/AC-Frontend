@@ -31,41 +31,25 @@ export class PersonService {
     
   getVisits(): Observable<Person[]> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/persons?visit=1`)
-            .map(res => {
-              let json = res.json();
-              
-              return json.map(p => new Person().fromJSON(p));
-            })
+            .map(res => <Person[]> res.json())
             .catch(this.handleError);
   }
   
   get(): Observable<Person[]> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/persons`)
-                .map(res => {
-                  let json = res.json();
-                  
-                  return json.map(p => new Person().fromJSON(p));
-                })
+                .map(res => <Person[]> res.json())
                 .catch(this.handleError);
   }
   
   createPerson(person: Person): Observable<any> {
     return this.authHttp.post(`${environment.API_BASEURL}/api/persons`, person)
-                        .map(res => {
-                          let json = res.json();
-                  
-                          return new Person().fromJSON(json);
-                        })
+                        .map(res => <Person> res.json())
                         .catch(this.handleError);
   }
   
   updatePerson(person: Person): Observable<any> {
     return this.authHttp.put(`${environment.API_BASEURL}/api/persons/${person._id}`, person)
-                        .map(res => {
-                          let json = res.json();
-                  
-                          return new Person().fromJSON(json);
-                        })
+                        .map(res => <Person> res.json())
                         .catch(this.handleError);
   }
 
