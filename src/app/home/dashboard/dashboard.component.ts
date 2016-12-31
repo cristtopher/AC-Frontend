@@ -3,10 +3,13 @@ import * as _ from 'lodash';
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Register } from '../../shared/register/register.model';
-import { RegisterService } from '../../shared/register/register.providers';
+import { Register } from '../../api/register/register.model';
+import { RegisterService } from '../../api/register/register.providers';
 
-import { SocketService } from '../../shared/socket/socket.service';
+import { Sector } from '../../api/sector/sector.model';
+import { SectorService } from '../../api/sector/sector.providers';
+
+import { SocketService } from '../../api/socket/socket.service';
 
 @Component({
   selector: 'dashboard',
@@ -16,6 +19,8 @@ import { SocketService } from '../../shared/socket/socket.service';
 export class DashboardComponent implements OnInit {  
   currentUser: any;
   registers: Register[];
+  
+  currentSector: Sector;
   
   statistics = {
     totalRegisters: null,
@@ -42,7 +47,7 @@ export class DashboardComponent implements OnInit {
     ]
   }
   
-  constructor(private route: ActivatedRoute, private registerService: RegisterService, private socketService: SocketService) { }
+  constructor(private route: ActivatedRoute, private registerService: RegisterService, private socketService: SocketService, private sectorService: SectorService) { }
 
   ngOnInit() {
     this.socketService.get('register')
@@ -57,6 +62,9 @@ export class DashboardComponent implements OnInit {
       this.registers = registers;
       this.recalculateStatistics();
     });
+    
+    this.sectorService.currentSector.subscribe(currentSector => this.currentSector = currentSector);
+    
   }
   
   recalculateStatistics() {

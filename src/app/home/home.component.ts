@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { User } from '../shared/user/user.model';
-import { Sector } from '../shared/sector/sector.model';
+import { User } from '../api/user/user.model';
+import { Sector } from '../api/sector/sector.model';
+
+import { UserService } from '../api/user/user.providers';
 
 declare var Chart:any;
 
@@ -13,17 +15,16 @@ declare var Chart:any;
 })
 export class HomeComponent implements OnInit {
   currentUser: User;
-  sectors: Sector[];
+  //sectors: Sector[];
   
-  constructor(private route: ActivatedRoute) {
-  }
+  constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit() {
-    this.sectors     = this.route.snapshot.data['sectors'];
-    this.currentUser = this.route.snapshot.data['currentUser'];
+    this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser);
     
-    this.currentUser.currentSector = this.sectors[0];
-    
+    // this.sectors     = this.route.snapshot.data['sectors'];
+    // this.currentUser = this.route.snapshot.data['currentUser'];
+        
     Chart.defaults.global.title.fontColor = '#FFFFFF';
     Chart.defaults.global.defaultColor = 'rgba(255, 255, 255, 1)';
     Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 1)';

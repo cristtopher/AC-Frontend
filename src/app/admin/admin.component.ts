@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { User } from '../shared/user/user.model';
+import { User } from '../api/user/user.model';
 
 @Component({
   selector: 'app-admin',

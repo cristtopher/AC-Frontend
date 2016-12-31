@@ -5,9 +5,9 @@ import { HomeComponent }      from './home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PeopleManagementComponent } from './people-management/people-management.component';
 
-import { CanActivateAuthGuard } from '../shared/auth/auth-guard.service';
-import { CurrentUserResolve }   from '../shared/user/user.providers';
-import { SectorsResolve }   from '../shared/sector/sector.providers';
+import { CanActivateAuthGuard } from '../api/auth/auth-guard.service';
+import { CurrentUserResolve }   from '../api/user/user.providers';
+import { SectorsResolve }   from '../api/sector/sector.providers';
 
 @NgModule({
   imports: [

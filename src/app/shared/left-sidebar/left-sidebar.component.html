@@ -8,8 +8,8 @@
       
       <!-- <span class="user-panel-role-badge"><span class="badge badge-faded-blue">{{currentUser.role}}</span></span> -->      
       <div class="form-group" *ngIf="currentUser.role === 'user'">      
-          <select class="form-control" (change)="changeSector($event.target.value)" [(ngModel)]="currentUser.currentSector">
-              <option *ngFor="let sector of sectors" [ngValue]="sector">{{sector.name}}</option>
+          <select class="form-control" (change)="changeSector($event.target.value)" [(ngModel)]="currentSectorId">
+              <option *ngFor="let sector of sectors" [value]="sector._id">{{sector.name}}</option>
           </select>
       </div>
             

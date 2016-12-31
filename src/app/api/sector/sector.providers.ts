@@ -5,7 +5,7 @@ import { Response } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -20,20 +20,32 @@ import { Sector } from './sector.model'
 
 
 @Injectable()
-export class SectorService {
+export class SectorService {  
+  currentSector: BehaviorSubject<Sector> = new BehaviorSubject<Sector>(null);
 
   constructor(private authHttp: AuthHttp) { }
 
-  get() {
-    return this.authHttp.get(`${environment.API_BASEURL}/api/sectors`)
+  get(query: Object = {}) {
+    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+    
+    return this.authHttp.get(`${environment.API_BASEURL}/api/sectors${queryString ? '?' + queryString : ''}`)
                         .map(res => {
                           let json = res.json();
-                          console.log(`${JSON.stringify(json)}`);
+                
                           return json.map(u => new Sector().fromJSON(u));
+                        })
+                        .do(sectors => {
+                          if (!this.currentSector.getValue()) {
+                            this.currentSector.next(sectors[0]);
+                          }
                         })
                         .catch(this.handleError);
   }
   
+  setCurrentSector(sector: Sector) {
+    this.currentSector.next(sector);
+  }
+    
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');

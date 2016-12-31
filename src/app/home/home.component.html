@@ -4,8 +4,7 @@
   <div class="page-wrapper">
     <app-top-header [title]="'ControlAccess'"></app-top-header>
     
-    
-    <app-left-sidebar [currentUser]="currentUser" [sectors]="sectors">
+    <app-left-sidebar>
       
       <div *ngIf="currentUser.role === 'supervisor'">
         <li class="sidebar-nav-heading">Administración</li>
@@ -37,8 +36,6 @@
         [sectionName]="'Registro Manual'" 
         [iconClass]="'typcn-document-add'">
       </sidebar-section>
-      
-      
       
     </app-left-sidebar>
     

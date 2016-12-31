@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute }   from '@angular/router';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
-import { AuthService } from '../shared/auth/auth.service';
-import { User } from '../shared/user/user.model';
+import { AuthService } from '../api/auth/auth.service';
+import { User } from '../api/user/user.model';
 
 declare var $: any;
 

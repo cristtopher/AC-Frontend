@@ -4,9 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 
-import { Person } from '../../shared/person/person.model';
-import { PersonService } from '../../shared/person/person.providers';
-import { SocketService } from '../../shared/socket/socket.service';
+import { Person } from '../../api/person/person.model';
+import { PersonService } from '../../api/person/person.providers';
+import { SocketService } from '../../api/socket/socket.service';
 
 import { PersonModalComponent, PersonModalContext } from './person-modal/person-modal.component';
 

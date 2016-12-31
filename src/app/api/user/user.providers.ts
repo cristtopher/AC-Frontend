@@ -5,14 +5,14 @@ import { Response } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { AuthService } from '../auth/auth.service';
 
-import { User } from './user.model'
+import { User } from './user.model';
 
 //-------------------------------------------------------
 //                      Services
@@ -22,10 +22,18 @@ import { User } from './user.model'
 @Injectable()
 export class UserService {
   
+  currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  
   constructor(private authHttp: AuthHttp) { }
   
-  get() {
-    return this.authHttp.get(`${environment.API_BASEURL}/api/users`)
+  setCurrentUser(user: User) {
+    this.currentUser.next(user);
+  }
+  
+  get(query: Object = {}) {
+     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+    
+    return this.authHttp.get(`${environment.API_BASEURL}/api/users${queryString ? '?' + queryString : ''}`)
                         .map(res => {
                           let json = res.json();
                           
@@ -53,10 +61,11 @@ export class UserService {
 
 @Injectable()
 export class CurrentUserResolve implements Resolve<User> {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private userService: UserService) {}
 
   resolve(route: ActivatedRouteSnapshot) {    
-    return this.authService.getProfile();
+    return this.authService.getProfile()
+                           .do(currentUser => this.userService.setCurrentUser(currentUser));
   }
 }
 

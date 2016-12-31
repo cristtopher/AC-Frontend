@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { AdminComponent }      from './admin.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 
-import { CanActivateAuthGuard } from '../shared/auth/auth-guard.service';
-import { CurrentUserResolve }   from '../shared/user/user.providers';
+import { CanActivateAuthGuard } from '../api/auth/auth-guard.service';
+import { CurrentUserResolve }   from '../api/user/user.providers';
 
 @NgModule({
   imports: [

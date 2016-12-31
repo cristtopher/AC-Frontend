@@ -1,6 +1,6 @@
 import { Serializable } from '../utils/serializable';
 
-import { Sector } from '../../shared/sector/sector.model';
+import { Sector } from '../../api/sector/sector.model';
 
 export class User extends Serializable {
   _id:  string;
@@ -9,9 +9,7 @@ export class User extends Serializable {
   role: string;
   company: any;
   sector:  any;
-  
-  currentSector: Sector;
-  
+    
   constructor() {
     super();  
   }

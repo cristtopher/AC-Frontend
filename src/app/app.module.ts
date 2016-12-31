@@ -10,15 +10,15 @@ import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AUTH_PROVIDERS } from 'angular2-jwt';
-import { USER_PROVIDERS } from './shared/user/user.providers';
-import { COMPANY_PROVIDERS } from './shared/company/company.providers';
-import { SECTOR_PROVIDERS } from './shared/sector/sector.providers';
-import { REGISTER_PROVIDERS } from './shared/register/register.providers';
-import { PERSON_PROVIDERS } from './shared/person/person.providers';
+import { USER_PROVIDERS } from './api/user/user.providers';
+import { COMPANY_PROVIDERS } from './api/company/company.providers';
+import { SECTOR_PROVIDERS } from './api/sector/sector.providers';
+import { REGISTER_PROVIDERS } from './api/register/register.providers';
+import { PERSON_PROVIDERS } from './api/person/person.providers';
 
-import { CanActivateAuthGuard } from './shared/auth/auth-guard.service';
-import { AuthService } from './shared/auth/auth.service';
-import { SocketService } from './shared/socket/socket.service';
+import { CanActivateAuthGuard } from './api/auth/auth-guard.service';
+import { AuthService } from './api/auth/auth.service';
+import { SocketService } from './api/socket/socket.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';

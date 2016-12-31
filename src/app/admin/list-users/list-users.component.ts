@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserService } from '../../shared/user/user.providers';
+import { UserService } from '../../api/user/user.providers';
 
 @Component({
   selector: 'admin-list-users',
