@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { CompleterService, CompleterData } from 'ng2-completer';
 
 import * as moment from 'moment';
 
