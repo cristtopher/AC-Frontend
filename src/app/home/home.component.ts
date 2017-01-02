@@ -15,16 +15,12 @@ declare var Chart:any;
 })
 export class HomeComponent implements OnInit {
   currentUser: User;
-  //sectors: Sector[];
   
   constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit() {
     this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser);
     
-    // this.sectors     = this.route.snapshot.data['sectors'];
-    // this.currentUser = this.route.snapshot.data['currentUser'];
-        
     Chart.defaults.global.title.fontColor = '#FFFFFF';
     Chart.defaults.global.defaultColor = 'rgba(255, 255, 255, 1)';
     Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 1)';

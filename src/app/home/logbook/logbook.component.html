@@ -11,10 +11,10 @@
 
 
 <div class="container-fluid">
-  <div class="widget widget-default">
-    <header class="widget-header">Bitacora</header>
-    <div class="widget-body">
-      
+  <div class="panel panel-default">
+    <div class="panel-heading">Bitacora</div>
+
+    <div class="panel-body">      
       <div class="form-inline">
         <select class="form-control" (change)="changeProfile($event.target.value)" [(ngModel)]="currentProfileFilter">
             <option value="all">-- Seleccione Perfil --</option>

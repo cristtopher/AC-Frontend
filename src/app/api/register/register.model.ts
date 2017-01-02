@@ -7,8 +7,8 @@ export class Register extends Serializable {
   person: Person;
   entrySector:  Sector;
   departSector: Sector;
-  entryTime: string;
-  departTime: string;
+  entryTime: number;
+  departTime: number;
   comment: string;
   
   constructor() {

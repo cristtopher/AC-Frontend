@@ -1,0 +1,70 @@
+<header class="page-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-md-9">
+        <h1 class="page-header-heading"><span class="typcn typcn-document-add page-header-heading-icon"></span> Registro Manual</h1>
+        <p class="page-header-description">Formulario Registro Manual para el sector <strong>{{ currentSector?.name }}</strong></p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container-fluid">
+  <div class="form-horizontal">
+    <div class="panel panel-default">
+      <div class="panel-heading">Formulario</div>
+      
+      <div class="panel-body">
+        <p>Utilize el RUT para identificar la persona a registrar.</p>
+        <div class="form-group margin-top-15">
+          <label class="col-sm-2 col-xs-12 control-label">RUT</label>
+          <div class="col-sm-10 col-xs-12">
+            <typeahead
+              [(ngModel)]="selectedRUT"
+              [list]="candidatePersons"
+              [searchProperty]="'rut'" [displayProperty]="'rut'"
+              [maxSuggestions]="5"
+              (suggestionSelected)="rutSelected($event)"
+              (keyup)="rutInputKeyUp($event)"
+              placeholder="">
+            </typeahead>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-2 col-xs-12 control-label">Nombre</label>
+          <div class="col-sm-10 col-xs-12">
+            <input type="text" name="personName" id="personName" class="form-control" [value]="selectedPerson?.name" disabled>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-2 col-xs-12 control-label">Tipo de Registro</label>
+          <div class="btn-group col-sm-10 col-xs-12">
+            <button type="button" class="btn" [class.btn-default]="selectedRegisterType !== 'entry'"  [class.btn-success]="selectedRegisterType === 'entry'" (click)="selectedRegisterType = 'entry'">Entrada</button>
+            <button type="button" class="btn" [class.btn-default]="selectedRegisterType !== 'depart'" [class.btn-danger]="selectedRegisterType === 'depart'" (click)="selectedRegisterType = 'depart'">Salida</button>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-2 col-xs-12 control-label">Fecha</label>
+          <div class="col-sm-10 col-xs-12">
+            <input class="form-control" [(ngModel)]="selectedRegistrerDate" ng2-datetime-picker />
+          </div>
+        </div>
+
+        
+        <div class="form-group">
+          <label class="col-sm-2 col-xs-12 control-label">Comentarios</label>
+          <div class="col-sm-10 col-xs-12">
+            <textarea name="query" id="query" rows="8" class="form-control" [(ngModel)]="registerComments"></textarea>
+          </div>
+        </div>
+      </div>
+      
+      <div class="panel-footer text-right">
+        <button type="button" class="btn btn-transparent btn-transparent-primary" (click)="submitRegister()"><span class="fa fa-share"></span> Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -32,6 +32,18 @@ export class RegisterService {
                         .catch(this.handleError);
   }
   
+  create(register: Register) {
+    console.log('going to create a new register....')
+    
+    return this.authHttp.post(`${environment.API_BASEURL}/api/registers`, register)
+                        .map(res => <Register[]> res.json())
+                        .do(() => {
+                          console.log('done...')
+                        })
+                        .catch(this.handleError);
+    
+  }
+  
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
