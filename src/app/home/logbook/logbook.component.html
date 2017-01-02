@@ -1,0 +1,74 @@
+<header class="page-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-md-9">
+        <h1 class="page-header-heading"><span class="typcn typcn-contacts page-header-heading-icon"></span> Bitacora</h1>
+        <p class="page-header-description">Listado de registros de empleados del <strong>{{ currentSector?.name }}</strong></p>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<div class="container-fluid">
+  <div class="widget widget-default">
+    <header class="widget-header">Bitacora</header>
+    <div class="widget-body">
+      
+      <button class="btn btn-pill" 
+        [class.btn-primary]="(currentFilter === 'today')" 
+        [class.btn-transparent]="!(currentFilter === 'today')" 
+        [class.btn-transparent-primary]="!(currentFilter === 'today')"
+        (click)="toggleFilter('today')"
+        >
+        Hoy
+      </button>
+      <button class="btn btn-pill" 
+        [class.btn-primary]="(currentFilter === 'last7days')" 
+        [class.btn-transparent]="!(currentFilter === 'last7days')" 
+        [class.btn-transparent-primary]="!(currentFilter === 'last7days')"
+        (click)="toggleFilter('last7days')"
+        >
+        7 Días
+      </button>
+      <button class="btn btn-pill" 
+        [class.btn-primary]="(currentFilter === 'last15days')" 
+        [class.btn-transparent]="!(currentFilter === 'last15days')" 
+        [class.btn-transparent-primary]="!(currentFilter === 'last15days')"
+        (click)="toggleFilter('last15days')"
+        >
+        15 Días
+      </button>
+      <button class="btn btn-pill" 
+        [class.btn-primary]="(currentFilter === 'last30days')" 
+        [class.btn-transparent]="!(currentFilter === 'last30days')" 
+        [class.btn-transparent-primary]="!(currentFilter === 'last30days')"
+        (click)="toggleFilter('last30days')"
+        >
+        30 Días
+      </button>
+      
+      <table class="table table-bordered logbook-table">
+        <thead>
+          <tr>
+            <th>Rut</th>
+            <th>Nombre</th>
+            <th>Hora Entrada</th>
+            <th>Hora Salida</th>
+            <th>Comentario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>123</td>
+            <td>asd</td>
+            <td>asd</td>
+            <td>asd</td>
+            <td>asd</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

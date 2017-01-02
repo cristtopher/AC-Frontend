@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent }      from './home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PeopleManagementComponent } from './people-management/people-management.component';
+import { LogbookComponent } from './logbook/logbook.component';
+
 
 import { CanActivateAuthGuard } from '../api/auth/auth-guard.service';
 import { CurrentUserResolve }   from '../api/user/user.providers';
@@ -25,6 +27,9 @@ import { SectorsResolve }   from '../api/sector/sector.providers';
         }, {
           path: 'peopleManagement',
           component: PeopleManagementComponent
+        }, {
+          path: 'logbook',
+          component: LogbookComponent
         }]
     }])
   ],

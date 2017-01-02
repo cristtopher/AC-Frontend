@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   
   statistics = {
     totalRegisters: null,
-    employeesPercentage: null,
+    staffPercentage: null,
     contractorsPercentage: null,
     visitorsPercentage: null
   }
@@ -35,14 +35,14 @@ export class DashboardComponent implements OnInit {
   }
     
   registersPerWeekBarChart = {
-    labels: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
+    labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'],
     series: [
       {label: 'Entradas', data: [65, 59, 80, 81, 56, 55, 40]},
       {label: 'Salidas', data: [28, 48, 40, 19, 86, 27, 90]}
     ]
   }
   
-  constructor(private route: ActivatedRoute, private socketService: SocketService, private sectorService: SectorService) { }
+  constructor(private socketService: SocketService, private sectorService: SectorService) { }
 
   ngOnInit() {
     this.socketService.get('register')
@@ -68,9 +68,17 @@ export class DashboardComponent implements OnInit {
   }
   
   recalculateStatistics() {
-    this.statistics.totalRegisters = this.registers.length;
-    this.statistics.contractorsPercentage = 0.3 * this.registers.length;
-    this.statistics.employeesPercentage = 0.6 * this.registers.length;
-    this.statistics.visitorsPercentage = 0.1 * this.registers.length;
+    // TODO: dummy data ATM, connect to backend
+    this.statistics.totalRegisters = Math.floor(Math.random() * 100);
+    this.statistics.contractorsPercentage = 0.3 * this.statistics.totalRegisters;
+    this.statistics.staffPercentage = 0.6 * this.statistics.totalRegisters;
+    this.statistics.visitorsPercentage = 0.1 * this.statistics.totalRegisters;
+    
+    this.profileDistPieChart.data = [this.statistics.staffPercentage, this.statistics.visitorsPercentage, this.statistics.visitorsPercentage];
+    this.registersPerWeekBarChart.series = [
+      { label: 'Entradas', data: [Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100)] },
+      { label: 'Salidas', data: [Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100)] }
+    ];
+    
   }
 }

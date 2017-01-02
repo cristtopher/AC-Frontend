@@ -12,13 +12,15 @@ import { HomeComponent } from './home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PeopleManagementComponent } from './people-management/people-management.component';
 import { PersonModalComponent } from './people-management/person-modal/person-modal.component';
+import { LogbookComponent } from './logbook/logbook.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     DashboardComponent,
     PeopleManagementComponent,
-    PersonModalComponent
+    PersonModalComponent,
+    LogbookComponent
   ],
   imports: [
     CommonModule,
