@@ -15,38 +15,45 @@
     <header class="widget-header">Bitacora</header>
     <div class="widget-body">
       
-      <button class="btn btn-pill" 
-        [class.btn-primary]="(currentFilter === 'today')" 
-        [class.btn-transparent]="!(currentFilter === 'today')" 
-        [class.btn-transparent-primary]="!(currentFilter === 'today')"
-        (click)="toggleFilter('today')"
-        >
-        Hoy
-      </button>
-      <button class="btn btn-pill" 
-        [class.btn-primary]="(currentFilter === 'last7days')" 
-        [class.btn-transparent]="!(currentFilter === 'last7days')" 
-        [class.btn-transparent-primary]="!(currentFilter === 'last7days')"
-        (click)="toggleFilter('last7days')"
-        >
-        7 Días
-      </button>
-      <button class="btn btn-pill" 
-        [class.btn-primary]="(currentFilter === 'last15days')" 
-        [class.btn-transparent]="!(currentFilter === 'last15days')" 
-        [class.btn-transparent-primary]="!(currentFilter === 'last15days')"
-        (click)="toggleFilter('last15days')"
-        >
-        15 Días
-      </button>
-      <button class="btn btn-pill" 
-        [class.btn-primary]="(currentFilter === 'last30days')" 
-        [class.btn-transparent]="!(currentFilter === 'last30days')" 
-        [class.btn-transparent-primary]="!(currentFilter === 'last30days')"
-        (click)="toggleFilter('last30days')"
-        >
-        30 Días
-      </button>
+      <div class="form-inline">
+        <select class="form-control" (change)="changeProfile($event.target.value)" [(ngModel)]="currentProfileFilter">
+            <option value="all">-- Seleccione Perfil --</option>
+            <option *ngFor="let profile of profiles" [value]="profile.id">{{profile.name}}</option>
+        </select>
+      
+        <button class="btn btn-pill" 
+          [class.btn-primary]="(currentFixedTimeFilter === 'today')" 
+          [class.btn-transparent]="!(currentFixedTimeFilter === 'today')" 
+          [class.btn-transparent-primary]="!(currentFixedTimeFilter === 'today')"
+          (click)="toggleFilter('today')"
+          >
+          Hoy
+        </button>
+        <button class="btn btn-pill" 
+          [class.btn-primary]="(currentFixedTimeFilter === 'last7days')" 
+          [class.btn-transparent]="!(currentFixedTimeFilter === 'last7days')" 
+          [class.btn-transparent-primary]="!(currentFixedTimeFilter === 'last7days')"
+          (click)="toggleFilter('last7days')"
+          >
+          7 Días
+        </button>
+        <button class="btn btn-pill" 
+          [class.btn-primary]="(currentFixedTimeFilter === 'last15days')" 
+          [class.btn-transparent]="!(currentFixedTimeFilter === 'last15days')" 
+          [class.btn-transparent-primary]="!(currentFixedTimeFilter === 'last15days')"
+          (click)="toggleFilter('last15days')"
+          >
+          15 Días
+        </button>
+        <button class="btn btn-pill" 
+          [class.btn-primary]="(currentFixedTimeFilter === 'last30days')" 
+          [class.btn-transparent]="!(currentFixedTimeFilter === 'last30days')" 
+          [class.btn-transparent-primary]="!(currentFixedTimeFilter === 'last30days')"
+          (click)="toggleFilter('last30days')"
+          >
+          30 Días
+        </button>
+      </div>
       
       <table class="table table-bordered logbook-table">
         <thead>
