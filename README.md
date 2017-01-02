@@ -31,6 +31,7 @@
 - [nvm](https://github.com/creationix/nvm) (highly recomended)
 - [Node.js and npm](nodejs.org) node lts/boron (`nvm install lts/boron`)
 - [angular-cli](https://github.com/angular/angular-cli) (`npm install -g angular-cli@1.0.0-beta.22-1`)
+- [typings](https://github.com/typings/typings) (`npm install -g typings`)
 
 ### Installation for development
 
