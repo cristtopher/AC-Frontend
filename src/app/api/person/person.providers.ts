@@ -35,8 +35,10 @@ export class PersonService {
             .catch(this.handleError);
   }
   
-  get(): Observable<Person[]> {
-    return this.authHttp.get(`${environment.API_BASEURL}/api/persons`)
+  get(query: Object = {}): Observable<Person[]> {
+    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+    
+    return this.authHttp.get(`${environment.API_BASEURL}/api/persons${queryString ? '?' + queryString : ''}`)
                 .map(res => <Person[]> res.json())
                 .catch(this.handleError);
   }

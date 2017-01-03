@@ -10,24 +10,40 @@
 </header>
 
 <div class="container-fluid">
-  <div class="form-horizontal">
+
+  
+  <form class="form-horizontal" [formGroup]="manualRegisterForm">
     <div class="panel panel-default">
       <div class="panel-heading">Formulario</div>
       
       <div class="panel-body">
         <p>Utilize el RUT para identificar la persona a registrar.</p>
-        <div class="form-group margin-top-15">
+
+        <div class="form-group">
+          <label class="col-sm-2 col-xs-12 control-label"></label>
+          <div class="col-sm-10 col-xs-12">        
+            <div class="panel panel-faded-blue">
+              <div class="panel-heading"><h4 class="panel-title">Buscador de Personas <strong>({{ currentSector?.name }})</strong></h4></div>
+              <div class="panel-body">
+                <input formControlName="searchBox"
+                       [typeahead]="candidatePersons"
+                       (isSearchBoxLoading)="searchBoxLoading($event)"
+                       (hasSearchBoxResults)="searchBoxNoResults($event)"
+                       (typeaheadOnSelect)="searchBoxOnSelect($event)"
+                       [typeaheadOptionsLimit]="7"
+                       [typeaheadOptionField]="'name'"
+                       placeholder="Ingrese RUT..."
+                       class="form-control">
+                <span class="error text-danger" *ngIf="hasSearchBoxResults && searchBox.dirty">La persona buscada no existe en los registros</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">RUT</label>
           <div class="col-sm-10 col-xs-12">
-            <typeahead
-              [(ngModel)]="selectedRUT"
-              [list]="candidatePersons"
-              [searchProperty]="'rut'" [displayProperty]="'rut'"
-              [maxSuggestions]="5"
-              (suggestionSelected)="rutSelected($event)"
-              (keyup)="rutInputKeyUp($event)"
-              placeholder="">
-            </typeahead>
+            <input type="text" name="personRut" id="personRut" class="form-control" [value]="selectedPerson?.rut" disabled>
           </div>
         </div>
         
@@ -49,7 +65,7 @@
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Fecha</label>
           <div class="col-sm-10 col-xs-12">
-            <input class="form-control" [(ngModel)]="selectedRegistrerDate" ng2-datetime-picker />
+            <input class="form-control" ng2-datetime-picker />
           </div>
         </div>
 
@@ -57,7 +73,7 @@
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Comentarios</label>
           <div class="col-sm-10 col-xs-12">
-            <textarea name="query" id="query" rows="8" class="form-control" [(ngModel)]="registerComments"></textarea>
+            <textarea name="query" id="query" rows="8" class="form-control"></textarea>
           </div>
         </div>
       </div>
@@ -66,5 +82,5 @@
         <button type="button" class="btn btn-transparent btn-transparent-primary" (click)="submitRegister()"><span class="fa fa-share"></span> Enviar</button>
       </div>
     </div>
-  </div>
+  </form>
 </div>

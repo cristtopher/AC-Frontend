@@ -1,13 +1,16 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-
-import * as moment from 'moment';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs/Rx';
 
 import { SectorService } from '../../api/sector/sector.providers';
 import { RegisterService } from '../../api/register/register.providers';
+import { PersonService } from '../../api/person/person.providers';
 
 import { Sector }   from '../../api/sector/sector.model';
 import { Register } from '../../api/register/register.model';
 import { Person }   from '../../api/person/person.model';
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-manual-register',
@@ -17,57 +20,46 @@ import { Person }   from '../../api/person/person.model';
 export class ManualRegisterComponent implements OnInit {
   currentSector: Sector;
   
-  candidatePersons: any[];
+  searchBox: FormControl = new FormControl();
+  manualRegisterForm: FormGroup = new FormGroup({
+    searchBox: this.searchBox
+  });
+
+  // list of candidates in searchBox and some searchBox statuses
+  candidatePersons:Observable<Person[]>;
+  isSearchBoxLoading:boolean = false;
+  hasSearchBoxResults:boolean = false;
   
-  selectedPerson: any;
+  
+  // TODO: replace all of these with FormControls...
   selectedRegisterType: string =  'entry';
   selectedRegisterTime: Date;
   registerComments: string;
-  
-  constructor(private sectorService: SectorService, private registerService: RegisterService) { }
+
+  constructor(private sectorService: SectorService, private registerService: RegisterService, private personService: PersonService) {
+    this.candidatePersons = Observable.create((observer: any) => observer.next(this.searchBox.value))
+                                      .mergeMap((currentRut: string) => this.personService.get({ rut: currentRut, sector: this.currentSector }));
+  }
 
   ngOnInit() {
     this.sectorService.currentSector.subscribe(currentSector => this.currentSector = currentSector);
   }
 
-  public rutSelected(person) {
-    if (!person) { return; }
-    
-    this.selectedPerson = person;
+  public searchBoxLoading(e: boolean): void {
+    this.isSearchBoxLoading = e;
   }
-    
-  public rutInputKeyUp(event) {
-    let currentInputValue = event.target.value;
-    if (currentInputValue.length > 1) {
-      //make a api request to get people.rut ~= currentInputValue
-      this.candidatePersons = [{
-        "_id": "5855d9b97f45b135cbb73ad1",
-        "rut": "123-K",
-        "name": "Person 1",
-        "company": "585597684f6ad8244e26748e",
-        "card":  1  
-      }, {
-        "_id": "5855d9ba7f45b135cbb73ad2",
-        "rut": "456-K",
-        "name": "Person 2",
-        "company": "585597684f6ad8244e26748e",
-        "card":  2  
-      }, {
-        "_id": "5855d9ba7f45b135cbb73ad3",
-        "rut": "789-1",
-        "name": "Person 3",
-        "company": "585597684f6ad8244e26748f",
-        "card":  3
-      }];
-      
-      console.log(`got response: ${this.candidatePersons}`)
-    }
+
+  public searchBoxNoResults(e: boolean): void {
+    this.hasSearchBoxResults = !e;
+  }
+  
+  public searchBoxOnSelect(e:any): void {
+    console.log('Selected value: ', e.item);
   }
   
   public submitRegister() {
     var newRegister = new Register();
     
-    newRegister.person = this.selectedPerson;
     newRegister.comment =  this.registerComments;
     
     if (this.selectedRegisterType === 'entry') {
