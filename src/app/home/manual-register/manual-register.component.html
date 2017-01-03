@@ -12,7 +12,7 @@
 <div class="container-fluid">
 
   
-  <form class="form-horizontal" [formGroup]="manualRegisterForm">
+  <form class="form-horizontal" [formGroup]="manualRegisterForm" (submit)="createRegister()">
     <div class="panel panel-default">
       <div class="panel-heading">Formulario</div>
       
@@ -28,13 +28,13 @@
                 <input formControlName="searchBox"
                        [typeahead]="candidatePersons"
                        (isSearchBoxLoading)="searchBoxLoading($event)"
-                       (hasSearchBoxResults)="searchBoxNoResults($event)"
+                       (typeaheadNoResults)="searchBoxNoResults($event)"
                        (typeaheadOnSelect)="searchBoxOnSelect($event)"
                        [typeaheadOptionsLimit]="7"
                        [typeaheadOptionField]="'name'"
                        placeholder="Ingrese RUT..."
                        class="form-control">
-                <span class="error text-danger" *ngIf="hasSearchBoxResults && searchBox.dirty">La persona buscada no existe en los registros</span>
+                <span class="error text-danger" *ngIf="hasSearchBoxNoResults && searchBox.dirty">La persona buscada no existe en los registros</span>
               </div>
             </div>
           </div>
@@ -43,14 +43,14 @@
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">RUT</label>
           <div class="col-sm-10 col-xs-12">
-            <input type="text" name="personRut" id="personRut" class="form-control" [value]="selectedPerson?.rut" disabled>
+            <input type="text" formControlName="rut" class="form-control" [value]="selectedPerson?.rut">
           </div>
         </div>
         
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Nombre</label>
           <div class="col-sm-10 col-xs-12">
-            <input type="text" name="personName" id="personName" class="form-control" [value]="selectedPerson?.name" disabled>
+            <input type="text" formControlName="name" class="form-control" [value]="selectedPerson?.name">
           </div>
         </div>
         
@@ -65,7 +65,7 @@
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Fecha</label>
           <div class="col-sm-10 col-xs-12">
-            <input class="form-control" ng2-datetime-picker />
+            <input class="form-control" formControlName="dateTime" ng2-datetime-picker />
           </div>
         </div>
 
@@ -73,13 +73,13 @@
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Comentarios</label>
           <div class="col-sm-10 col-xs-12">
-            <textarea name="query" id="query" rows="8" class="form-control"></textarea>
+            <textarea formControlName="comments" rows="8" class="form-control"></textarea>
           </div>
         </div>
       </div>
       
       <div class="panel-footer text-right">
-        <button type="button" class="btn btn-transparent btn-transparent-primary" (click)="submitRegister()"><span class="fa fa-share"></span> Enviar</button>
+        <button type="submit" class="btn btn-transparent btn-transparent-primary"><span class="fa fa-share"></span> Enviar</button>
       </div>
     </div>
   </form>

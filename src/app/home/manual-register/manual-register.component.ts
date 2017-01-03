@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
 import { SectorService } from '../../api/sector/sector.providers';
@@ -20,24 +20,31 @@ import * as moment from 'moment';
 export class ManualRegisterComponent implements OnInit {
   currentSector: Sector;
   
-  searchBox: FormControl = new FormControl();
-  manualRegisterForm: FormGroup = new FormGroup({
-    searchBox: this.searchBox
-  });
-
   // list of candidates in searchBox and some searchBox statuses
   candidatePersons:Observable<Person[]>;
+  selectedPerson: Person;
   isSearchBoxLoading:boolean = false;
-  hasSearchBoxResults:boolean = false;
+  hasSearchBoxNoResults:boolean = false;
   
+  searchBoxFormControl: FormControl    = new FormControl();
+  rutFormControl: FormControl          = new FormControl({ value: '', disabled: true }, Validators.required);
+  nameFormControl: FormControl         = new FormControl({ value: '', disabled: true }, Validators.required);
+  dateTimeFormControl: FormControl     = new FormControl('', Validators.required);
+  commentsFormControl: FormControl     = new FormControl('', Validators.required);
   
-  // TODO: replace all of these with FormControls...
+  manualRegisterForm: FormGroup = new FormGroup({
+    searchBox:    this.searchBoxFormControl,
+    rut:          this.rutFormControl,
+    name:         this.nameFormControl,
+    dateTime:     this.dateTimeFormControl,
+    comments:     this.commentsFormControl
+  });
+
+  // TODO: replace this with FormControls based solution
   selectedRegisterType: string =  'entry';
-  selectedRegisterTime: Date;
-  registerComments: string;
 
   constructor(private sectorService: SectorService, private registerService: RegisterService, private personService: PersonService) {
-    this.candidatePersons = Observable.create((observer: any) => observer.next(this.searchBox.value))
+    this.candidatePersons = Observable.create((observer: any) => observer.next(this.searchBoxFormControl.value))
                                       .mergeMap((currentRut: string) => this.personService.get({ rut: currentRut, sector: this.currentSector }));
   }
 
@@ -45,34 +52,48 @@ export class ManualRegisterComponent implements OnInit {
     this.sectorService.currentSector.subscribe(currentSector => this.currentSector = currentSector);
   }
 
-  public searchBoxLoading(e: boolean): void {
+  searchBoxLoading(e: boolean): void {
     this.isSearchBoxLoading = e;
   }
 
-  public searchBoxNoResults(e: boolean): void {
-    this.hasSearchBoxResults = !e;
+  searchBoxNoResults(e: boolean): void {
+    this.hasSearchBoxNoResults = e;
   }
   
-  public searchBoxOnSelect(e:any): void {
-    console.log('Selected value: ', e.item);
+  searchBoxOnSelect(e: any): void {
+    console.log(`Selected Person: ${e.item}`);
+    this.selectedPerson = <Person> e.item;
   }
   
-  public submitRegister() {
+
+  createRegister() {
+    console.log('Creating Register from Form...');
     var newRegister = new Register();
     
-    newRegister.comment =  this.registerComments;
+    // creating new register... 
+    newRegister.person  = this.selectedPerson;
+    newRegister.comment = this.commentsFormControl.value;
     
     if (this.selectedRegisterType === 'entry') {
       newRegister.entrySector = this.currentSector;
-      newRegister.entryTime = moment(this.selectedRegisterTime).unix();
+      newRegister.entryTime   = moment(this.dateTimeFormControl.value).unix();
     } else if (this.selectedRegisterType === 'depart') {
       newRegister.departSector = this.currentSector;
-      newRegister.departTime = moment(this.selectedRegisterTime).unix();
+      newRegister.departTime   = moment(this.dateTimeFormControl.value).unix();
     }
-    
+
     this.registerService.create(newRegister).subscribe(createdRegister => {
-      console.log(`created Register: ${createdRegister}`)
+      console.log(`manual register created sucessfully: ${createdRegister}`);
+      
+      this.selectedPerson = null;
+      this.selectedRegisterType = 'entry';
+      this.manualRegisterForm.reset();
+    }, (error) => {
+      console.log(`error while creating register: ${error}`);
     })
+    
+    
+    
   }
 
 }
