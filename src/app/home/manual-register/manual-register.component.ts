@@ -21,8 +21,8 @@ export class ManualRegisterComponent implements OnInit {
   currentSector: Sector;
   
   // ngModel var for datepicker
-  registerDateTime: any = moment().format('YYYY-mm-DD hh:mm');
-  
+  registerDateTime: any;
+
   // list of candidates in searchBox and some searchBox statuses
   candidatePersons:Observable<Person[]>;
   selectedPerson: Person;
@@ -49,6 +49,8 @@ export class ManualRegisterComponent implements OnInit {
   selectedRegisterType: string =  'entry';
 
   constructor(private sectorService: SectorService, private registerService: RegisterService, private personService: PersonService) {
+    console.log(`registerDateTime: ${this.registerDateTime}`);
+    
     this.candidatePersons = Observable.create((observer: any) => observer.next(this.searchBoxFormControl.value))
                                       .mergeMap((currentRut: string) => this.personService.get({ rut: currentRut, sector: this.currentSector }));
   }

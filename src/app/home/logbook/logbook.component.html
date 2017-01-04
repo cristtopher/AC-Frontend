@@ -16,42 +16,50 @@
 
     <div class="panel-body">      
       <div class="form-inline">
-        <select class="form-control" (change)="changeProfile($event.target.value)" [(ngModel)]="currentProfileFilter">
+        <select class="form-control" (change)="changeProfileFilter($event.target.value)" [(ngModel)]="currentProfileFilterControl">
             <option value="all">-- Seleccione Perfil --</option>
             <option *ngFor="let profile of profiles" [value]="profile.id">{{profile.name}}</option>
         </select>
       
         <button class="btn btn-pill" 
-          [class.btn-primary]="(currentFixedTimeFilter === 'today')" 
-          [class.btn-transparent]="!(currentFixedTimeFilter === 'today')" 
-          [class.btn-transparent-primary]="!(currentFixedTimeFilter === 'today')"
+          [class.btn-primary]="(currentToggleableFilter === 'today')" 
+          [class.btn-transparent]="!(currentToggleableFilter === 'today')" 
+          [class.btn-transparent-primary]="!(currentToggleableFilter === 'today')"
           (click)="toggleFilter('today')"
           >
           Hoy
         </button>
         <button class="btn btn-pill" 
-          [class.btn-primary]="(currentFixedTimeFilter === 'last7days')" 
-          [class.btn-transparent]="!(currentFixedTimeFilter === 'last7days')" 
-          [class.btn-transparent-primary]="!(currentFixedTimeFilter === 'last7days')"
+          [class.btn-primary]="(currentToggleableFilter === 'last7days')" 
+          [class.btn-transparent]="!(currentToggleableFilter === 'last7days')" 
+          [class.btn-transparent-primary]="!(currentToggleableFilter === 'last7days')"
           (click)="toggleFilter('last7days')"
           >
           7 Días
         </button>
         <button class="btn btn-pill" 
-          [class.btn-primary]="(currentFixedTimeFilter === 'last15days')" 
-          [class.btn-transparent]="!(currentFixedTimeFilter === 'last15days')" 
-          [class.btn-transparent-primary]="!(currentFixedTimeFilter === 'last15days')"
+          [class.btn-primary]="(currentToggleableFilter === 'last15days')" 
+          [class.btn-transparent]="!(currentToggleableFilter === 'last15days')" 
+          [class.btn-transparent-primary]="!(currentToggleableFilter === 'last15days')"
           (click)="toggleFilter('last15days')"
           >
           15 Días
         </button>
         <button class="btn btn-pill" 
-          [class.btn-primary]="(currentFixedTimeFilter === 'last30days')" 
-          [class.btn-transparent]="!(currentFixedTimeFilter === 'last30days')" 
-          [class.btn-transparent-primary]="!(currentFixedTimeFilter === 'last30days')"
+          [class.btn-primary]="(currentToggleableFilter === 'last30days')" 
+          [class.btn-transparent]="!(currentToggleableFilter === 'last30days')" 
+          [class.btn-transparent-primary]="!(currentToggleableFilter === 'last30days')"
           (click)="toggleFilter('last30days')"
           >
           30 Días
+        </button>
+        <button class="btn btn-pill" 
+          [class.btn-warning]="(currentToggleableFilter === 'incomplete')" 
+          [class.btn-transparent]="!(currentToggleableFilter === 'incomplete')" 
+          [class.btn-transparent-warning]="!(currentToggleableFilter === 'incomplete')"
+          (click)="toggleFilter('incomplete')"
+          >
+          Incompletos
         </button>
       </div>
       
@@ -60,18 +68,20 @@
           <tr>
             <th>Rut</th>
             <th>Nombre</th>
+            <th>Tipo</th>
             <th>Hora Entrada</th>
             <th>Hora Salida</th>
             <th>Comentario</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>123</td>
-            <td>asd</td>
-            <td>asd</td>
-            <td>asd</td>
-            <td>asd</td>
+          <tr *ngFor="let register of registers">
+            <td>{{ register.person?.rut }}</td>
+            <td>{{ register.person?.name }}</td>
+            <td>{{ register.person?.type }}</td>
+            <td>{{ register.entryTime }}</td>
+            <td>{{ register.departTime }}</td>
+            <td>{{ register.comment }}</td>
           </tr>
         </tbody>
       </table>
