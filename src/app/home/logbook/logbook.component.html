@@ -72,6 +72,7 @@
             <th>Hora Entrada</th>
             <th>Hora Salida</th>
             <th>Comentario</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -82,9 +83,18 @@
             <td>{{ register.entryTime }}</td>
             <td>{{ register.departTime }}</td>
             <td>{{ register.comment }}</td>
+            <td align="center"><button class="btn btn-transparent btn-transparent-success btn-xs"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md">Resolver</span></button></td>
           </tr>
         </tbody>
       </table>
+      
+      <nav>
+        <ul class="pager">
+          <li class="previous disabled"><a><span aria-hidden="true">←</span> Siguiente</a></li>
+          <li class="next"><a>Anterior <span aria-hidden="true">→</span></a></li>
+        </ul>
+      </nav>
+      
     </div>
   </div>
 
