@@ -20,6 +20,9 @@ import * as moment from 'moment';
 export class ManualRegisterComponent implements OnInit {
   currentSector: Sector;
   
+  // ngModel var for datepicker
+  registerDateTime: any = moment().format('YYYY-mm-DD hh:mm');
+  
   // list of candidates in searchBox and some searchBox statuses
   candidatePersons:Observable<Person[]>;
   selectedPerson: Person;
@@ -29,13 +32,15 @@ export class ManualRegisterComponent implements OnInit {
   searchBoxFormControl: FormControl    = new FormControl();
   rutFormControl: FormControl          = new FormControl({ value: '', disabled: true }, Validators.required);
   nameFormControl: FormControl         = new FormControl({ value: '', disabled: true }, Validators.required);
-  dateTimeFormControl: FormControl     = new FormControl('', Validators.required);
+  personTypeFormControl: FormControl   = new FormControl({ value: '', disabled: true }, Validators.required);
+  dateTimeFormControl: FormControl     = new FormControl({ value: null }, Validators.required);
   commentsFormControl: FormControl     = new FormControl('', Validators.required);
   
   manualRegisterForm: FormGroup = new FormGroup({
     searchBox:    this.searchBoxFormControl,
     rut:          this.rutFormControl,
     name:         this.nameFormControl,
+    personType:   this.personTypeFormControl,
     dateTime:     this.dateTimeFormControl,
     comments:     this.commentsFormControl
   });
@@ -90,9 +95,7 @@ export class ManualRegisterComponent implements OnInit {
       this.manualRegisterForm.reset();
     }, (error) => {
       console.log(`error while creating register: ${error}`);
-    })
-    
-    
+    });
     
   }
 

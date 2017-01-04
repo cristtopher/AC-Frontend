@@ -34,8 +34,14 @@ export class LoginComponent implements OnInit {
                       } else {
                         return this.router.navigate(['/home']); 
                       }
-                    }, (err) => {
-                      console.error(`Error while trying to login to API: ${err}`);
+                    }, (error) => {
+                      if (error.status === 401) {
+                        console.log('Invalid Username or Password!');
+                      } else if (error.status === 500) {
+                        console.log('Server Error while trying to login');
+                      } else {
+                        console.error(`Error while trying to login to API: ${error}`);
+                      }
                     });
   }
 
