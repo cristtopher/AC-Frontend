@@ -29,7 +29,7 @@
       <div class="widget widget-statistic widget-success">
         <header class="widget-statistic-header">Empleados</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">30%</span>
+          <span class="widget-statistic-value">{{ statistics.staffPercentage }}%</span>
           <span class="widget-statistic-description">Porcentaje de <strong>empleados</strong> en planta</span>
           <span class="widget-statistic-icon fa fa-user"></span>
         </div>
@@ -40,7 +40,7 @@
       <div class="widget widget-statistic widget-faded-blue">
         <header class="widget-statistic-header">Contratistas</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">13%</span>
+          <span class="widget-statistic-value">{{ statistics.contractorsPercentage }}%</span>
           <span class="widget-statistic-description">Porcentaje de <strong>contratistas</strong> en planta</span>
           <span class="widget-statistic-icon fa fa-user-o"></span>
         </div>
@@ -51,7 +51,7 @@
       <div class="widget widget-statistic widget-purple">
         <header class="widget-statistic-header">Visitas</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">57%</span>
+          <span class="widget-statistic-value">{{ statistics.visitorsPercentage }}%</span>
           <span class="widget-statistic-description">Porcentaje de <strong>visitas</strong> en planta</span>
           <span class="widget-statistic-icon fa fa-eye"></span>
         </div>
@@ -82,7 +82,7 @@
     <!-- bar-chart -->
     <div class="col-sm-8 col-lg-8">
       <div class="widget widget-default">
-        <header class="widget-header">Eventos por dia</header>
+        <header class="widget-header">Eventos última semana</header>
         
         <div class="widget-body">
           <div style="display: block">
@@ -120,10 +120,10 @@
               <th scope="row">{{ (i + 1) }}</th>
               <td>{{ register.person?.name }}</td>
               <td>{{ register.person?.type }}</td>
-              <td>{{ register.entryTime | date:"medium" }}</td>
-              <td>{{ register.entrySector?.name }}</td>
-              <td>{{ register.departTime ? (register.departTime | date:"medium") : '-' }}</td>
-              <td>{{ register.departSector ? register.departSector?.name : '-' }}</td>
+              <td>{{ register.time | date:"medium" }}</td>
+              <td>{{ register.sector?.name }}</td>
+              <td>{{ register.time ? (register.time | date:"medium") : '-' }}</td>
+              <td>{{ register.sector ? register.sector?.name : '-' }}</td>
             </tr>
           </tbody> 
         </table> 

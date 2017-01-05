@@ -6,6 +6,9 @@ import { Sector } from '../api/sector/sector.model';
 
 import { UserService } from '../api/user/user.providers';
 
+import * as moment from 'moment';
+import 'moment/min/locales';
+
 declare var Chart:any;
 
 @Component({
@@ -21,6 +24,9 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser);
     
+    // TODO: hardcoded locale
+    moment.locale('es-cl');
+
     Chart.defaults.global.title.fontColor = '#FFFFFF';
     Chart.defaults.global.defaultColor = 'rgba(255, 255, 255, 1)';
     Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 1)';

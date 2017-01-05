@@ -48,6 +48,12 @@ export class SectorService {
     
   }
   
+  getStatistics(sector: Sector): Observable<any> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/statistics`)
+                        .map(res => res.json())
+                        .catch(this.handleError);
+  }
+  
   setCurrentSector(sector: Sector) {
     this.currentSector.next(sector);
   }

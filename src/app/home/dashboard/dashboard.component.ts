@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,6 +8,9 @@ import { Sector } from '../../api/sector/sector.model';
 import { SectorService } from '../../api/sector/sector.providers';
 
 import { SocketService } from '../../api/socket/socket.service';
+
+import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'dashboard',
@@ -31,14 +32,14 @@ export class DashboardComponent implements OnInit {
 
   profileDistPieChart = {
     labels: ['Planta', 'Contratistas', 'Visitas'],
-    data: [200, 100, 300]
+    data: [0, 0, 0]
   }
     
   registersPerWeekBarChart = {
     labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'],
     series: [
-      {label: 'Entradas', data: [65, 59, 80, 81, 56, 55, 40]},
-      {label: 'Salidas', data: [28, 48, 40, 19, 86, 27, 90]}
+      {label: 'Entradas', data: [0, 0, 0, 0, 0, 0, 0]},
+      {label: 'Salidas', data: [0, 0, 0, 0, 0, 0, 0]}
     ]
   }
   
@@ -62,23 +63,25 @@ export class DashboardComponent implements OnInit {
                         this.registers = registers;
                         this.recalculateStatistics();
                       });
-
-                      
-    
   }
   
   recalculateStatistics() {
-    // TODO: dummy data ATM, connect to backend
-    this.statistics.totalRegisters = Math.floor(Math.random() * 100);
-    this.statistics.contractorsPercentage = 0.3 * this.statistics.totalRegisters;
-    this.statistics.staffPercentage = 0.6 * this.statistics.totalRegisters;
-    this.statistics.visitorsPercentage = 0.1 * this.statistics.totalRegisters;
+    this.sectorService.getStatistics(this.currentSector).subscribe(statistics => {
+      console.log(`got statistics: ${JSON.stringify(statistics)}`)
+      
+      this.statistics.totalRegisters        = statistics.staffCount + statistics.contractorCount + statistics.visitCount;
+      this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statistics.staffCount / this.statistics.totalRegisters) * 100 : 0;
+      this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
+      this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
     
-    this.profileDistPieChart.data = [this.statistics.staffPercentage, this.statistics.visitorsPercentage, this.statistics.visitorsPercentage];
-    this.registersPerWeekBarChart.series = [
-      { label: 'Entradas', data: [Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100)] },
-      { label: 'Salidas', data: [Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100)] }
-    ];
-    
+      this.profileDistPieChart.data = [this.statistics.staffPercentage, this.statistics.visitorsPercentage, this.statistics.visitorsPercentage];
+      
+      this.registersPerWeekBarChart.labels = statistics.weeklyHistory.entry.reverse().map(t => moment.weekdays()[moment(t.datetime).day()]);
+      
+      this.registersPerWeekBarChart.series = [
+        { label: 'Entradas', data: [Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100)] },
+        { label: 'Salidas', data: [Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100)] }
+      ];
+    });
   }
 }

@@ -1,7 +1,4 @@
-import * as _ from 'lodash';
-
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-
 import { Observable } from 'rxjs/Rx';
 
 import { UserService } from '../../api/user/user.providers';
@@ -9,6 +6,8 @@ import { User } from '../../api/user/user.model';
 
 import { Sector } from '../../api/sector/sector.model';
 import { SectorService } from '../../api/sector/sector.providers';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -23,10 +22,12 @@ export class LeftSidebarComponent implements OnInit {
   constructor(private userService: UserService, private sectorService: SectorService) { }
 
   ngOnInit() { 
-    this.sectorService.get().subscribe((sectors: Sector[]) => {
-      this.sectors = sectors;
-      this.sectorService.setCurrentSector(sectors[0]);
-    });
+    this.sectorService.get()
+      .map(sectors => _.sortBy(sectors, 'name'))
+      .subscribe((sectors: Sector[]) => {
+        this.sectors = sectors;
+        this.sectorService.setCurrentSector(sectors[0]);
+      });
     
     this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser);
     this.sectorService.currentSector.subscribe(currentSector => {

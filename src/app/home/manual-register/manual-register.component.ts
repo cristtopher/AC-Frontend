@@ -82,11 +82,11 @@ export class ManualRegisterComponent implements OnInit {
     newRegister.comment = this.commentsFormControl.value;
     
     if (this.selectedRegisterType === 'entry') {
-      newRegister.entrySector = this.currentSector;
-      newRegister.entryTime   = moment(this.dateTimeFormControl.value).unix();
+      newRegister.sector = this.currentSector;
+      newRegister.time   = moment(this.dateTimeFormControl.value).unix();
     } else if (this.selectedRegisterType === 'depart') {
-      newRegister.departSector = this.currentSector;
-      newRegister.departTime   = moment(this.dateTimeFormControl.value).unix();
+      newRegister.sector = this.currentSector;
+      newRegister.time   = moment(this.dateTimeFormControl.value).unix();
     }
 
     this.registerService.create(newRegister).subscribe(createdRegister => {

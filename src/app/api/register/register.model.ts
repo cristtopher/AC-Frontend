@@ -5,10 +5,8 @@ import { Sector } from '../sector/sector.model';
 export class Register extends Serializable {
   _id: string;
   person: Person;
-  entrySector:  Sector;
-  departSector: Sector;
-  entryTime: number;
-  departTime: number;
+  sector: Sector;
+  time: number;
   comment: string;
   
   constructor() {
