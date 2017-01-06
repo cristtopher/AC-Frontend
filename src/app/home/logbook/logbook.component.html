@@ -89,7 +89,7 @@
             <td>{{ register.comment }}</td>
             <td *ngIf="!register.isResolved">
               <span class="text-warning" style="float: left;">Incompleto</span>
-              <button class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md">Resolver</span></button>
+              <button (click)="resolveRegister(register)" class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md">Resolver</span></button>
             </td>
             <td *ngIf="register.isResolved"><span class="text-success">Resuelto</span></td>
           </tr>

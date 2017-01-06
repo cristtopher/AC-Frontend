@@ -69,13 +69,13 @@ export class LogbookComponent implements OnInit {
       this.currentToggleableFilter = filterName;
     
       if (this.currentToggleableFilter === 'today') {
-        this.currentFilters.from = moment().startOf('day').unix();
+        this.currentFilters.from = moment().startOf('day').unix() * 1000;
       } else if (this.currentToggleableFilter === 'last7days') {
-        this.currentFilters.from = moment().startOf('day').subtract(7, 'days').unix();;
+        this.currentFilters.from = moment().startOf('day').subtract(7, 'days').unix() * 1000;
       } else if (this.currentToggleableFilter === 'last15days') {
-        this.currentFilters.from = moment().startOf('day').subtract(15, 'days').unix();
+        this.currentFilters.from = moment().startOf('day').subtract(15, 'days').unix() * 1000;
       } else if (this.currentToggleableFilter === 'last30days') {
-        this.currentFilters.from = moment().startOf('day').subtract(30, 'days').unix();
+        this.currentFilters.from = moment().startOf('day').subtract(30, 'days').unix() * 1000;
       } else if (this.currentToggleableFilter === 'incomplete') {
         this.currentFilters.incomplete = true;
       }
@@ -83,6 +83,12 @@ export class LogbookComponent implements OnInit {
         
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
                       .subscribe(registers => this.registers = registers)
+  }
+
+  resolveRegister(register: Register){
+    console.log(`resolveRegister called with args: ${JSON.stringify(register)}`);
+    register.isResolved = true;
+    // TODO: make api request...
   }
 
 }
