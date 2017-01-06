@@ -1,13 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Register } from '../../api/register/register.model';
 import { RegisterService } from '../../api/register/register.providers';
+import { SectorService } from '../../api/sector/sector.providers';
+import { UserService } from '../../api/user/user.providers';
+import { SocketService } from '../../api/socket/socket.service';
 
 import { Sector } from '../../api/sector/sector.model';
-import { SectorService } from '../../api/sector/sector.providers';
-
-import { SocketService } from '../../api/socket/socket.service';
+import { Register } from '../../api/register/register.model';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -43,18 +43,20 @@ export class DashboardComponent implements OnInit {
     ]
   }
   
-  constructor(private socketService: SocketService, private sectorService: SectorService) { }
+  constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService) { }
 
   ngOnInit() {
     this.socketService.get('register')
                       .subscribe((event) => {
-                        if (event.action == "save")   { this.registers.push(event.item); }
+                        if (event.item.sector._id !== this.currentSector._id) return;
+                        
+                        if (event.action == "save")   { this.registers.unshift(event.item); this.registers = this.registers.slice(0, 15); }
                         else if (event.action == "remove") {  _.remove(this.registers, { _id: event.item._id }); }
                         
                         this.recalculateStatistics();
                       });
       
-    this.sectorService.currentSector
+    this.userService.currentSector
                       .switchMap(currentSector => {
                         this.currentSector = currentSector;
                         return this.sectorService.getRegisters(this.currentSector, { top: 15 })
@@ -77,11 +79,13 @@ export class DashboardComponent implements OnInit {
       this.profileDistPieChart.data = [this.statistics.staffPercentage, this.statistics.visitorsPercentage, this.statistics.visitorsPercentage];
       
       this.registersPerWeekBarChart.labels = statistics.weeklyHistory.entry.reverse().map(t => moment.weekdays()[moment(t.datetime).day()]);
-      
+            
+      // FIXME: Bug in mapping count data and dates
       this.registersPerWeekBarChart.series = [
-        { label: 'Entradas', data: [Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100)] },
-        { label: 'Salidas', data: [Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100)] }
+        { label: 'Entradas', data: statistics.weeklyHistory.entry.map(x => x.count) },
+        { label: 'Salidas', data: statistics.weeklyHistory.depart.map(x => x.count) }
       ];
+      
     });
   }
 }

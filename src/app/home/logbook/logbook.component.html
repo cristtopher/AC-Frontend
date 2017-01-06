@@ -72,18 +72,26 @@
             <th>Hora Entrada</th>
             <th>Hora Salida</th>
             <th>Comentario</th>
-            <th></th>
+            <th>Estado</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let register of registers">
             <td>{{ register.person?.rut }}</td>
             <td>{{ register.person?.name }}</td>
-            <td>{{ register.person?.type }}</td>
-            <td>{{ register.time }}</td>
-            <td>{{ register.time }}</td>
+            <td>
+              <span class="text-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
+              <span class="text-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
+              <span class="text-muted" *ngIf="register.person?.type === 'visitor'">Visita</span>
+            </td>
+            <td>{{ register.time | amDateFormat:'LLLL' }}</td>
+            <td>{{ register.resolvedRegister?.time | amDateFormat:'LLLL' }}</td>
             <td>{{ register.comment }}</td>
-            <td align="center"><button class="btn btn-transparent btn-transparent-success btn-xs"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md">Resolver</span></button></td>
+            <td *ngIf="!register.isResolved">
+              <span class="text-warning" style="float: left;">Incompleto</span>
+              <button class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md">Resolver</span></button>
+            </td>
+            <td *ngIf="register.isResolved"><span class="text-success">Resuelto</span></td>
           </tr>
         </tbody>
       </table>

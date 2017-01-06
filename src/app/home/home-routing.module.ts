@@ -9,7 +9,6 @@ import { ManualRegisterComponent } from './manual-register/manual-register.compo
 
 import { CanActivateAuthGuard } from '../api/auth/auth-guard.service';
 import { CurrentUserResolve }   from '../api/user/user.providers';
-import { SectorsResolve }   from '../api/sector/sector.providers';
 
 @NgModule({
   imports: [
@@ -17,7 +16,7 @@ import { SectorsResolve }   from '../api/sector/sector.providers';
       path: 'home', 
       component: HomeComponent,
       canActivate: [CanActivateAuthGuard],
-      resolve: { currentUser: CurrentUserResolve, sectors: SectorsResolve },
+      resolve: { currentUser: CurrentUserResolve },
       children: [{
           path: '',
           redirectTo: 'dashboard'

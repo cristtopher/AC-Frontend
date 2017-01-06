@@ -13,6 +13,7 @@ import 'rxjs/add/operator/catch';
 import { AuthService } from '../auth/auth.service';
 
 import { User } from './user.model';
+import { Sector } from '../sector/sector.model';
 
 //-------------------------------------------------------
 //                      Services
@@ -23,13 +24,31 @@ import { User } from './user.model';
 export class UserService {
   
   currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  currentSector: BehaviorSubject<Sector> = new BehaviorSubject<Sector>(null); 
   
   constructor(private authHttp: AuthHttp) { }
   
   setCurrentUser(user: User) {
     this.currentUser.next(user);
   }
+
+  setCurrentSector(sector: Sector) {
+    console.log(`setting sector: ${JSON.stringify(sector)}`)
+    this.currentSector.next(sector);
+  }
   
+  getSectors(): Observable<Sector[]> {    
+    return this.authHttp.get(`${environment.API_BASEURL}/api/users/${this.currentUser.getValue()._id}/sectors`)
+                        .map(res => <Sector[]> res.json())
+                        .do(sectors => {
+                          if (!this.currentSector.getValue()) {
+                            this.currentSector.next(sectors[0]);
+                          }
+                        })
+                        .catch(this.handleError);
+  }
+  
+    
   get(query: Object = {}) {
      let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     
@@ -61,7 +80,8 @@ export class CurrentUserResolve implements Resolve<User> {
 
   resolve(route: ActivatedRouteSnapshot) {    
     return this.authService.getProfile()
-                           .do(currentUser => this.userService.setCurrentUser(currentUser));
+                           .do(currentUser => this.userService.setCurrentUser(currentUser))
+                           .flatMap(() => this.userService.getSectors());
   }
 }
 

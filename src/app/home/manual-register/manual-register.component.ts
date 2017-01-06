@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
-import { SectorService } from '../../api/sector/sector.providers';
+import { UserService } from '../../api/user/user.providers';
 import { RegisterService } from '../../api/register/register.providers';
 import { PersonService } from '../../api/person/person.providers';
 
@@ -48,7 +48,7 @@ export class ManualRegisterComponent implements OnInit {
   // TODO: replace this with FormControls based solution
   selectedRegisterType: string =  'entry';
 
-  constructor(private sectorService: SectorService, private registerService: RegisterService, private personService: PersonService) {
+  constructor(private userService: UserService, private registerService: RegisterService, private personService: PersonService) {
     console.log(`registerDateTime: ${this.registerDateTime}`);
     
     this.candidatePersons = Observable.create((observer: any) => observer.next(this.searchBoxFormControl.value))
@@ -56,7 +56,7 @@ export class ManualRegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sectorService.currentSector.subscribe(currentSector => this.currentSector = currentSector);
+    this.userService.currentSector.subscribe(currentSector => this.currentSector = currentSector);
   }
 
   searchBoxLoading(e: boolean): void {
@@ -80,13 +80,14 @@ export class ManualRegisterComponent implements OnInit {
     // creating new register... 
     newRegister.person  = this.selectedPerson;
     newRegister.comment = this.commentsFormControl.value;
+    newRegister.type    = this.selectedRegisterType;
     
     if (this.selectedRegisterType === 'entry') {
       newRegister.sector = this.currentSector;
-      newRegister.time   = moment(this.dateTimeFormControl.value).unix();
+      newRegister.time   = moment(this.dateTimeFormControl.value).unix() * 1000;
     } else if (this.selectedRegisterType === 'depart') {
       newRegister.sector = this.currentSector;
-      newRegister.time   = moment(this.dateTimeFormControl.value).unix();
+      newRegister.time   = moment(this.dateTimeFormControl.value).unix() * 1000;
     }
 
     this.registerService.create(newRegister).subscribe(createdRegister => {

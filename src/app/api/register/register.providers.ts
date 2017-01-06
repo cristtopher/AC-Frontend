@@ -35,12 +35,18 @@ export class RegisterService {
   create(register: Register) {
     console.log('going to create a new register....')
     
-    return this.authHttp.post(`${environment.API_BASEURL}/api/registers`, register)
-                        .map(res => <Register[]> res.json())
-                        .do(() => {
-                          console.log('done...')
-                        })
-                        .catch(this.handleError);
+    return this.authHttp.post(`${environment.API_BASEURL}/api/registers`, {
+      person: register.person._id,
+      sector: register.sector._id,
+      time: register.time,
+      type: register.type,
+      comment: register.comment
+    })
+    .map(res => <Register[]> res.json())
+    .do(() => {
+      console.log('done...')
+    })
+    .catch(this.handleError);
     
   }
   

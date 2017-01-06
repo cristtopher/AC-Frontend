@@ -22,22 +22,8 @@ import { Register } from '../register/register.model'
 
 @Injectable()
 export class SectorService {  
-  currentSector: BehaviorSubject<Sector> = new BehaviorSubject<Sector>(null);
-
+  
   constructor(private authHttp: AuthHttp) { }
-
-  get(query: Object = {}): Observable<Sector[]> {
-    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
-    
-    return this.authHttp.get(`${environment.API_BASEURL}/api/sectors${queryString ? '?' + queryString : ''}`)
-                        .map(res => <Sector[]> res.json())
-                        .do(sectors => {
-                          if (!this.currentSector.getValue()) {
-                            this.currentSector.next(sectors[0]);
-                          }
-                        })
-                        .catch(this.handleError);
-  }
   
   getRegisters(sector: Sector, query: Object = {}): Observable<Register[]> {
     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
@@ -53,10 +39,6 @@ export class SectorService {
                         .map(res => res.json())
                         .catch(this.handleError);
   }
-  
-  setCurrentSector(sector: Sector) {
-    this.currentSector.next(sector);
-  }
     
   private handleError(error: Response) {
     console.error(error);
@@ -65,24 +47,11 @@ export class SectorService {
 
 }
 
-//-------------------------------------------------------
-//                      Resolvers
-//-------------------------------------------------------
-
-@Injectable()
-export class SectorsResolve implements Resolve<Sector[]> {
-  constructor(private sectorService: SectorService) {}
-
-  resolve(route: ActivatedRouteSnapshot) {
-    return this.sectorService.get();
-  }
-}
 
 //-------------------------------------------------------
 //                      Providers
 //-------------------------------------------------------
 
 export const SECTOR_PROVIDERS: Provider[] = [
-  { provide: SectorService, useClass: SectorService },
-  { provide: SectorsResolve, useClass: SectorsResolve }
+  { provide: SectorService, useClass: SectorService }
 ];

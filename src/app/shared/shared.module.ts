@@ -13,6 +13,10 @@ import { SharedComponent } from './shared.component';
 
 import { TypeaheadDirective } from './typeahead/typeahead.directive';
 
+import { CalendarPipe } from './moment/calendar.pipe';
+import { DateFormatPipe } from './moment/date-format.pipe';
+import { OrderByPipe } from './utils/order-by.pipe';
+
 @NgModule({
   declarations: [
     SharedComponent,
@@ -21,7 +25,10 @@ import { TypeaheadDirective } from './typeahead/typeahead.directive';
     SectionComponent,
     GroupSectionComponent,
     TypeaheadContainerComponent,
-    TypeaheadDirective
+    TypeaheadDirective,
+    CalendarPipe,
+    DateFormatPipe,
+    OrderByPipe
   ],
   imports: [
     CommonModule,
@@ -35,7 +42,10 @@ import { TypeaheadDirective } from './typeahead/typeahead.directive';
     SectionComponent,
     GroupSectionComponent,
     TypeaheadContainerComponent,
-    TypeaheadDirective
+    TypeaheadDirective,
+    CalendarPipe,
+    DateFormatPipe,
+    OrderByPipe
   ],
   providers: [
     ComponentsHelper

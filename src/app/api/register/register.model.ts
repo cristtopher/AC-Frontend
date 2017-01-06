@@ -7,6 +7,9 @@ export class Register extends Serializable {
   person: Person;
   sector: Sector;
   time: number;
+  type: string;
+  isResolved: boolean;
+  resolvedRegister: Register;
   comment: string;
   
   constructor() {

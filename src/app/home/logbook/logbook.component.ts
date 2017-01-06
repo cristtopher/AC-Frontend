@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { SocketService } from '../../api/socket/socket.service';
+import { UserService } from '../../api/user/user.providers';
 import { SectorService } from '../../api/sector/sector.providers';
+import { SocketService } from '../../api/socket/socket.service';
 
 import { Sector } from '../../api/sector/sector.model';
 import { Register } from '../../api/register/register.model';
@@ -39,10 +40,10 @@ export class LogbookComponent implements OnInit {
     name: 'Visitas'
   }];
   
-  constructor(private socketService: SocketService, private sectorService: SectorService) { }
+  constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService) { }
 
   ngOnInit() {
-    this.sectorService.currentSector
+    this.userService.currentSector
                       .mergeMap(currentSector => {
                         this.currentSector = currentSector;
       

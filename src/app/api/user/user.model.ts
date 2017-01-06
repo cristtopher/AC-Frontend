@@ -8,7 +8,7 @@ export class User extends Serializable {
   name: string;
   role: string;
   company: any;
-  sector:  any;
+  sectors: Sector[];
     
   constructor() {
     super();  

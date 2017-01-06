@@ -19,27 +19,24 @@ export class LeftSidebarComponent implements OnInit {
   currentSectorId: string;
   sectors: Sector[];
   
-  constructor(private userService: UserService, private sectorService: SectorService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() { 
-    this.sectorService.get()
+    this.userService.getSectors()
       .map(sectors => _.sortBy(sectors, 'name'))
       .subscribe((sectors: Sector[]) => {
         this.sectors = sectors;
-        this.sectorService.setCurrentSector(sectors[0]);
+        this.userService.setCurrentSector(sectors[0]);
       });
     
     this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser);
-    this.sectorService.currentSector.subscribe(currentSector => {
-      console.log(`currentSector: ${currentSector}`)
+    this.userService.currentSector.subscribe(currentSector => {
       this.currentSectorId = currentSector._id;
     });
   }
   
   changeSector(sectorId: string) {
     let newSector = _.find(this.sectors, s => s._id === sectorId);
-    
-    console.log(`Sector was changed to: ${newSector._id}`);
-    this.sectorService.setCurrentSector(newSector);
+    this.userService.setCurrentSector(newSector);
   }
 }
