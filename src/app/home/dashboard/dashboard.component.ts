@@ -78,12 +78,14 @@ export class DashboardComponent implements OnInit {
     
       this.profileDistPieChart.data = [this.statistics.staffPercentage, this.statistics.visitorsPercentage, this.statistics.visitorsPercentage];
       
-      this.registersPerWeekBarChart.labels = statistics.weeklyHistory.entry.reverse().map(t => moment.weekdays()[moment(t.datetime).day()]);
+      let reversedEntryWeeklyHistory = statistics.weeklyHistory.entry.reverse();
+      let reversedDepartWeeklyHistory = statistics.weeklyHistory.depart.reverse();
+      
+      this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
             
-      // FIXME: Bug in mapping count data and dates
       this.registersPerWeekBarChart.series = [
-        { label: 'Entradas', data: statistics.weeklyHistory.entry.map(x => x.count) },
-        { label: 'Salidas', data: statistics.weeklyHistory.depart.map(x => x.count) }
+        { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
+        { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
       ];
       
     });
