@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '../../api/user/user.providers';
+import { RegisterService } from '../../api/register/register.providers';
 import { SectorService } from '../../api/sector/sector.providers';
 import { SocketService } from '../../api/socket/socket.service';
 
@@ -20,6 +21,7 @@ export class LogbookComponent implements OnInit {
 
   registers: Register[];  
   currentFilters = {
+    type: 'entry',
     from: null,
     personType: null,
     incomplete: null
@@ -40,14 +42,14 @@ export class LogbookComponent implements OnInit {
     name: 'Visitas'
   }];
   
-  constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService) { }
+  constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService, private registerService: RegisterService) { }
 
   ngOnInit() {
     this.userService.currentSector
                       .mergeMap(currentSector => {
                         this.currentSector = currentSector;
       
-                        return this.sectorService.getRegisters(this.currentSector);
+                        return this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters));
                       })
                       .subscribe(registers => this.registers = registers)
   }
@@ -87,8 +89,33 @@ export class LogbookComponent implements OnInit {
 
   resolveRegister(register: Register){
     console.log(`resolveRegister called with args: ${JSON.stringify(register)}`);
-    register.isResolved = true;
-    // TODO: make api request...
+    
+    // creating new register... 
+    var newRegister = new Register();
+    
+    newRegister.person     = register.person;
+    newRegister.comments   = 'Resolución manual';
+    newRegister.type       = 'depart';
+    newRegister.isResolved = true;
+    newRegister.time       = moment(new Date()).unix() * 1000;
+    newRegister.sector     = register.sector;
+
+    this.registerService.create(newRegister)
+      .flatMap((newRegister) => {
+        register.isResolved = true;
+        register.resolvedRegister = newRegister._id;
+        return this.registerService.patch(register, {
+          resolvedRegister: newRegister._id,
+          isResolved: true
+        });
+      })                               
+      .subscribe(resolvedRegister => {
+        console.log(`resolvedRegister: ${JSON.stringify(resolvedRegister)}`)
+        register.resolvedRegister = newRegister;
+      }, (error) => {
+        console.log(`error while creating register: ${error}`);
+      });
+    
   }
 
 }

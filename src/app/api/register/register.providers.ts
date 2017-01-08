@@ -33,23 +33,33 @@ export class RegisterService {
   }
   
   create(register: Register) {
-    console.log('going to create a new register....')
-    
     return this.authHttp.post(`${environment.API_BASEURL}/api/registers`, {
       person: register.person._id,
       sector: register.sector._id,
       time: register.time,
       type: register.type,
-      comment: register.comment
+      comments: register.comments
     })
     .map(res => <Register[]> res.json())
-    .do(() => {
-      console.log('done...')
-    })
     .catch(this.handleError);
     
   }
   
+  update(register: Register) {
+     console.log(`going to update register: ${register}`)
+    return  this.authHttp.put(`${environment.API_BASEURL}/api/registers/${register._id}`, register)
+                         .map(res => <Register> res.json())
+                         .catch(this.handleError);
+  }
+
+  patch(register: Register, data) {
+    console.log(`going to patch register: ${register}`)
+    return this.authHttp.patch(`${environment.API_BASEURL}/api/registers/${register._id}`, data)
+                         .map(res => <Register> res.json())
+                         .catch(this.handleError);
+  }
+  
+    
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');

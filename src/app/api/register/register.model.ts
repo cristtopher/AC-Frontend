@@ -10,7 +10,7 @@ export class Register extends Serializable {
   type: string;
   isResolved: boolean;
   resolvedRegister: Register;
-  comment: string;
+  comments: string;
   
   constructor() {
     super();  

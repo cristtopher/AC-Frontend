@@ -9,7 +9,6 @@ import { SectionComponent } from './left-sidebar/section/section.component';
 import { GroupSectionComponent } from './left-sidebar/group-section/group-section.component';
 import { TypeaheadContainerComponent } from './typeahead/typeahead-container.component';
 import { ComponentsHelper } from './utils/components-helper.service';
-import { SharedComponent } from './shared.component';
 
 import { TypeaheadDirective } from './typeahead/typeahead.directive';
 
@@ -19,7 +18,6 @@ import { OrderByPipe } from './utils/order-by.pipe';
 
 @NgModule({
   declarations: [
-    SharedComponent,
     LeftSidebarComponent,
     TopHeaderComponent,
     SectionComponent,
@@ -36,7 +34,6 @@ import { OrderByPipe } from './utils/order-by.pipe';
     RouterModule
   ],
   exports: [
-    SharedComponent,
     LeftSidebarComponent,
     TopHeaderComponent,
     SectionComponent,

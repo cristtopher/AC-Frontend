@@ -70,8 +70,11 @@
             <th>Nombre</th>
             <th>Tipo</th>
             <th>Hora Entrada</th>
+            <th>Sector Entrada</th>
+            <th>Comentario Entrada</th>
             <th>Hora Salida</th>
-            <th>Comentario</th>
+            <th>Sector Salida</th>
+            <th>Comentario Salida</th>
             <th>Estado</th>
           </tr>
         </thead>
@@ -85,8 +88,11 @@
               <span class="text-muted" *ngIf="register.person?.type === 'visitor'">Visita</span>
             </td>
             <td>{{ register.time | amDateFormat:'LLLL' }}</td>
+            <td>{{ register.sector.name }}</td>
+            <td>{{ register.comments }}</td>
             <td>{{ register.resolvedRegister?.time | amDateFormat:'LLLL' }}</td>
-            <td>{{ register.comment }}</td>
+            <td>{{ register.resolvedRegister?.sector?.name }}</td>
+            <td>{{ register.resolvedRegister?.comments }}</td>
             <td *ngIf="!register.isResolved">
               <span class="text-warning" style="float: left;">Incompleto</span>
               <button (click)="resolveRegister(register)" class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md">Resolver</span></button>

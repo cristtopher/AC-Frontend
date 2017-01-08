@@ -116,7 +116,7 @@
             </tr> 
           </thead>
           <tbody>
-            <tr *ngFor="let register of registers; let i = index">
+            <tr *ngFor="let register of registers | orderBy: 'time':'desc'; let i = index">
               <td>
                 <span class="text-success" *ngIf="register.type === 'entry'">Entrada</span>
                 <span class="text-warning" *ngIf="register.type === 'depart'">Salida</span>

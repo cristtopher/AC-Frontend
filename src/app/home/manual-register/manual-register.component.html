@@ -21,7 +21,7 @@
           <label class="col-sm-2 col-xs-12 control-label"></label>
           <div class="col-sm-10 col-xs-12">        
             <div class="panel panel-faded-blue">
-              <div class="panel-heading"><h4 class="panel-title">Buscador de Personas <strong>({{ currentSector?.name }})</strong></h4></div>
+              <div class="panel-heading"><h4 class="panel-title">Buscador de Personas</h4></div>
               <div class="panel-body">
                 <input formControlName="searchBox"
                        [typeahead]="candidatePersons"
@@ -32,7 +32,8 @@
                        [typeaheadOptionField]="'name'"
                        placeholder="Ingrese RUT..."
                        class="form-control">
-                <span class="error text-danger" *ngIf="hasSearchBoxNoResults && searchBox.dirty">La persona buscada no existe en los registros</span>
+
+                <span class="error text-danger" *ngIf="hasSearchBoxNoResults && searchBoxFormControl.dirty">La persona buscada no existe en los registros</span>
               </div>
             </div>
           </div>
@@ -84,7 +85,7 @@
       </div>
       
       <div class="panel-footer text-right">
-        <button type="submit" class="btn btn-transparent btn-transparent-primary"><span class="fa fa-share"></span> Enviar</button>
+         <button type="submit" class="btn btn-transparent btn-transparent-primary" [disabled]="!selectedPerson || !manualRegisterForm.valid"><span class="fa fa-share"></span> Enviar</button>
       </div>
     </div>
   </form>

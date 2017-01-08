@@ -5,7 +5,9 @@ import { Observable } from 'rxjs/Rx';
 import { UserService } from '../../api/user/user.providers';
 import { RegisterService } from '../../api/register/register.providers';
 import { PersonService } from '../../api/person/person.providers';
+import { CompanyService } from '../../api/company/company.providers';
 
+import { User }   from '../../api/user/user.model';
 import { Sector }   from '../../api/sector/sector.model';
 import { Register } from '../../api/register/register.model';
 import { Person }   from '../../api/person/person.model';
@@ -19,6 +21,7 @@ import * as moment from 'moment';
 })
 export class ManualRegisterComponent implements OnInit {
   currentSector: Sector;
+  currentUser: User;
   
   // ngModel var for datepicker
   registerDateTime: any;
@@ -48,11 +51,10 @@ export class ManualRegisterComponent implements OnInit {
   // TODO: replace this with FormControls based solution
   selectedRegisterType: string =  'entry';
 
-  constructor(private userService: UserService, private registerService: RegisterService, private personService: PersonService) {
-    console.log(`registerDateTime: ${this.registerDateTime}`);
-    
+  constructor(private userService: UserService, private registerService: RegisterService, private companyService: CompanyService) {
     this.candidatePersons = Observable.create((observer: any) => observer.next(this.searchBoxFormControl.value))
-                                      .mergeMap((currentRut: string) => this.personService.get({ rut: currentRut, sector: this.currentSector }));
+                                      .do(() => this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser))
+                                      .mergeMap((currentRut: string) => this.companyService.getPersons(this.currentUser.company, { rut: currentRut }));
   }
 
   ngOnInit() {
@@ -64,6 +66,7 @@ export class ManualRegisterComponent implements OnInit {
   }
 
   searchBoxNoResults(e: boolean): void {
+    console.log(`searchBoxNoResults: ${this.hasSearchBoxNoResults}`);
     this.hasSearchBoxNoResults = e;
   }
   
@@ -79,7 +82,7 @@ export class ManualRegisterComponent implements OnInit {
     
     // creating new register... 
     newRegister.person  = this.selectedPerson;
-    newRegister.comment = this.commentsFormControl.value;
+    newRegister.comments = this.commentsFormControl.value;
     newRegister.type    = this.selectedRegisterType;
     
     if (this.selectedRegisterType === 'entry') {

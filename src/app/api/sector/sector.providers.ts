@@ -33,7 +33,7 @@ export class SectorService {
                         .catch(this.handleError);
     
   }
-  
+    
   getStatistics(sector: Sector): Observable<any> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/statistics`)
                         .map(res => res.json())
