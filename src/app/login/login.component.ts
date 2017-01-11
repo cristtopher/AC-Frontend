@@ -49,7 +49,8 @@ export class LoginComponent implements OnInit {
                         console.log('Server Error while trying to login');
                         this.serverError = true;
                       } else {
-                        console.error(`Error while trying to login to API: ${error}`);
+                        console.error(`Unknown error while trying to login to API: ${error}`);
+                        this.serverError = true;
                       }
                     });
   }
