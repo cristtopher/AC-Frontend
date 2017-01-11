@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'sidebar-section',
@@ -12,9 +12,14 @@ export class SectionComponent implements OnInit {
   @Input() badgeClass: string;
   @Input() badgeValue: number;
   
+  @Output() clickEvent = new EventEmitter();
   
   constructor() { }
 
   ngOnInit() {
+  }  
+  
+  click() {
+    this.clickEvent.emit();
   }  
 }

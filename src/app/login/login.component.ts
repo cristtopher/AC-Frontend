@@ -15,7 +15,10 @@ declare var $: any;
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-    
+  
+  invalidLogin: boolean = false;
+  serverError: boolean = false;
+  
   constructor(private authService: AuthService, private router:Router) { 
   }
   
@@ -23,9 +26,13 @@ export class LoginComponent implements OnInit {
     
   }
 
-  login($event, rut, password) {    
+  login($event, rut, password) {
     this.authService.login(rut, password)
                     .flatMap(() => this.authService.getProfile())
+                    .do(() => {
+                      this.invalidLogin = false;
+                      this.serverError  = false;
+                    })
                     .subscribe((user: User) => {
                       if(!this.authService.loggedIn()) { return; }
                       
@@ -37,8 +44,10 @@ export class LoginComponent implements OnInit {
                     }, (error) => {
                       if (error.status === 401) {
                         console.log('Invalid Username or Password!');
+                        this.invalidLogin = true
                       } else if (error.status === 500) {
                         console.log('Server Error while trying to login');
+                        this.serverError = true;
                       } else {
                         console.error(`Error while trying to login to API: ${error}`);
                       }

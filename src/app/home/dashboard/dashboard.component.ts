@@ -65,8 +65,9 @@ export class DashboardComponent implements OnInit {
                         this.registers = registers;
                         this.recalculateStatistics();
                       });
+                      
   }
-  
+    
   recalculateStatistics() {
     this.sectorService.getStatistics(this.currentSector).subscribe(statistics => {
       console.log(`got statistics: ${JSON.stringify(statistics)}`)

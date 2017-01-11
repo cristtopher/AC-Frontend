@@ -21,7 +21,9 @@
         [sectionName]="'Dashboard'" 
         [iconClass]="'typcn-chart-line'" 
         [badgeClass]="'badge-primary'" 
-        [badgeValue]="dashboardBadge">
+        [badgeValue]="dashboardBadge"
+        (click)="dashboardSectionClicked()"
+        >
       </sidebar-section>
 
       <sidebar-section

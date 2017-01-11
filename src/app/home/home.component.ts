@@ -39,4 +39,9 @@ export class HomeComponent implements OnInit {
     Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 1)';
   }
 
+  dashboardSectionClicked(){
+    console.log('Dashboard on Open event called (resetting badge)');
+    this.dashboardBadge = 0;
+  }
+
 }
