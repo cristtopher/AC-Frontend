@@ -29,10 +29,6 @@ export class LoginComponent implements OnInit {
   login($event, rut, password) {
     this.authService.login(rut, password)
                     .flatMap(() => this.authService.getProfile())
-                    .do(() => {
-                      this.invalidLogin = false;
-                      this.serverError  = false;
-                    })
                     .subscribe((user: User) => {
                       if(!this.authService.loggedIn()) { return; }
                       
@@ -42,6 +38,9 @@ export class LoginComponent implements OnInit {
                         return this.router.navigate(['/home']); 
                       }
                     }, (error) => {
+                      this.invalidLogin = false;
+                      this.serverError  = false;
+                      
                       if (error.status === 401) {
                         console.log('Invalid Username or Password!');
                         this.invalidLogin = true
