@@ -37,7 +37,7 @@ export class ManualRegisterComponent implements OnInit {
   nameFormControl: FormControl         = new FormControl({ value: '', disabled: true }, Validators.required);
   personTypeFormControl: FormControl   = new FormControl({ value: '', disabled: true }, Validators.required);
   dateTimeFormControl: FormControl     = new FormControl({ value: null }, Validators.required);
-  commentsFormControl: FormControl     = new FormControl('', Validators.required);
+  commentsFormControl: FormControl     = new FormControl('');
   
   manualRegisterForm: FormGroup = new FormGroup({
     searchBox:    this.searchBoxFormControl,
