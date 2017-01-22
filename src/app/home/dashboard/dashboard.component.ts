@@ -32,7 +32,23 @@ export class DashboardComponent implements OnInit {
 
   profileDistPieChart = {
     labels: ['Planta', 'Contratistas', 'Visitas'],
-    data: [0, 0, 0]
+    data: [0, 0, 0],
+    options: {
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {            
+            //get the concerned dataset
+            let dataset = data.datasets[tooltipItem.datasetIndex];
+          
+            //get the current items value
+            let currentValue = dataset.data[tooltipItem.index];
+            let currentLabel = data.labels[tooltipItem.index];
+            
+            return `${currentLabel}: ${currentValue}%`;
+          }
+        }
+      } 
+    }
   }
     
   registersPerWeekBarChart = {
@@ -77,7 +93,11 @@ export class DashboardComponent implements OnInit {
       this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
       this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
     
-      this.profileDistPieChart.data = [this.statistics.staffPercentage, this.statistics.visitorsPercentage, this.statistics.visitorsPercentage];
+      this.profileDistPieChart.data = [
+        this.statistics.staffPercentage, 
+        this.statistics.visitorsPercentage, 
+        this.statistics.visitorsPercentage
+      ];
       
       let reversedEntryWeeklyHistory = statistics.weeklyHistory.entry.reverse();
       let reversedDepartWeeklyHistory = statistics.weeklyHistory.depart.reverse();
