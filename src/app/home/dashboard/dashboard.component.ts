@@ -90,12 +90,12 @@ export class DashboardComponent implements OnInit {
       
       this.statistics.totalRegisters        = statistics.staffCount + statistics.contractorCount + statistics.visitCount;
       this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statistics.staffCount / this.statistics.totalRegisters) * 100 : 0;
-      this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
+      this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statistics.contractorCount / this.statistics.totalRegisters) * 100 : 0;
       this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
     
       this.profileDistPieChart.data = [
         this.statistics.staffPercentage, 
-        this.statistics.visitorsPercentage, 
+        this.statistics.contractorsPercentage, 
         this.statistics.visitorsPercentage
       ];
       
