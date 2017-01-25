@@ -4,8 +4,10 @@ export class Person extends Serializable {
   _id: string;
   rut: string;
   name: string;
-  companyName: string;
-  
+  company: any;
+  type: string;
+  card: number;
+    
   constructor() {
     super();  
   }  

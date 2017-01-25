@@ -26,7 +26,7 @@ export class TopHeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout().subscribe(() => this.router.navigate(['/login']));
+    this.authService.logout().then(() => this.router.navigate(['/login']))
   }
 
   toggleSidebar() {

@@ -15,7 +15,7 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 export class AuthService {
     
-  constructor(private router: Router, private http: Http, private authHttp: AuthHttp) { }
+  constructor(private http: Http, private authHttp: AuthHttp) { }
   
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${environment.API_BASEURL}/auth/local`, {rut: username, password: password}, new Headers({ 'Content-Type': 'application/json' }))
@@ -30,9 +30,11 @@ export class AuthService {
                     });
   }
 
-  logout(): Observable<any> {
-    localStorage.removeItem("id_token");    
-    return Observable.fromPromise(this.router.navigate(['/']));
+  logout(): Promise<any> {  
+    return new Promise(resolve => {
+      localStorage.removeItem("id_token");
+      resolve();
+    });
   }
   
   loggedIn() {

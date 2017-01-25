@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   
   constructor(private route: ActivatedRoute, private userService: UserService, private socketService: SocketService) { }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser);
     
     this.socketService.get('register')
