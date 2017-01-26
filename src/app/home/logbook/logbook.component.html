@@ -22,42 +22,42 @@
         </select>
       
         <button class="btn btn-pill" 
-          [class.btn-primary]="(currentToggleableFilter === 'today')" 
-          [class.btn-transparent]="!(currentToggleableFilter === 'today')" 
-          [class.btn-transparent-primary]="!(currentToggleableFilter === 'today')"
-          (click)="toggleFilter('today')"
+          [class.btn-primary]="(currentDateTimeFilterName === 'today')" 
+          [class.btn-transparent]="!(currentDateTimeFilterName === 'today')" 
+          [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'today')"
+          (click)="toggleDateTimeFilter('today')"
           >
           Hoy
         </button>
         <button class="btn btn-pill" 
-          [class.btn-primary]="(currentToggleableFilter === 'last7days')" 
-          [class.btn-transparent]="!(currentToggleableFilter === 'last7days')" 
-          [class.btn-transparent-primary]="!(currentToggleableFilter === 'last7days')"
-          (click)="toggleFilter('last7days')"
+          [class.btn-primary]="(currentDateTimeFilterName === 'last7days')" 
+          [class.btn-transparent]="!(currentDateTimeFilterName === 'last7days')" 
+          [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last7days')"
+          (click)="toggleDateTimeFilter('last7days')"
           >
           7 Días
         </button>
         <button class="btn btn-pill" 
-          [class.btn-primary]="(currentToggleableFilter === 'last15days')" 
-          [class.btn-transparent]="!(currentToggleableFilter === 'last15days')" 
-          [class.btn-transparent-primary]="!(currentToggleableFilter === 'last15days')"
-          (click)="toggleFilter('last15days')"
+          [class.btn-primary]="(currentDateTimeFilterName === 'last15days')" 
+          [class.btn-transparent]="!(currentDateTimeFilterName === 'last15days')" 
+          [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last15days')"
+          (click)="toggleDateTimeFilter('last15days')"
           >
           15 Días
         </button>
         <button class="btn btn-pill" 
-          [class.btn-primary]="(currentToggleableFilter === 'last30days')" 
-          [class.btn-transparent]="!(currentToggleableFilter === 'last30days')" 
-          [class.btn-transparent-primary]="!(currentToggleableFilter === 'last30days')"
-          (click)="toggleFilter('last30days')"
+          [class.btn-primary]="(currentDateTimeFilterName === 'last30days')" 
+          [class.btn-transparent]="!(currentDateTimeFilterName === 'last30days')" 
+          [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last30days')"
+          (click)="toggleDateTimeFilter('last30days')"
           >
           30 Días
         </button>
         <button class="btn btn-pill" 
-          [class.btn-warning]="(currentToggleableFilter === 'incomplete')" 
-          [class.btn-transparent]="!(currentToggleableFilter === 'incomplete')" 
-          [class.btn-transparent-warning]="!(currentToggleableFilter === 'incomplete')"
-          (click)="toggleFilter('incomplete')"
+          [class.btn-warning]="(currentFilters['incomplete'])" 
+          [class.btn-transparent]="!(currentFilters['incomplete'])" 
+          [class.btn-transparent-warning]="!(currentFilters['incomplete'])"
+          (click)="toggleIncompleteFilter()"
           >
           Incompletos
         </button>

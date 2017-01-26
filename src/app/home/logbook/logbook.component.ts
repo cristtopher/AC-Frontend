@@ -24,11 +24,11 @@ export class LogbookComponent implements OnInit {
     type: 'entry',
     from: null,
     personType: null,
-    incomplete: null
+    incomplete: false
   };
   
   // variables to handle filter controls behavior
-  currentToggleableFilter: string;
+  currentDateTimeFilterName: string;
   currentProfileFilterControl: string = "all";
   
   profiles = [{
@@ -61,28 +61,36 @@ export class LogbookComponent implements OnInit {
                       .subscribe(registers => this.registers = registers);
   }
 
-  toggleFilter(filterName: string) {    
-    if(filterName === this.currentToggleableFilter) { 
+  toggleIncompleteFilter() {
+      this.currentFilters['incomplete'] = !this.currentFilters['incomplete'];
+      
+      this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
+                        .subscribe(registers => this.registers = registers)
+  }
+
+  toggleDateTimeFilter(filterName: string) {    
+    // for time-based filter buttons
+    if(filterName === this.currentDateTimeFilterName) { 
       // means that the filter will be deactivated...      
-      this.currentToggleableFilter = null;
-      this.currentFilters[filterName === 'incomplete' ? 'incomplete' : 'from'] = null;
+      this.currentDateTimeFilterName = null;
+      this.currentFilters['from'] = null;
     } else {
       // means that a filter will be activated...
-      this.currentToggleableFilter = filterName;
+      this.currentDateTimeFilterName = filterName;
     
-      if (this.currentToggleableFilter === 'today') {
+      if (this.currentDateTimeFilterName === 'today') {
         this.currentFilters.from = moment().startOf('day').unix() * 1000;
-      } else if (this.currentToggleableFilter === 'last7days') {
+      } else if (this.currentDateTimeFilterName === 'last7days') {
         this.currentFilters.from = moment().startOf('day').subtract(7, 'days').unix() * 1000;
-      } else if (this.currentToggleableFilter === 'last15days') {
+      } else if (this.currentDateTimeFilterName === 'last15days') {
         this.currentFilters.from = moment().startOf('day').subtract(15, 'days').unix() * 1000;
-      } else if (this.currentToggleableFilter === 'last30days') {
+      } else if (this.currentDateTimeFilterName === 'last30days') {
         this.currentFilters.from = moment().startOf('day').subtract(30, 'days').unix() * 1000;
-      } else if (this.currentToggleableFilter === 'incomplete') {
-        this.currentFilters.incomplete = true;
       }
     }
-        
+    
+    console.log(`current filters: ${JSON.stringify(this.currentFilters)}`);
+    
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
                       .subscribe(registers => this.registers = registers)
   }
