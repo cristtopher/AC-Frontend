@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PeopleManagementComponent } from './people-management/people-management.component';
 import { LogbookComponent } from './logbook/logbook.component';
 import { ManualRegisterComponent } from './manual-register/manual-register.component';
+import { OverviewComponent } from './overview/overview.component';
 
 import { CanActivateAuthGuard } from '../api/auth/auth-guard.service';
 import { CurrentUserResolve }   from '../api/user/user.providers';
@@ -20,6 +21,9 @@ import { CurrentUserResolve }   from '../api/user/user.providers';
       children: [{
           path: '',
           redirectTo: 'dashboard'
+        }, {
+          path: 'overview',
+          component: OverviewComponent
         }, {
           path: 'dashboard',
           component: DashboardComponent

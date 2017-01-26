@@ -26,7 +26,7 @@ export class LogbookComponent implements OnInit {
     personType: null,
     incomplete: false
   };
-  
+    
   // variables to handle filter controls behavior
   currentDateTimeFilterName: string;
   currentProfileFilterControl: string = "all";

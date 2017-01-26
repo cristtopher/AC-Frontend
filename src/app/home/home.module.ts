@@ -15,6 +15,7 @@ import { PeopleManagementComponent } from './people-management/people-management
 import { PersonModalComponent } from './people-management/person-modal/person-modal.component';
 import { LogbookComponent } from './logbook/logbook.component';
 import { ManualRegisterComponent } from './manual-register/manual-register.component';
+import { OverviewComponent } from './overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ManualRegisterComponent } from './manual-register/manual-register.compo
     PeopleManagementComponent,
     PersonModalComponent,
     LogbookComponent,
-    ManualRegisterComponent
+    ManualRegisterComponent,
+    OverviewComponent
   ],
   imports: [
     CommonModule,

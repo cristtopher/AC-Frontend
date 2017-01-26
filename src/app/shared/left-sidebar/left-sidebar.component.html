@@ -4,21 +4,25 @@
       <div class="user-panel-profile-picture"><img src="/assets/images/user-generic-profile.jpg"></div>
       <div class="user-panel-company-logo"><img [src]="'data:image/jpg;base64,'+currentUser.company.logo"></div>
 
-      <span class="user-panel-logged-in-text"><span class="fa fa-circle-o text-success user-panel-status-icon"></span> Ingresado como <strong>{{currentUser.name}}</strong></span>
-      
-      <div class="form-group" *ngIf="currentUser.role === 'user'">      
+
+      <div class="form-group">      
           <select class="form-control" (change)="changeSector($event.target.value)" [(ngModel)]="currentSectorId">
               <option *ngFor="let sector of sectors" [value]="sector._id">{{sector.name}}</option>
           </select>
       </div>
-            
+      
+
+      <span class="user-panel-logged-in-text"><span class="fa fa-circle-o text-success user-panel-status-icon"></span> Ingresado como <strong>{{currentUser.name}}</strong></span>
+      
+
       <h4 [ngSwitch]="currentUser.role">
         <span class="label btn-transparent label-primary" *ngSwitchCase="'supervisor'">Supervisor</span>
         <span class="label label-success" *ngSwitchCase="'admin'">Administrador</span>
         <span class="label label-primary" *ngSwitchCase="'!user'">{{currentUser.role}}</span>
       </h4>
       
-      
+
+            
     </div>
   </section>
   

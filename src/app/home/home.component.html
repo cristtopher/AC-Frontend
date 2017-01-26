@@ -8,18 +8,25 @@
       
       <div *ngIf="currentUser.role === 'supervisor'">
         <li class="sidebar-nav-heading">Administración</li>
-          <sidebar-section
-            [linkTo]="'peopleManagement'"
-            [sectionName]="'Visitas'" 
-            [iconClass]="'typcn-group-outline'">
-          </sidebar-section>
+
+        <sidebar-section
+          [linkTo]="'overview'"
+          [sectionName]="'Estadisticas Globales'" 
+          [iconClass]="'typcn-chart-line'">
+        </sidebar-section>
+        
+        <sidebar-section
+          [linkTo]="'peopleManagement'"
+          [sectionName]="'Gestion Personal'" 
+          [iconClass]="'typcn-group-outline'">
+        </sidebar-section>  
       </div>
         
       <li class="sidebar-nav-heading">General</li>    
       <sidebar-section
         [linkTo]="'dashboard'"
         [sectionName]="'Dashboard'" 
-        [iconClass]="'typcn-chart-line'" 
+        [iconClass]="'typcn-chart-pie'" 
         [badgeClass]="'badge-primary'" 
         [badgeValue]="dashboardBadge"
         (click)="dashboardSectionClicked()">
