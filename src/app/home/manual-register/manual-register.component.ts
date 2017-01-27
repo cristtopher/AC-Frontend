@@ -24,7 +24,7 @@ export class ManualRegisterComponent implements OnInit {
   currentUser: User;
   
   // ngModel var for datepicker
-  registerDateTime: any;
+  registerDateTime: any = new Date();
 
   // list of candidates in searchBox and some searchBox statuses
   candidatePersons:Observable<Person[]>;
