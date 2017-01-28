@@ -9,6 +9,8 @@ import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../api/person/perso
 import { SocketService } from '../../api/socket/socket.service';
 
 import { PersonModalComponent, PersonModalContext } from './person-modal/person-modal.component';
+import { ImportModalComponent, ImportModalContext } from './import-modal/import-modal.component';
+
 
 import swal from 'sweetalert2';
 
@@ -66,6 +68,9 @@ export class PeopleManagementComponent implements OnInit {
     this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "create", person: new Person() }, BSModalContext));
   }
   
-  importExcel() { console.log('import excel'); }
+  importExcel() {
+    this.modal.open(ImportModalComponent);
+  }
+   
   exportExcel() { console.log('export excel'); }
 }

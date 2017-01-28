@@ -12,7 +12,7 @@ export class PersonModalContext extends BSModalContext {
     constructor(public person: Person) {
       super();
     }
-  }
+}
 
 @Component({
   selector: 'people-management-person-modal',
