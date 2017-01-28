@@ -15,6 +15,7 @@ import { TypeaheadDirective } from './typeahead/typeahead.directive';
 import { CalendarPipe } from './moment/calendar.pipe';
 import { DateFormatPipe } from './moment/date-format.pipe';
 import { OrderByPipe } from './utils/order-by.pipe';
+import { MapToIterablePipe } from './utils/map-to-iterable.pipe';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { OrderByPipe } from './utils/order-by.pipe';
     TypeaheadDirective,
     CalendarPipe,
     DateFormatPipe,
-    OrderByPipe
+    OrderByPipe,
+    MapToIterablePipe
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { OrderByPipe } from './utils/order-by.pipe';
     TypeaheadDirective,
     CalendarPipe,
     DateFormatPipe,
-    OrderByPipe
+    OrderByPipe,
+    MapToIterablePipe
   ],
   providers: [
     ComponentsHelper

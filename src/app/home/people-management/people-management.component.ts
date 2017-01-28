@@ -5,10 +5,12 @@ import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 
 import { Person } from '../../api/person/person.model';
-import { PersonService } from '../../api/person/person.providers';
+import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../api/person/person.providers';
 import { SocketService } from '../../api/socket/socket.service';
 
 import { PersonModalComponent, PersonModalContext } from './person-modal/person-modal.component';
+
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-people-management',
@@ -16,35 +18,54 @@ import { PersonModalComponent, PersonModalContext } from './person-modal/person-
   styleUrls: ['./people-management.component.css']
 })
 export class PeopleManagementComponent implements OnInit {
-  visits: Person[];
+  persons: Person[];
 
-  constructor(private modal: Modal, private personService: PersonService, private socketService: SocketService) { }
+  humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
+  
+
+  constructor(private modal: Modal, 
+              private personService: PersonService, 
+              private socketService: SocketService) { }
 
   ngOnInit() {
     this.socketService.get('person')
                       .subscribe((event) => {
-                        if (event.action == "save") { return this.visits.push(event.item); }
-                        if (event.action == "remove") { return _.remove(this.visits, { _id: event.item._id }); }
+                        if (event.action == "save")   { return this.persons.push(event.item); }
+                        if (event.action == "remove") { return _.remove(this.persons, { _id: event.item._id }); }
                         if (event.action == "update") { 
-                          let idx = _.indexOf(this.visits, _.find(this.visits, { _id: event.item._id }));
-                          return this.visits.splice(idx, 1, event.item);
+                          let idx = _.indexOf(this.persons, _.find(this.persons, { _id: event.item._id }));
+                          
+                          return this.persons.splice(idx, 1, event.item);
                         }
                       });
     
-    this.personService.getVisits()
-                      .subscribe(visits => this.visits = visits);
+    this.personService.get().subscribe(persons => this.persons = persons);
   }
   
-  updateVisit(visit: Person){
-    this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "update", person: new Person().clone(visit) }, BSModalContext));
+  updatePerson(person: Person){
+    this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "update", person: new Person().clone(person) }, BSModalContext));
   }
 
-  deleteVisit(visit: Person){
-    this.personService.deletePerson(visit).subscribe();
+  deletePerson(person: Person){
+    swal({
+      title: 'Eliminar Persona?',
+      html: `Estas seguro de eliminar a <strong>${person.name}</strong>?`,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    })
+    .then(() => {
+      this.personService.deletePerson(person).subscribe(() => {
+        swal('Eliminar Persona', `${person.name} eliminada satisfactoriamente`, 'success');
+      });
+    }, (dismiss) => {});
   }
 
-  createVisit() {
+  createPerson() {
     this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "create", person: new Person() }, BSModalContext));
   }
-
+  
+  importExcel() { console.log('import excel'); }
+  exportExcel() { console.log('export excel'); }
 }

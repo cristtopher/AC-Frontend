@@ -41,6 +41,7 @@
     "rxjs": "5.0.0-beta.12",
     "socket.io-client": "^1.7.2",
     "summernote": "^0.8.2",
+    "sweetalert2": "^6.3.2",
     "ts-helpers": "^1.1.1",
     "typicons.font": "^2.0.8",
     "zone.js": "^0.6.23"

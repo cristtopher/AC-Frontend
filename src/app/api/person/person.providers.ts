@@ -14,6 +14,17 @@ import { AuthService } from '../auth/auth.service';
 
 import { Person } from './person.model'
 
+
+//-------------------------------------------------------
+//                      Constants
+//-------------------------------------------------------
+
+export const HUMANIZED_PERSON_PROFILES = {
+  'staff': 'Empleado',
+  'contractor': 'Contratista',
+  'visitor': 'Visita'
+};
+
 //-------------------------------------------------------
 //                      Services
 //-------------------------------------------------------
@@ -28,13 +39,7 @@ export class PersonService {
     return this.authHttp.delete(`${environment.API_BASEURL}/api/persons/${person._id}`)
                         .catch(this.handleError);
   }
-    
-  getVisits(): Observable<Person[]> {
-    return this.authHttp.get(`${environment.API_BASEURL}/api/persons?visit=1`)
-            .map(res => <Person[]> res.json())
-            .catch(this.handleError);
-  }
-  
+      
   get(query: Object = {}): Observable<Person[]> {
     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     

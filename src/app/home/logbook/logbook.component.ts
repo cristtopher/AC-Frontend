@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserService } from '../../api/user/user.providers';
+import { UserService }     from '../../api/user/user.providers';
 import { RegisterService } from '../../api/register/register.providers';
-import { SectorService } from '../../api/sector/sector.providers';
-import { SocketService } from '../../api/socket/socket.service';
+import { SectorService }   from '../../api/sector/sector.providers';
+import { SocketService }   from '../../api/socket/socket.service';
+import { HUMANIZED_PERSON_PROFILES } from '../../api/person/person.providers';
 
-import { Sector } from '../../api/sector/sector.model';
+import { Sector }   from '../../api/sector/sector.model';
 import { Register } from '../../api/register/register.model';
 
 import * as moment from 'moment';
@@ -20,6 +21,7 @@ export class LogbookComponent implements OnInit {
   currentSector: Sector;
 
   registers: Register[];  
+  
   currentFilters = {
     type: 'entry',
     from: null,
@@ -31,18 +33,12 @@ export class LogbookComponent implements OnInit {
   currentDateTimeFilterName: string;
   currentProfileFilterControl: string = "all";
   
-  profiles = [{
-    id: 'staff',
-    name: 'Empleados'
-  }, {
-    id: 'contractor',
-    name: 'Contratistas'
-  }, {
-    id: 'visitor',
-    name: 'Visitas'
-  }];
+  humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   
-  constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService, private registerService: RegisterService) { }
+  constructor(private socketService: SocketService, 
+              private userService: UserService, 
+              private sectorService: SectorService, 
+              private registerService: RegisterService) { }
 
   ngOnInit() {
     this.userService.currentSector
@@ -88,16 +84,13 @@ export class LogbookComponent implements OnInit {
         this.currentFilters.from = moment().startOf('day').subtract(30, 'days').unix() * 1000;
       }
     }
-    
-    console.log(`current filters: ${JSON.stringify(this.currentFilters)}`);
-    
+        
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
                       .subscribe(registers => this.registers = registers)
   }
 
   resolveRegister(register: Register){
-    console.log(`resolveRegister called with args: ${JSON.stringify(register)}`);
-    
+        
     // creating new register... 
     var newRegister = new Register();
     
@@ -118,7 +111,6 @@ export class LogbookComponent implements OnInit {
         });
       })                               
       .subscribe(resolvedRegister => {
-        console.log(`resolvedRegister: ${JSON.stringify(resolvedRegister)}`)
         register.resolvedRegister = newRegister;
       }, (error) => {
         console.log(`error while creating register: ${error}`);

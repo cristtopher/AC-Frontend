@@ -1,11 +1,11 @@
-import { Observable } from 'rxjs/Rx';
-
 import { Component, OnInit } from '@angular/core';
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap/index';
+import { Observable }        from 'rxjs/Rx';
 
-import { Person } from '../../../api/person/person.model';
-import { PersonService } from '../../../api/person/person.providers';
+import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { BSModalContext }                        from 'angular2-modal/plugins/bootstrap/index';
+
+import { Person }                                   from '../../../api/person/person.model';
+import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../../api/person/person.providers';
 
 
 export class PersonModalContext extends BSModalContext {
@@ -21,6 +21,8 @@ export class PersonModalContext extends BSModalContext {
 })
 export class PersonModalComponent implements OnInit, ModalComponent<PersonModalContext> {
   context: PersonModalContext;
+  
+  humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   
   constructor(public dialog: DialogRef<PersonModalContext>, private personService: PersonService) {
     this.context = dialog.context;
@@ -55,5 +57,5 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
 
   beforeClose(): boolean {
     return false;
-  }  
+  }
 }
