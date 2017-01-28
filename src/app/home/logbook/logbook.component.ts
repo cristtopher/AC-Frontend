@@ -117,5 +117,9 @@ export class LogbookComponent implements OnInit {
       });
     
   }
+  
+  exportExcel() {
+    console.log('Exporting logbook to excel...');
+  }
 
 }
