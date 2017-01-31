@@ -10,9 +10,6 @@ export class CanActivateAuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) { }
 
   canActivate() {    
-/*    // testing...
-    return true;
-*/    
     let isLoggedIn = this.auth.loggedIn();
 
     // If user is not logged in we'll send them to the homepage

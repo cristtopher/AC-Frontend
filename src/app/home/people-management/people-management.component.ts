@@ -11,7 +11,6 @@ import { SocketService } from '../../api/socket/socket.service';
 import { PersonModalComponent, PersonModalContext } from './person-modal/person-modal.component';
 import { ImportModalComponent, ImportModalContext } from './import-modal/import-modal.component';
 
-
 import swal from 'sweetalert2';
 
 @Component({
@@ -72,5 +71,10 @@ export class PeopleManagementComponent implements OnInit {
     this.modal.open(ImportModalComponent);
   }
    
-  exportExcel() { console.log('export excel'); }
+  exportExcel() { 
+    this.personService.exportExcel()
+    .subscribe(data  => window.open(window.URL.createObjectURL(data)),
+               error => console.log("Error downloading the file."),
+               ()    => console.log('Completed file download.'));
+  }
 }

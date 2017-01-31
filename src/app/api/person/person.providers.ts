@@ -6,6 +6,7 @@ import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
 
 import { Observable } from 'rxjs/Rx';
+import * as fileSaver from 'file-saver';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -60,11 +61,21 @@ export class PersonService {
                         .catch(this.handleError);
   }
 
+
+  exportExcel(): Observable<any> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/persons/export`)
+                        .map(res => {
+                          let excelData = new Blob([res.text()], { type: 'application/vnd.ms-excel' });
+                          fileSaver.saveAs(excelData, 'people.xlsx');
+                        })
+                        .catch(this.handleError)
+  }
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   } 
-
+    
 }
 
 //-------------------------------------------------------

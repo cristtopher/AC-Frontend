@@ -5,3 +5,8 @@ declare module 'socket.io-client' {
   var e: any;
   export = e;
 }
+
+declare module 'file-saver' {
+  var saveAs: any;
+  export = saveAs;
+}
