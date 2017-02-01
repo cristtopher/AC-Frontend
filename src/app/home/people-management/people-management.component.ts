@@ -74,7 +74,7 @@ export class PeopleManagementComponent implements OnInit {
    
   exportExcel() { 
     this.personService.exportExcel()
-    .subscribe(data  => {console.log(`excel data: ${data}`); fileSaver.saveAs(data, 'people-export.xlsx')},
+    .subscribe(data  => fileSaver.saveAs(data, 'people-export.xlsx'),
                error => console.log("Error downloading the file."),
                ()    => console.log('Completed file download.'));
   }

@@ -63,9 +63,7 @@ export class PersonService {
 
   exportExcel(): Observable<any> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/persons/export`, { responseType: ResponseContentType.Blob })
-                        .map(res => {
-                          return new Blob([res.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                        })
+                        .map(res => res.blob())
                         .catch(this.handleError)
   }
 
