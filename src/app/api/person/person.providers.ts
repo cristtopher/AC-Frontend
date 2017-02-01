@@ -70,7 +70,7 @@ export class PersonService {
   }
 
   getExcelUploader(): FileUploader {
-    return new FileUploader({ url: `${environment.API_BASEURL}/api/persons/import`, authToken: `Bearer ${his.authService.getAccessToken()}` });
+    return new FileUploader({ url: `${environment.API_BASEURL}/api/persons/import`, authToken: `Bearer ${this.authService.getAccessToken()}` });
   }
 
   private handleError(error: Response) {
