@@ -12,6 +12,7 @@ import { PersonModalComponent, PersonModalContext } from './person-modal/person-
 import { ImportModalComponent, ImportModalContext } from './import-modal/import-modal.component';
 
 import swal from 'sweetalert2';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-people-management',
@@ -73,7 +74,7 @@ export class PeopleManagementComponent implements OnInit {
    
   exportExcel() { 
     this.personService.exportExcel()
-    .subscribe(data  => window.open(window.URL.createObjectURL(data)),
+    .subscribe(data  => {console.log(`excel data: ${data}`); fileSaver.saveAs(data, 'people-export.xlsx')},
                error => console.log("Error downloading the file."),
                ()    => console.log('Completed file download.'));
   }

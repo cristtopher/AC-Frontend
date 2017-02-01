@@ -1,12 +1,11 @@
 import { environment } from '../../../environments/environment';
 
 import { Injectable, Provider } from '@angular/core';
-import { Response } from '@angular/http';
+import { Response, ResponseContentType } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
 
 import { Observable } from 'rxjs/Rx';
-import * as fileSaver from 'file-saver';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -63,10 +62,9 @@ export class PersonService {
 
 
   exportExcel(): Observable<any> {
-    return this.authHttp.get(`${environment.API_BASEURL}/api/persons/export`)
+    return this.authHttp.get(`${environment.API_BASEURL}/api/persons/export`, { responseType: ResponseContentType.Blob })
                         .map(res => {
-                          let excelData = new Blob([res.text()], { type: 'application/vnd.ms-excel' });
-                          fileSaver.saveAs(excelData, 'people.xlsx');
+                          return new Blob([res.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
                         })
                         .catch(this.handleError)
   }
@@ -77,6 +75,8 @@ export class PersonService {
   } 
     
 }
+
+
 
 //-------------------------------------------------------
 //                      Resolvers
