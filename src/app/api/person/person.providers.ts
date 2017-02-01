@@ -4,6 +4,8 @@ import { Injectable, Provider } from '@angular/core';
 import { Response, ResponseContentType } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
+import { FileUploader } from 'ng2-file-upload';
+
 
 import { Observable } from 'rxjs/Rx';
 
@@ -32,8 +34,8 @@ export const HUMANIZED_PERSON_PROFILES = {
 
 @Injectable()
 export class PersonService {
-  
-  constructor(private authHttp: AuthHttp) { }
+    
+  constructor(private authHttp: AuthHttp, private authService: AuthService) { }
   
   deletePerson(person: Person): Observable<any> {
     return this.authHttp.delete(`${environment.API_BASEURL}/api/persons/${person._id}`)
@@ -65,6 +67,10 @@ export class PersonService {
     return this.authHttp.get(`${environment.API_BASEURL}/api/persons/export`, { responseType: ResponseContentType.Blob })
                         .map(res => res.blob())
                         .catch(this.handleError)
+  }
+
+  getExcelUploader(): FileUploader {
+    return new FileUploader({ url: `${environment.API_BASEURL}/api/persons/import`, authToken: this.authService.getAccessToken() })
   }
 
   private handleError(error: Response) {

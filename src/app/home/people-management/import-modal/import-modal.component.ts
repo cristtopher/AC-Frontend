@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable }        from 'rxjs/Rx';
+import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext }                        from 'angular2-modal/plugins/bootstrap/index';
 
+import { AuthService } from '../../../api/auth/auth.service';
 import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../../api/person/person.providers';
 
 import swal from 'sweetalert2';
@@ -21,11 +23,25 @@ export class ImportModalContext extends BSModalContext {
 })
 export class ImportModalComponent implements OnInit, ModalComponent<ImportModalContext> {
   context: ImportModalContext;
+  uploader: FileUploader;
   
-  constructor(public dialog: DialogRef<ImportModalContext>) {
+  constructor(public dialog: DialogRef<ImportModalContext>, private personService: PersonService) {
     this.context = dialog.context;
     this.context.showClose = true;
     dialog.setCloseGuard(this);
+    
+    this.uploader = this.personService.getExcelUploader();
+    
+    this.uploader.onSuccessItem = (item:FileItem, response:string, status:number, headers:ParsedResponseHeaders) => {
+      return swal('Importar Excel', 'Importación de personas finalizada satisfactoriamente', 'success')
+        .then(() => this.closeModal());
+    }
+    
+    this.uploader.onErrorItem = (item:FileItem, response:string, status:number, headers:ParsedResponseHeaders) => {
+      return swal('Importar Excel', 'Error al intentar importar personas', 'error')
+        .then(() => this.closeModal());
+    }
+    
   }
 
   ngOnInit() { }
@@ -42,8 +58,7 @@ export class ImportModalComponent implements OnInit, ModalComponent<ImportModalC
     .then(() => {
       console.log('Importing excel...');
       
-      return swal('Importar Excel', 'Importación de personas finalizada satisfactoriamente', 'success')
-        .then(() => this.closeModal());
+      this.uploader.uploadAll();
     }, (dismiss) => {});
   }
 

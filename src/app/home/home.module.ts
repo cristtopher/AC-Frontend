@@ -6,6 +6,8 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { Ng2DatetimePickerModule } from 'ng2-datetime-picker';
 
+import { FileSelectDirective } from 'ng2-file-upload';
+
 import { SharedModule } from '../shared/shared.module';
 import { HomeRoutingModule } from './home-routing.module';
 
@@ -27,7 +29,8 @@ import { ImportModalComponent } from './people-management/import-modal/import-mo
     LogbookComponent,
     ManualRegisterComponent,
     OverviewComponent,
-    ImportModalComponent
+    ImportModalComponent,
+    FileSelectDirective
   ],
   imports: [
     CommonModule,
