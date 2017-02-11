@@ -32,6 +32,12 @@ export class CompanyService {
                         .map(res => <Person[]> res.json())
                         .catch(this.handleError);    
   }
+
+  getStatistics(company: Company): Observable<any> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/statistics`)
+                        .map(res => res.json())
+                        .catch(this.handleError);
+  }
   
   private handleError(error: Response) {
     console.error(error);
