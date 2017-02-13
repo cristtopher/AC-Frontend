@@ -56,7 +56,7 @@
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Categoría persona</label>
           <div class="col-sm-10 col-xs-12">
-            <input type="text" formControlName="personType" class="form-control" [value]="selectedPerson?.type">
+            <input type="text" formControlName="personType" class="form-control" [value]="humanizedPersonProfiles[selectedPerson?.type] || ''">
           </div>
         </div>
       

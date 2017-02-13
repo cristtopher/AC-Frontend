@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { UserService } from '../../api/user/user.providers';
 import { RegisterService } from '../../api/register/register.providers';
-import { PersonService } from '../../api/person/person.providers';
+import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../api/person/person.providers';
 import { CompanyService } from '../../api/company/company.providers';
 
 import { User }   from '../../api/user/user.model';
@@ -22,6 +22,8 @@ import * as moment from 'moment';
 export class ManualRegisterComponent implements OnInit {
   currentSector: Sector;
   currentUser: User;
+  
+  humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   
   // ngModel var for datepicker
   registerDateTime: any = new Date();
@@ -94,7 +96,7 @@ export class ManualRegisterComponent implements OnInit {
     }
 
     this.registerService.create(newRegister).subscribe(createdRegister => {
-      console.log(`manual register created sucessfully: ${createdRegister}`);
+      console.log(`manual register created sucessfully: ${JSON.stringify(createdRegister)}`);
       
       this.selectedPerson = null;
       this.selectedRegisterType = 'entry';
