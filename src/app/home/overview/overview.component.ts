@@ -67,29 +67,27 @@ export class OverviewComponent implements OnInit {
   ngOnInit() {
     this.socketService.get('register')
                       .subscribe((event) => {
-                        if (event.item.sector._id !== this.currentSector._id) return;
-                        
-                        if (event.action == "save")   { this.registers.unshift(event.item); this.registers = this.registers.slice(0, 15); }
-                        else if (event.action == "remove") {  _.remove(this.registers, { _id: event.item._id }); }
+                        // TODO: implement socket.io part of company statistics
+                        if (event.action == "save")   { }
+                        else if (event.action == "remove") { }
                         
                         this.recalculateStatistics();
                       });
       
-    this.userService.currentSector
-                      .switchMap(currentSector => {
-                        this.currentSector = currentSector;
-                        return this.sectorService.getRegisters(this.currentSector, { top: 15 })
+    this.userService.currentUser
+                      .switchMap(currentUser => {
+                        this.currentCompany = currentUser.company;
+                        return this.companyService.getRegisters(this.currentCompany, { top: 15 })
                       })
                       .subscribe(registers => {
                         this.registers = registers;
                         this.recalculateStatistics();
                       });
-                      
+                                            
   }
     
   recalculateStatistics() {
-    //this.sectorService.getStatistics(this.currentSector).subscribe(statistics => {
-    this.companyService.getStatistics(this.currentSector).subscribe(statistics => {
+    this.companyService.getStatistics(this.currentCompany).subscribe(statistics => {
       console.log(`got statistics: ${JSON.stringify(statistics)}`)
       
       this.statistics.totalRegisters        = statistics.staffCount + statistics.contractorCount + statistics.visitCount;

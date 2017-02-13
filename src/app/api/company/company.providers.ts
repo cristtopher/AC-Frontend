@@ -21,8 +21,7 @@ import { Person } from '../person/person.model';
 
 
 @Injectable()
-export class CompanyService {
-  
+export class CompanyService {  
   constructor(private authHttp: AuthHttp) { }
   
   getPersons(company: Company, query: Object = {}): Observable<Person[]> {
@@ -37,6 +36,14 @@ export class CompanyService {
     return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/statistics`)
                         .map(res => res.json())
                         .catch(this.handleError);
+  }
+  
+  getRegisters(company: Company, query: Object = {}): Observable<any> {
+    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+    
+    return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/registers${queryString ? '?' + queryString : ''}`)
+                        .map(res => <Person[]> res.json())
+                        .catch(this.handleError);    
   }
   
   private handleError(error: Response) {
