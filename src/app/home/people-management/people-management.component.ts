@@ -34,7 +34,7 @@ export class PeopleManagementComponent implements OnInit {
                       .subscribe((event) => {
                         if (event.action == "save")   { return this.persons.push(event.item); }
                         if (event.action == "remove") { return _.remove(this.persons, { _id: event.item._id }); }
-                        if (event.action == "update") { 
+                        if (event.action == "update") {
                           let idx = _.indexOf(this.persons, _.find(this.persons, { _id: event.item._id }));
                           
                           return this.persons.splice(idx, 1, event.item);
