@@ -84,10 +84,10 @@
               <span class="text-info"    *ngIf="register.person?.type === 'contractor'">Contratista</span>
               <span class="text-muted"   *ngIf="register.person?.type === 'visitor'">Visita</span>
             </td>
-            <td>{{ register.time | amDateFormat:'DD/MM hh:mm:ss' }}</td>
+            <td>{{ register.time | amDateFormat:'DD/MM/YYYY hh:mm:ss' }}</td>
             <td>{{ register.sector.name }}</td>
             <td>{{ register.comments }}</td>
-            <td>{{ register.resolvedRegister?.time | amDateFormat:'DD/MM hh:mm:ss' }}</td>
+            <td>{{ register.resolvedRegister?.time | amDateFormat:'DD/MM/YYYY hh:mm:ss' }}</td>
             <td>{{ register.resolvedRegister?.sector?.name }}</td>
             <td>{{ register.resolvedRegister?.comments }}</td>
             <td *ngIf="!register.isResolved">
