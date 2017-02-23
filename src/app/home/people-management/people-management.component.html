@@ -25,6 +25,8 @@
                 <th>#</th>
                 <th>RUT</th>
                 <th>Nombre</th>
+                <th>Tarjeta</th>
+                <th>Status</th>
                 <th>Perfil</th>
                 <th class="text-right">Acciones</th>
               </tr>
@@ -34,6 +36,8 @@
                 <th scope="row">{{i + 1}}</th>
                 <td>{{person.rut}}</td>
                 <td>{{person.name}}</td>
+                <td>{{person.card}}</td>
+                <td>{{person.active}}</td>
                 <td>{{humanizedPersonProfiles[person.type]}}</td>
                 <td class="text-right">
                   <button (click)="updatePerson(person)" class="btn btn-transparent btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs hidden-sm hidden-md">Editar</span></button> 
