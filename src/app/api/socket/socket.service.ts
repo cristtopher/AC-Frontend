@@ -34,7 +34,6 @@ export class SocketService {
     });      
   }
 
-
   get(modelName: string): Observable<any> {
     return Observable.create((observer: any) => {
       this.socket.on(`${modelName}:save`, (item: any) => observer.next({ action: "save", item: item }) );
