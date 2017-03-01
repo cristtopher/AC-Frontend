@@ -11,6 +11,7 @@ import { Register } from '../../api/register/register.model';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-logbook',
@@ -118,8 +119,15 @@ export class LogbookComponent implements OnInit {
     
   }
   
-  exportExcel() {
-    console.log('Exporting logbook to excel...');
+  //exportExcel() {
+  //  console.log('Exporting logbook to excel...');
+  //}
+
+  exportExcel() { 
+    this.sectorService.exportExcel(this.currentSector)
+    .subscribe(data  => fileSaver.saveAs(data, 'registers-export.xlsx'),
+               error => console.log("Error downloading the file."),
+               ()    => console.log('Completed file download.'));
   }
 
 }

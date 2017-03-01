@@ -1,7 +1,7 @@
 import { environment } from '../../../environments/environment';
 
 import { Injectable, Provider } from '@angular/core';
-import { Response } from '@angular/http';
+import { Response, ResponseContentType } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
 
@@ -44,6 +44,12 @@ export class SectorService {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   } 
+
+  exportExcel(sector: Sector): Observable<any> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/export`, { responseType: ResponseContentType.Blob })
+                        .map(res => res.blob())
+                        .catch(this.handleError)
+  }
 
 }
 
