@@ -42,6 +42,16 @@ export class LogbookComponent implements OnInit {
               private registerService: RegisterService) { }
 
   ngOnInit() {
+
+    this.socketService.get('register').subscribe((event) => {
+                     console.log("received event of 'registe save' from the BE: " + event.sector);
+                     console.log("currentSector");
+                     console.log(this.currentSector);
+                     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
+                       .subscribe(registers => this.registers = registers);
+                     });
+                     
+
     this.userService.currentSector
                       .mergeMap(currentSector => {
                         this.currentSector = currentSector;
