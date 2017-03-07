@@ -27,9 +27,10 @@ export class LogbookComponent implements OnInit {
     type: 'entry',
     from: null,
     personType: null,
-    incomplete: false
+    incomplete: false,
+    page: 1
   };
-    
+  
   // variables to handle filter controls behavior
   currentDateTimeFilterName: string;
   currentProfileFilterControl: string = "all";
@@ -129,15 +130,29 @@ export class LogbookComponent implements OnInit {
     
   }
   
-  //exportExcel() {
-  //  console.log('Exporting logbook to excel...');
-  //}
-
   exportExcel() { 
     this.sectorService.exportExcel(this.currentSector)
     .subscribe(data  => fileSaver.saveAs(data, 'registers-export.xlsx'),
                error => console.log("Error downloading the file."),
                ()    => console.log('Completed file download.'));
+  }
+
+  nextPage() {
+    this.currentFilters["page"]++;
+    
+    console.log(`Going to next page: ${JSON.stringify(this.currentFilters)}`)
+    
+    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
+                      .subscribe(registers => this.registers = registers)
+  }
+
+  previousPage() {
+    this.currentFilters["page"] > 1 ? this.currentFilters["page"]-- : this.currentFilters["page"];
+    
+    console.log(`Going to previous page: ${JSON.stringify(this.currentFilters)}`)
+    
+    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
+                      .subscribe(registers => this.registers = registers)
   }
 
 }

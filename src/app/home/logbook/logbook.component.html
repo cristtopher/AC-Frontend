@@ -101,8 +101,8 @@
       
       <nav>
         <ul class="pager">
-          <li class="previous disabled"><a><span aria-hidden="true">←</span> Siguiente</a></li>
-          <li class="next"><a>Anterior <span aria-hidden="true">→</span></a></li>
+          <li class="previous" [class.disabled]="currentFilters['page'] == 1" (click)="previousPage()"><a><span aria-hidden="true">←</span> Anterior</a></li>
+          <li class="next" (click)="nextPage()"><a>Siguiente <span aria-hidden="true">→</span></a></li>
         </ul>
       </nav>
       
