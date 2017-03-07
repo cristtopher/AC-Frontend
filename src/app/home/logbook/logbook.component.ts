@@ -22,6 +22,8 @@ export class LogbookComponent implements OnInit {
   currentSector: Sector;
 
   registers: Register[];  
+  totalPages  = 1;
+  currentPage = 1;
   
   currentFilters = {
     type: 'entry',
@@ -44,36 +46,52 @@ export class LogbookComponent implements OnInit {
 
   ngOnInit() {
 
-    this.socketService.get('register').subscribe((event) => {
-                     console.log("received event of 'registe save' from the BE: " + event.sector);
-                     console.log("currentSector");
-                     console.log(this.currentSector);
-                     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                       .subscribe(registers => this.registers = registers);
-                     });
+    this.socketService.get('register').subscribe((event) => {                        
+       // TODO: Replace this by just appending/removing new event instead of requesting all data
+       this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
+                         .subscribe(registers => {
+                           this.totalPages  = registers.pages;
+                           this.currentPage = registers.page;
+                           this.registers   = registers.data;
+                         });
+    });  
                      
-
     this.userService.currentSector
                       .mergeMap(currentSector => {
                         this.currentSector = currentSector;
       
                         return this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters));
                       })
-                      .subscribe(registers => this.registers = registers)
+                      .subscribe(registers => {
+                        
+                        console.log(`got registers... totalPages: ${this.totalPages}, currentPage: ${this.currentPage}`)
+                        
+                        this.totalPages  = registers.pages;
+                        this.currentPage = registers.page;
+                        this.registers   = registers.data;
+                      });
   }
 
   changeProfileFilter(profile: string) {
     this.currentFilters.personType = profile !== "all" ? profile : null;
     
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                      .subscribe(registers => this.registers = registers);
+                      .subscribe(registers => {
+                        this.totalPages  = registers.pages;
+                        this.currentPage = registers.page;
+                        this.registers   = registers.data;
+                      });
   }
 
   toggleIncompleteFilter() {
       this.currentFilters['incomplete'] = !this.currentFilters['incomplete'];
       
       this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                        .subscribe(registers => this.registers = registers)
+                        .subscribe(registers => {
+                          this.totalPages  = registers.pages;
+                          this.currentPage = registers.page;
+                          this.registers   = registers.data;
+                        });
   }
 
   toggleDateTimeFilter(filterName: string) {    
@@ -98,7 +116,11 @@ export class LogbookComponent implements OnInit {
     }
         
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                      .subscribe(registers => this.registers = registers)
+                      .subscribe(registers => {
+                        this.totalPages  = registers.pages;
+                        this.currentPage = registers.page;
+                        this.registers   = registers.data;
+                      });
   }
 
   resolveRegister(register: Register){
@@ -139,20 +161,24 @@ export class LogbookComponent implements OnInit {
 
   nextPage() {
     this.currentFilters["page"]++;
-    
-    console.log(`Going to next page: ${JSON.stringify(this.currentFilters)}`)
-    
+      
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                      .subscribe(registers => this.registers = registers)
+                      .subscribe(registers => {
+                        this.totalPages  = registers.pages;
+                        this.currentPage = registers.page;
+                        this.registers   = registers.data;
+                      });
   }
 
   previousPage() {
     this.currentFilters["page"] > 1 ? this.currentFilters["page"]-- : this.currentFilters["page"];
-    
-    console.log(`Going to previous page: ${JSON.stringify(this.currentFilters)}`)
-    
+        
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                      .subscribe(registers => this.registers = registers)
+                      .subscribe(registers => {
+                        this.totalPages  = registers.pages;
+                        this.currentPage = registers.page;
+                        this.registers   = registers.data;
+                      });
   }
 
 }

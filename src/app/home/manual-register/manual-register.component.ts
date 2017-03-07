@@ -26,7 +26,7 @@ export class ManualRegisterComponent implements OnInit {
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   
   // ngModel var for datepicker
-  registerDateTime: any = new Date();
+  registerDateTime: any = moment().format("YYYY-MM-DD hh:mm");
 
   // list of candidates in searchBox and some searchBox statuses
   candidatePersons:Observable<Person[]>;
@@ -83,9 +83,9 @@ export class ManualRegisterComponent implements OnInit {
     var newRegister = new Register();
     
     // creating new register... 
-    newRegister.person  = this.selectedPerson;
+    newRegister.person   = this.selectedPerson;
     newRegister.comments = this.commentsFormControl.value;
-    newRegister.type    = this.selectedRegisterType;
+    newRegister.type     = this.selectedRegisterType;
     
     if (this.selectedRegisterType === 'entry') {
       newRegister.sector = this.currentSector;
@@ -95,12 +95,11 @@ export class ManualRegisterComponent implements OnInit {
       newRegister.time   = moment(this.dateTimeFormControl.value).unix() * 1000;
     }
 
-    this.registerService.create(newRegister).subscribe(createdRegister => {
-      console.log(`manual register created sucessfully: ${JSON.stringify(createdRegister)}`);
-      
-      this.selectedPerson = null;
-      this.selectedRegisterType = 'entry';
+    this.registerService.create(newRegister).subscribe(createdRegister => {      
       this.manualRegisterForm.reset();
+      
+      this.selectedPerson       = null;
+      this.selectedRegisterType = 'entry';
     }, (error) => {
       console.log(`error while creating register: ${error}`);
     });

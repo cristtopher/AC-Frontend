@@ -25,11 +25,20 @@ export class SectorService {
   
   constructor(private authHttp: AuthHttp) { }
   
-  getRegisters(sector: Sector, query: Object = {}): Observable<Register[]> {
+  getRegisters(sector: Sector, query: Object = {}): Observable<any> {
     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/registers${queryString ? '?' + queryString : ''}`)
-                        .map(res => <Register[]> res.json())
+                        .map(res => {
+                          
+                          console.log(`got response from registers: pages: ${JSON.stringify(res.headers.get('X-Pagination-Page'))}`);
+                          
+                          return {
+                            page: parseInt(res.headers.get('X-Pagination-Page')),
+                            pages: parseInt(res.headers.get('X-Pagination-Pages')),
+                            data: <Register[]> res.json()                            
+                          }
+                        })
                         .catch(this.handleError);
     
   }
