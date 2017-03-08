@@ -75,6 +75,51 @@ export class LogbookComponent implements OnInit {
                       });
   }
 
+
+  //-------------------------
+  //    Bussiness Logic
+  //-------------------------
+
+  resolveRegister(register: Register){
+        
+    // creating new register... 
+    var newRegister = new Register();
+    
+    newRegister.person     = register.person;
+    newRegister.type       = 'depart';
+    newRegister.isResolved = true;
+    newRegister.time       = moment(new Date()).unix() * 1000;
+    newRegister.sector     = register.sector;
+
+    this.registerService.create(newRegister)
+      .flatMap((newRegister) => {
+        register.isResolved = true;
+        register.resolvedRegister = newRegister._id;
+        return this.registerService.patch(register, [
+          { op: 'replace', path: '/resolvedRegister', value: 'newRegister._id' },
+          { op: 'replace', path: '/isResolved', value: true }
+        ]);
+      })                               
+      .subscribe(resolvedRegister => {
+        register.resolvedRegister = newRegister;
+      }, (error) => {
+        console.log(`error while creating register: ${error}`);
+      });
+    
+  }
+  
+  exportExcel() { 
+    this.sectorService.exportExcel(this.currentSector)
+    .subscribe(data  => fileSaver.saveAs(data, 'registers-export.xlsx'),
+               error => console.log("Error downloading the file."),
+               ()    => console.log('Completed file download.'));
+  }
+
+
+  //-------------------------
+  //   Filtering Functions
+  //-------------------------
+
   changeProfileFilter(profile: string) {
     this.currentFilters.personType = profile !== "all" ? profile : null;
     
@@ -126,40 +171,34 @@ export class LogbookComponent implements OnInit {
                       });
   }
 
-  resolveRegister(register: Register){
-        
-    // creating new register... 
-    var newRegister = new Register();
-    
-    newRegister.person     = register.person;
-    newRegister.type       = 'depart';
-    newRegister.isResolved = true;
-    newRegister.time       = moment(new Date()).unix() * 1000;
-    newRegister.sector     = register.sector;
 
-    this.registerService.create(newRegister)
-      .flatMap((newRegister) => {
-        register.isResolved = true;
-        register.resolvedRegister = newRegister._id;
-        return this.registerService.patch(register, {
-          resolvedRegister: newRegister._id,
-          isResolved: true
-        });
-      })                               
-      .subscribe(resolvedRegister => {
-        register.resolvedRegister = newRegister;
-      }, (error) => {
-        console.log(`error while creating register: ${error}`);
-      });
-    
+  //-------------------------
+  //    Comment Editing
+  //-------------------------
+
+  isCommentEditing(register: Register) {
+    return this.editingComments[register._id] === true;
   }
   
-  exportExcel() { 
-    this.sectorService.exportExcel(this.currentSector)
-    .subscribe(data  => fileSaver.saveAs(data, 'registers-export.xlsx'),
-               error => console.log("Error downloading the file."),
-               ()    => console.log('Completed file download.'));
+  editComment(register: Register){
+    this.editingComments[register._id] = true;
   }
+      
+  closeEditComment(register: Register) {
+    delete this.editingComments[register._id];
+  }
+  
+  saveEdittedComment(register: Register) {
+    this.registerService.patch(register, [{ op: 'replace', path: '/comments', value: register.comments }])
+                        .subscribe(patchedRegister => { 
+                          register.comments = patchedRegister.comments;
+                          this.closeEditComment(register);
+                        });
+  }
+  
+  //-------------------------
+  //    Paging Handling
+  //-------------------------
 
   nextPage() {
     this.currentFilters["page"]++;
@@ -181,25 +220,6 @@ export class LogbookComponent implements OnInit {
                         this.currentPage = registers.page;
                         this.registers   = registers.data;
                       });
-  }
-
-  editComment(register: Register){
-    console.log('editing comment...');
-    this.editingComments[register._id] = true;
-  }
-  
-  saveEdittedComment(register: Register) {
-    console.log('saving comment...');
-  }
-  
-  cancelEditComment(register: Register) {
-    console.log(`cancel edit comment`)
-    delete this.editingComments[register._id];
-    console.log(`this.editingComments: ${this.editingComments}`)
-  }
-  
-  isCommentEditing(register: Register) {
-    return this.editingComments[register._id] === true;
   }
 
 }
