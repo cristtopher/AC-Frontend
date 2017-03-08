@@ -96,8 +96,8 @@ export class LogbookComponent implements OnInit {
         register.isResolved = true;
         register.resolvedRegister = newRegister._id;
         return this.registerService.patch(register, [
-          { op: 'replace', path: '/resolvedRegister', value: 'newRegister._id' },
-          { op: 'replace', path: '/isResolved', value: true }
+          { op: 'add', path: '/resolvedRegister', value: 'newRegister._id' },
+          { op: 'add', path: '/isResolved', value: true }
         ]);
       })                               
       .subscribe(resolvedRegister => {
