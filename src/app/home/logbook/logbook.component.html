@@ -86,10 +86,25 @@
             </td>
             <td>{{ register.time | amDateFormat:'DD/MM/YYYY hh:mm:ss' }}</td>
             <td>{{ register.sector.name }}</td>
-            <td>{{ register.comments }}</td>
+            <td>
+              <span   *ngIf="!editingComments[register._id]" style="float: left;">{{ register.comments }}</span>
+              <button *ngIf="!editingComments[register._id]" (click)="editComment(register)"class="btn btn-transparent btn-xs" style="float: right;"><span class="fa fa-pencil"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
+              
+              <input type="text" class="form-control" *ngIf="editingComments[register._id]" [(ngModel)]="register.comments" style="float: left;">
+              <button *ngIf="editingComments[register._id]" (click)="saveEdittedComment(register)" class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
+              <button *ngIf="editingComments[register._id]" (click)="cancelEditComment(register)" class="btn btn-transparent btn-xs" style="float: right;"><span class="fa fa-times"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
+            </td>
             <td>{{ register.resolvedRegister?.time | amDateFormat:'DD/MM/YYYY hh:mm:ss' }}</td>
             <td>{{ register.resolvedRegister?.sector?.name }}</td>
-            <td>{{ register.resolvedRegister?.comments }}</td>
+            <td>
+              <span   *ngIf="register.resolvedRegister && !editingComments[register.resolvedRegister?._id]" style="float: left;">{{ register.resolvedRegister?.comments }}</span>
+              <button *ngIf="register.resolvedRegister && !editingComments[register.resolvedRegister?._id]" (click)="editComment(register.resolvedRegister)"class="btn btn-transparent btn-xs" style="float: right;"><span class="fa fa-pencil"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
+              
+              <input  *ngIf="register.resolvedRegister && editingComments[register.resolvedRegister?._id]" [(ngModel)]="register.resolvedRegister.comments" type="text" class="form-control" style="float: left;">
+              <button *ngIf="register.resolvedRegister && editingComments[register.resolvedRegister?._id]" (click)="saveEdittedComment(register.resolvedRegister)" class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
+              <button *ngIf="register.resolvedRegister && editingComments[register.resolvedRegister?._id]" (click)="cancelEditComment(register.resolvedRegister)" class="btn btn-transparent btn-xs" style="float: right;"><span class="fa fa-times"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
+              
+            </td>
             <td *ngIf="!register.isResolved">
               <span class="text-warning" style="float: left;">Incompleto</span>
               <button (click)="resolveRegister(register)" class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md">Resolver</span></button>

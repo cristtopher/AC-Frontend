@@ -39,6 +39,9 @@ export class LogbookComponent implements OnInit {
   
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   
+  // variable to mantain track of currently comments being edited
+  editingComments = {};
+  
   constructor(private socketService: SocketService, 
               private userService: UserService, 
               private sectorService: SectorService, 
@@ -129,7 +132,6 @@ export class LogbookComponent implements OnInit {
     var newRegister = new Register();
     
     newRegister.person     = register.person;
-    newRegister.comments   = 'Resolución manual';
     newRegister.type       = 'depart';
     newRegister.isResolved = true;
     newRegister.time       = moment(new Date()).unix() * 1000;
@@ -179,6 +181,25 @@ export class LogbookComponent implements OnInit {
                         this.currentPage = registers.page;
                         this.registers   = registers.data;
                       });
+  }
+
+  editComment(register: Register){
+    console.log('editing comment...');
+    this.editingComments[register._id] = true;
+  }
+  
+  saveEdittedComment(register: Register) {
+    console.log('saving comment...');
+  }
+  
+  cancelEditComment(register: Register) {
+    console.log(`cancel edit comment`)
+    delete this.editingComments[register._id];
+    console.log(`this.editingComments: ${this.editingComments}`)
+  }
+  
+  isCommentEditing(register: Register) {
+    return this.editingComments[register._id] === true;
   }
 
 }
