@@ -33,7 +33,6 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
   ngOnInit() { }
     
   createPerson(){
-    //this.context.person.card = Number(this.context.person.rut.split("-")[0])
     return this.personService.createPerson(this.context.person)
                              .toPromise()
                              .then((person) => this.dialog.close(person))

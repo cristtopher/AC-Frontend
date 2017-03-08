@@ -37,7 +37,10 @@
                 <td>{{person.rut}}</td>
                 <td>{{person.name}}</td>
                 <td>{{person.card}}</td>
-                <td>{{person.active}}</td>
+                <td>
+                  <span *ngIf="person.active">Activo</span>
+                  <span *ngIf="!person.active">Inactivo</span>
+                </td>
                 <td>{{humanizedPersonProfiles[person.type]}}</td>
                 <td class="text-right">
                   <button (click)="updatePerson(person)" class="btn btn-transparent btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs hidden-sm hidden-md">Editar</span></button> 

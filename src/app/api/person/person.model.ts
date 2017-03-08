@@ -7,7 +7,8 @@ export class Person extends Serializable {
   company: any;
   type: string;
   card: number;
-    
+  active: boolean = true;
+  
   constructor() {
     super();  
   }  
