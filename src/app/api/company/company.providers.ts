@@ -1,9 +1,10 @@
 import { environment } from '../../../environments/environment';
 
 import { Injectable, Provider } from '@angular/core';
-import { Response } from '@angular/http';
+import { Response, ResponseContentType } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
+import { FileUploader } from 'ng2-file-upload';
 
 import { Observable } from 'rxjs/Rx';
 
@@ -22,7 +23,7 @@ import { Person } from '../person/person.model';
 
 @Injectable()
 export class CompanyService {  
-  constructor(private authHttp: AuthHttp) { }
+  constructor(private authHttp: AuthHttp, private authService: AuthService) { }
   
   getPersons(company: Company, query: Object = {}): Observable<Person[]> {
     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
@@ -44,6 +45,16 @@ export class CompanyService {
     return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/registers${queryString ? '?' + queryString : ''}`)
                         .map(res => <Person[]> res.json())
                         .catch(this.handleError);    
+  }
+  
+  exportExcel(company: Company): Observable<any> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/persons/export`, { responseType: ResponseContentType.Blob })
+                        .map(res => res.blob())
+                        .catch(this.handleError)
+  }
+
+  getExcelUploader(company: Company): FileUploader {
+    return new FileUploader({ url: `${environment.API_BASEURL}/api/companies/${company._id}/persons/import`, authToken: `Bearer ${this.authService.getAccessToken()}` });
   }
   
   private handleError(error: Response) {

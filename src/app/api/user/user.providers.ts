@@ -12,8 +12,9 @@ import 'rxjs/add/operator/catch';
 
 import { AuthService } from '../auth/auth.service';
 
-import { User } from './user.model';
-import { Sector } from '../sector/sector.model';
+import { User }    from './user.model';
+import { Company } from '../company/company.model';
+import { Sector }  from '../sector/sector.model';
 
 //-------------------------------------------------------
 //                      Services
@@ -21,10 +22,10 @@ import { Sector } from '../sector/sector.model';
 
 
 @Injectable()
-export class UserService {
-  
-  currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-  currentSector: BehaviorSubject<Sector> = new BehaviorSubject<Sector>(null); 
+export class UserService {  
+  currentUser: BehaviorSubject<User>       = new BehaviorSubject<User>(null);
+  currentCompany: BehaviorSubject<Company> = new BehaviorSubject<Company>(null); 
+  currentSector: BehaviorSubject<Sector>   = new BehaviorSubject<Sector>(null); 
   
   constructor(private authHttp: AuthHttp) { }
   
@@ -32,23 +33,26 @@ export class UserService {
     this.currentUser.next(user);
   }
 
+  setCurrentCompany(company: Company) {
+    this.currentCompany.next(company);
+  }
+  
   setCurrentSector(sector: Sector) {
-    console.log(`setting sector: ${JSON.stringify(sector)}`)
     this.currentSector.next(sector);
   }
   
-  getSectors(): Observable<Sector[]> {    
-    return this.authHttp.get(`${environment.API_BASEURL}/api/users/${this.currentUser.getValue()._id}/sectors`)
-                        .map(res => <Sector[]> res.json())
-                        .do(sectors => {
-                          if (!this.currentSector.getValue()) {
-                            this.currentSector.next(sectors[0]);
-                          }
-                        })
+  getMyCompanies(): Observable<Company[]> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/users/me/companies`)
+                        .map(res => <Company[]> res.json())
                         .catch(this.handleError);
   }
   
-    
+  getMySectors(company: Company): Observable<Sector[]> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/users/me/companies/${company._id}/sectors`)
+                        .map(res => <Sector[]> res.json())
+                        .catch(this.handleError);
+  }
+      
   get(query: Object = {}) {
      let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     
@@ -78,10 +82,14 @@ export class UserService {
 export class CurrentUserResolve implements Resolve<User> {
   constructor(private authService: AuthService, private userService: UserService) {}
 
-  resolve(route: ActivatedRouteSnapshot) {    
+  // before rendering anything, some Subjects are defined: currentUser, currentCompany, currentSector
+  resolve(route: ActivatedRouteSnapshot) {
     return this.authService.getProfile()
                            .do(currentUser => this.userService.setCurrentUser(currentUser))
-                           .flatMap(() => this.userService.getSectors());
+                           .flatMap(() => this.userService.getMyCompanies())
+                           .do(currentUserCompanies => this.userService.setCurrentCompany(currentUserCompanies[0]))
+                           .flatMap(currentUserCompanies => this.userService.getMySectors(currentUserCompanies[0]))
+                           .do(firstCompanySectors => this.userService.setCurrentSector(firstCompanySectors[0]));                             
   }
 }
 

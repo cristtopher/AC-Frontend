@@ -74,14 +74,24 @@ export class DashboardComponent implements OnInit {
                             this.registers = registers;
                             this.recalculateStatistics();
                         });
-
                       });
+
+    
+    this.userService.currentCompany
+                    .flatMap(() => this.userService.currentSector)
+                    .filter(s => s != null)
+                    .do(currentSector => this.currentSector = currentSector)
+                    .flatMap(currentSector => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
+                    .subscribe(registers => {
+                      this.registers = registers;
+                      this.recalculateStatistics();
+                    });
+
       
     this.userService.currentSector
-                      .switchMap(currentSector => {
-                        this.currentSector = currentSector;
-                        return this.sectorService.getRegisters(this.currentSector, { top: 15 })
-                      })
+                      .filter(s => s != null)
+                      .do(currentSector => this.currentSector = currentSector)
+                      .flatMap(currentSector => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
                       .subscribe(registers => {
                         this.registers = registers;
                         this.recalculateStatistics();

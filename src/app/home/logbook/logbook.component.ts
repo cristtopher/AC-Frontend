@@ -30,6 +30,7 @@ export class LogbookComponent implements OnInit {
     from: null,
     personType: null,
     incomplete: false,
+    paging: true,
     page: 1
   };
   
@@ -65,10 +66,7 @@ export class LogbookComponent implements OnInit {
       
                         return this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters));
                       })
-                      .subscribe(registers => {
-                        
-                        console.log(`got registers... totalPages: ${this.totalPages}, currentPage: ${this.currentPage}`)
-                        
+                      .subscribe(registers => {                        
                         this.totalPages  = registers.pages;
                         this.currentPage = registers.page;
                         this.registers   = registers.data;

@@ -6,14 +6,19 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext }                        from 'angular2-modal/plugins/bootstrap/index';
 
 import { AuthService } from '../../../api/auth/auth.service';
-import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../../api/person/person.providers';
+import { PersonService } from '../../../api/person/person.providers';
+import { CompanyService } from '../../../api/company/company.providers';
+
+import { Company } from '../../../api/company/company.model';
 
 import swal from 'sweetalert2';
 
 export class ImportModalContext extends BSModalContext {
-    constructor() {
-      super();
-    }
+  company: Company
+  
+  constructor() {
+    super();
+  }
 }
 
 @Component({
@@ -25,12 +30,12 @@ export class ImportModalComponent implements OnInit, ModalComponent<ImportModalC
   context: ImportModalContext;
   uploader: FileUploader;
   
-  constructor(public dialog: DialogRef<ImportModalContext>, private personService: PersonService) {
+  constructor(public dialog: DialogRef<ImportModalContext>, private companyService: CompanyService) {
     this.context = dialog.context;
     this.context.showClose = true;
     dialog.setCloseGuard(this);
     
-    this.uploader = this.personService.getExcelUploader();
+    this.uploader = this.companyService.getExcelUploader(this.context.company);
     
     this.uploader.onSuccessItem = (item:FileItem, response:string, status:number, headers:ParsedResponseHeaders) => {
       return swal('Importar Excel', 'Importación de personas finalizada satisfactoriamente', 'success')

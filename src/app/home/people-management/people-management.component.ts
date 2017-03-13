@@ -4,9 +4,13 @@ import { Component, OnInit } from '@angular/core';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 
-import { Person } from '../../api/person/person.model';
 import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../api/person/person.providers';
+import { UserService } from '../../api/user/user.providers';
+import { CompanyService } from '../../api/company/company.providers';
 import { SocketService } from '../../api/socket/socket.service';
+
+import { Company }  from '../../api/company/company.model';
+import { Person }  from '../../api/person/person.model';
 
 import { PersonModalComponent, PersonModalContext } from './person-modal/person-modal.component';
 import { ImportModalComponent, ImportModalContext } from './import-modal/import-modal.component';
@@ -20,12 +24,15 @@ import * as fileSaver from 'file-saver';
   styleUrls: ['./people-management.component.css']
 })
 export class PeopleManagementComponent implements OnInit {
+  currentCompany: Company;
   persons: Person[];
 
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   
 
   constructor(private modal: Modal, 
+              private userService: UserService,
+              private companyService: CompanyService,
               private personService: PersonService, 
               private socketService: SocketService) { }
 
@@ -40,8 +47,11 @@ export class PeopleManagementComponent implements OnInit {
                           return this.persons.splice(idx, 1, event.item);
                         }
                       });
-    
-    this.personService.get().subscribe(persons => this.persons = persons);
+
+    this.userService.currentCompany
+                      .do(currentCompany => this.currentCompany = currentCompany)
+                      .flatMap(currentCompany => this.companyService.getPersons(currentCompany))
+                      .subscribe(persons => this.persons = persons);
   }
   
   updatePerson(person: Person){
@@ -69,13 +79,13 @@ export class PeopleManagementComponent implements OnInit {
   }
   
   importExcel() {
-    this.modal.open(ImportModalComponent);
+    this.modal.open(ImportModalComponent, overlayConfigFactory({ company: this.currentCompany }, BSModalContext));
   }
    
   exportExcel() { 
-    this.personService.exportExcel()
-    .subscribe(data  => fileSaver.saveAs(data, 'people-export.xlsx'),
-               error => console.log("Error downloading the file."),
-               ()    => console.log('Completed file download.'));
+    this.companyService.exportExcel(this.currentCompany)
+      .subscribe(data  => fileSaver.saveAs(data, 'people-export.xlsx'),
+                 error => console.log("Error downloading the file."),
+                 ()    => console.log('Completed file download.'));
   }
 }

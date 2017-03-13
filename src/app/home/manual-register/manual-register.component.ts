@@ -7,7 +7,7 @@ import { RegisterService } from '../../api/register/register.providers';
 import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../api/person/person.providers';
 import { CompanyService } from '../../api/company/company.providers';
 
-import { User }   from '../../api/user/user.model';
+import { Company }  from '../../api/company/company.model';
 import { Sector }   from '../../api/sector/sector.model';
 import { Register } from '../../api/register/register.model';
 import { Person }   from '../../api/person/person.model';
@@ -20,9 +20,9 @@ import * as moment from 'moment';
   styleUrls: ['./manual-register.component.css']
 })
 export class ManualRegisterComponent implements OnInit {
+  currentCompany: Company;
   currentSector: Sector;
-  currentUser: User;
-  
+
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   
   // ngModel var for datepicker
@@ -54,12 +54,13 @@ export class ManualRegisterComponent implements OnInit {
   selectedRegisterType: string =  'entry';
 
   constructor(private userService: UserService, private registerService: RegisterService, private companyService: CompanyService) {
-    this.candidatePersons = Observable.create((observer: any) => observer.next(this.searchBoxFormControl.value))
-                                      .do(() => this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser))
-                                      .mergeMap((currentRut: string) => this.companyService.getPersons(this.currentUser.company, { rut: currentRut }));
   }
 
   ngOnInit() {
+    this.candidatePersons = Observable.create((observer: any) => observer.next(this.searchBoxFormControl.value))
+                                      .do(() => this.userService.currentCompany.subscribe(currentCompany => this.currentCompany = currentCompany))
+                                      .mergeMap((currentRut: string) => this.companyService.getPersons(this.currentCompany, { rut: currentRut }));
+    
     this.userService.currentSector.subscribe(currentSector => this.currentSector = currentSector);
   }
 

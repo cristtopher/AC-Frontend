@@ -23,7 +23,6 @@ export class OverviewComponent implements OnInit {
   currentUser: any;
   registers: Register[];
   
-  currentSector: Sector;
   currentCompany: Company;
   
   statistics = {
@@ -73,16 +72,14 @@ export class OverviewComponent implements OnInit {
                         
                         this.recalculateStatistics();
                       });
-      
-    this.userService.currentUser
-                      .switchMap(currentUser => {
-                        this.currentCompany = currentUser.company;
-                        return this.companyService.getRegisters(this.currentCompany, { top: 15 })
-                      })
-                      .subscribe(registers => {
-                        this.registers = registers;
-                        this.recalculateStatistics();
-                      });
+    
+    this.userService.currentCompany
+                    .do(currentCompany => this.currentCompany = currentCompany)
+                    .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
+                    .subscribe(registers => {
+                      this.registers = registers;
+                      this.recalculateStatistics();
+                    });
                                             
   }
     

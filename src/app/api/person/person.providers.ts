@@ -6,7 +6,6 @@ import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
 import { FileUploader } from 'ng2-file-upload';
 
-
 import { Observable } from 'rxjs/Rx';
 
 import 'rxjs/add/operator/map';

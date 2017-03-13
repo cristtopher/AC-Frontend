@@ -30,8 +30,7 @@ export class SectorService {
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/registers${queryString ? '?' + queryString : ''}`)
                         .map(res => {
-                          
-                          console.log(`got response from registers: pages: ${JSON.stringify(res.headers.get('X-Pagination-Page'))}`);
+                          if (!query['paging']) { return <Register[]> res.json(); }
                           
                           return {
                             page: parseInt(res.headers.get('X-Pagination-Page')),
@@ -42,7 +41,7 @@ export class SectorService {
                         .catch(this.handleError);
     
   }
-    
+      
   getStatistics(sector: Sector): Observable<any> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/statistics`)
                         .map(res => res.json())
