@@ -49,11 +49,11 @@ export class PersonService {
                 .catch(this.handleError);
   }
   
-  createPerson(person: Person): Observable<any> {
-    return this.authHttp.post(`${environment.API_BASEURL}/api/persons`, person)
-                        .map(res => <Person> res.json())
-                        .catch(this.handleError);
-  }
+  // createPerson(person: Person): Observable<any> {
+  //   return this.authHttp.post(`${environment.API_BASEURL}/api/persons`, person)
+  //                       .map(res => <Person> res.json())
+  //                       .catch(this.handleError);
+  // }
   
   updatePerson(person: Person): Observable<any> {
     return this.authHttp.put(`${environment.API_BASEURL}/api/persons/${person._id}`, person)

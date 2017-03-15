@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable }        from 'rxjs/Rx';
 
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext }                        from 'angular2-modal/plugins/bootstrap/index';
+import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 
-import { Person }                                   from '../../../api/person/person.model';
+import { CompanyService }                           from '../../../api/company/company.providers';
 import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../../api/person/person.providers';
 
+import { Person } from '../../../api/person/person.model';
+import { Company } from '../../../api/company/company.model';
 
 export class PersonModalContext extends BSModalContext {
-    constructor(public person: Person) {
+    constructor(public person: Person, public company: Company) {
       super();
     }
 }
@@ -24,7 +26,7 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
   
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   
-  constructor(public dialog: DialogRef<PersonModalContext>, private personService: PersonService) {
+  constructor(public dialog: DialogRef<PersonModalContext>, private personService: PersonService, private companyService: CompanyService) {
     this.context = dialog.context;
     this.context.showClose = true;
     dialog.setCloseGuard(this);
@@ -33,7 +35,7 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
   ngOnInit() { }
     
   createPerson(){
-    return this.personService.createPerson(this.context.person)
+    return this.companyService.createPerson(this.context.company, this.context.person)
                              .toPromise()
                              .then((person) => this.dialog.close(person))
   }

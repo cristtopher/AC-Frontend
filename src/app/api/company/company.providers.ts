@@ -57,6 +57,13 @@ export class CompanyService {
     return new FileUploader({ url: `${environment.API_BASEURL}/api/companies/${company._id}/persons/import`, authToken: `Bearer ${this.authService.getAccessToken()}` });
   }
   
+  
+  createPerson(company: Company, person: Person): Observable<any> {
+    return this.authHttp.post(`${environment.API_BASEURL}/api/companies/${company._id}/persons`, person)
+                        .map(res => <Person> res.json())
+                        .catch(this.handleError);
+  }
+  
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');

@@ -54,7 +54,7 @@ export class PeopleManagementComponent implements OnInit {
                       .subscribe(persons => this.persons = persons);
   }
   
-  updatePerson(person: Person){
+  updatePerson(person: Person) {
     this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "update", person: new Person().clone(person) }, BSModalContext));
   }
 
@@ -75,7 +75,7 @@ export class PeopleManagementComponent implements OnInit {
   }
 
   createPerson() {
-    this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "create", person: new Person() }, BSModalContext));
+    this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "create", person: new Person(), company: this.currentCompany }, BSModalContext));
   }
   
   importExcel() {
