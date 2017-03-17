@@ -3,48 +3,61 @@
 <header class="page-header">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xs-12 col-md-9">
+      <div class="col-sm-6 col-lg-8">
         <h1 class="page-header-heading"><span class="typcn typcn-group-outline page-header-heading-icon"></span> Gestión Personal</h1>
         <p class="page-header-description">La siguiente pagina provee la gestión de personas de la empresa.</p>
       </div>
+      <div class="col-sm-3 col-lg-4">
+        <img src="/assets/images/image.png" width="150" alt="Axxezo" class="achievement-image">
+      </div>
     </div>
-  </div>  
+  </div>
 </header>
 
 <div class="container-fluid">
-  
+
   <div class="row">
     <div class="col-xs-12 col-md-10">
       <div class="widget widget-default">
         <header class="widget-header">Lista de Personas</header>
-        
+
         <div class="widget-body table-responsive">
-          <table class="table">
+          <table class="table table-condensed table-hover">
             <thead>
               <tr>
-                <th>#</th>
-                <th>RUT</th>
+                <th class="text-muted">#</th>
+                <th>Rut</th>
                 <th>Nombre</th>
                 <th>Tarjeta</th>
-                <th>Status</th>
+                <th>Estado</th>
                 <th>Perfil</th>
                 <th class="text-right">Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let person of persons; let i = index;">
-                <th scope="row">{{i + 1}}</th>
+                <th class="text-muted" scope="row">{{i + 1}}</th>
                 <td>{{person.rut}}</td>
                 <td>{{person.name}}</td>
                 <td>{{person.card}}</td>
                 <td>
-                  <span *ngIf="person.active">Activo</span>
-                  <span *ngIf="!person.active">Inactivo</span>
+                  <span class="text-success" *ngIf="person.active">Activo</span>
+                  <span class="text-muted" *ngIf="!person.active">Inactivo</span>
                 </td>
-                <td>{{humanizedPersonProfiles[person.type]}}</td>
+                <td>
+                  <span class="badge badge-primary" *ngIf="humanizedPersonProfiles[person.type] === 'Empleado'">Empleado</span>
+                  <span class="badge badge-info" *ngIf="humanizedPersonProfiles[person.type] === 'Contratista'">Contratista</span>
+                  <span class="badge badge-faded-blue" *ngIf="humanizedPersonProfiles[person.type] === 'Visita'">Visita</span>
+                </td>
                 <td class="text-right">
-                  <button (click)="updatePerson(person)" class="btn btn-transparent btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs hidden-sm hidden-md">Editar</span></button> 
-                  <div (click)="deletePerson(person)" class="btn btn-transparent btn-transparent-danger btn-xs"><span class="fa fa-trash-o"></span> <span class="hidden-xs hidden-sm hidden-md">Eliminar</span></div>
+                  <button (click)="updatePerson(person)" class="btn btn-transparent btn-xs">
+                    <span class="fa fa-pencil"></span>
+                    <span class="hidden-xs hidden-sm hidden-md">Editar</span>
+                  </button>
+                  <div (click)="deletePerson(person)" class="btn btn-transparent btn-transparent-danger btn-xs">
+                    <span class="fa fa-trash-o"></span>
+                    <span class="hidden-xs hidden-sm hidden-md">Eliminar</span>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -52,12 +65,12 @@
         </div>
       </div>
     </div>
-    
+
     <div class="col-xs-12 col-lg-2 col-md-2">
-      <button (click)="createPerson()" class="btn btn-faded-blue btn-block"><span class="fa fa-user-plus"></span> Agregar persona</button>
-      <button (click)="importExcel()" class="btn btn-purple btn-block"><span class="fa fa-upload"></span> Importar Excel</button>
-      <button (click)="exportExcel()" class="btn btn-success btn-block"><span class="fa fa-download"></span> Exportar a Excel</button>
+      <button (click)="createPerson()" class="btn btn-success btn-block"><span class="fa fa-user-plus"></span> Agregar persona</button>
+      <button (click)="importExcel()" class="btn btn-primary btn-block"><span class="fa fa-upload"></span> Importar Excel</button>
+      <button (click)="exportExcel()" class="btn btn-purple btn-block"><span class="fa fa-download"></span> Exportar a Excel</button>
     </div>
-    
+
   </div>
 </div>
