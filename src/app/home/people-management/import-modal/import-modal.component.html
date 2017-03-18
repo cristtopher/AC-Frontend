@@ -1,32 +1,25 @@
 <div class="container-fluid">
-  <div class="panel panel-default">
+  <div class="panel panel-primary">
     <div class="panel-heading">Importar Excel</div>
-    
     <div class="panel-body">
-      
       <div class="form-horizontal">
         <div class="panel">
-          
           <div class="panel-body">
-            
+
             <div class="form-group">
               <label class="col-sm-2 col-xs-12 control-label">Excel: </label>
               <div class="col-sm-10 col-xs-12">
-                
+
                  <input type="file" name="importExcel" class="form-control" ng2FileSelect [uploader]="uploader">
               </div>
             </div>
-            
           </div>
-          
           <div class="panel-footer text-right">
             <button (click)="closeModal()" class="btn btn-transparent"><span class="fa fa-arrow-left"></span> Cancelar</button>
             <button (click)="importExcel()" type="button" class="btn btn-transparent btn-transparent-primary"><span class="fa fa-share"></span> Importar</button>
           </div>
-          
         </div>
-      </div>    
+      </div>
     </div>
-    
   </div>
 </div>

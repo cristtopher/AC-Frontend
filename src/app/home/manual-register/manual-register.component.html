@@ -1,9 +1,14 @@
 <header class="page-header">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xs-12 col-md-9">
-        <h1 class="page-header-heading"><span class="typcn typcn-document-add page-header-heading-icon"></span> Registro Manual</h1>
-        <p class="page-header-description">Formulario Registro Manual para el sector <strong>{{ currentSector?.name }}</strong></p>
+      <div class="col-sm-6 col-lg-8">
+        <h1 class="page-header-heading"><span class="typcn typcn-document-add page-header-heading-icon"></span>Registro Manual</h1>
+        <p class="page-header-description">Formulario Registro Manual para el sector
+          <span class="label label-default"><strong>{{currentSector?.name}}</strong></span>
+        </p>
+      </div>
+      <div class="col-sm-3 col-lg-4">
+        <img src="/assets/images/image.png" width="150" alt="Axxezo" class="achievement-image">
       </div>
     </div>
   </div>
@@ -11,16 +16,16 @@
 
 <div class="container-fluid">
   <form class="form-horizontal" [formGroup]="manualRegisterForm" (submit)="createRegister()">
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
       <div class="panel-heading">Formulario</div>
-      
+
       <div class="panel-body">
         <p>Utilize el RUT para identificar la persona a registrar.</p>
 
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label"></label>
-          <div class="col-sm-10 col-xs-12">        
-            <div class="panel panel-faded-blue">
+          <div class="col-sm-10 col-xs-12">
+            <div class="panel panel-success">
               <div class="panel-heading"><h4 class="panel-title">Buscador de Personas</h4></div>
               <div class="panel-body">
                 <input formControlName="searchBox"
@@ -38,28 +43,28 @@
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
-          <label class="col-sm-2 col-xs-12 control-label">RUT</label>
+          <label class="col-sm-2 col-xs-12 control-label">Rut</label>
           <div class="col-sm-10 col-xs-12">
             <input type="text" formControlName="rut" class="form-control" [value]="selectedPerson?.rut">
           </div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Nombre</label>
           <div class="col-sm-10 col-xs-12">
             <input type="text" formControlName="name" class="form-control" [value]="selectedPerson?.name">
           </div>
         </div>
-        
+
         <div class="form-group">
-          <label class="col-sm-2 col-xs-12 control-label">Categoría persona</label>
+          <label class="col-sm-2 col-xs-12 control-label">Perfil</label>
           <div class="col-sm-10 col-xs-12">
             <input type="text" formControlName="personType" class="form-control" [value]="humanizedPersonProfiles[selectedPerson?.type] || ''">
           </div>
         </div>
-      
+
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Tipo de Registro</label>
           <div class="btn-group col-sm-10 col-xs-12">
@@ -67,7 +72,7 @@
             <button type="button" class="btn" [class.btn-default]="selectedRegisterType !== 'depart'" [class.btn-danger]="selectedRegisterType === 'depart'" (click)="selectedRegisterType = 'depart'">Salida</button>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Fecha</label>
           <div class="col-sm-10 col-xs-12">
@@ -75,7 +80,6 @@
           </div>
         </div>
 
-        
         <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Comentarios</label>
           <div class="col-sm-10 col-xs-12">
@@ -83,7 +87,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="panel-footer text-right">
          <button type="submit" class="btn btn-transparent btn-transparent-primary" [disabled]="!selectedPerson || !manualRegisterForm.valid"><span class="fa fa-share"></span> Enviar</button>
       </div>

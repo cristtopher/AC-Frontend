@@ -1,21 +1,26 @@
 <header class="page-header">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xs-12 col-md-9">
-        <h1 class="page-header-heading"><span class="typcn typcn-chart-line page-header-heading-icon"></span> Dashboard</h1>
-        <p class="page-header-description">La siguiente pagina provee un resumen de los registros de acceso del <strong>{{currentSector?.name}}</strong></p>
+      <div class="col-sm-6 col-lg-8">
+        <h1 class="page-header-heading"><span class="typcn typcn-chart-line page-header-heading-icon"></span>Dashboard</h1>
+        <p class="page-header-description">Este panel de control provee un resumen de los registros de acceso del
+          <span class="label label-default"><strong>{{currentSector?.name}}</strong></span>
+        </p>
+      </div>
+      <div class="col-sm-3 col-lg-4">
+        <img src="/assets/images/image.png" width="150" alt="Axxezo" class="achievement-image">
       </div>
     </div>
   </div>
 </header>
 
 <div class="container-fluid">
-  
+
   <!-- row -->
   <div class="row">
-        
+
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-primary">
+      <div class="widget widget-statistic widget-success">
         <header class="widget-statistic-header">En Planta</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.totalRegisters }}</span>
@@ -24,9 +29,9 @@
         </div>
       </div>
     </div>
-    
+
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-success">
+      <div class="widget widget-statistic widget-primary">
         <header class="widget-statistic-header">Empleados</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.staffPercentage | number:'1.0-2' }}%</span>
@@ -35,9 +40,9 @@
         </div>
       </div>
     </div>
-    
+
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-faded-blue">
+      <div class="widget widget-statistic widget-info">
         <header class="widget-statistic-header">Contratistas</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.contractorsPercentage | number:'1.0-2' }}%</span>
@@ -46,9 +51,9 @@
         </div>
       </div>
     </div>
-    
+
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-purple">
+      <div class="widget widget-statistic widget-faded-blue">
         <header class="widget-statistic-header">Visitas</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.visitorsPercentage | number:'1.0-2' }}%</span>
@@ -57,33 +62,33 @@
         </div>
       </div>
     </div>
-    
+
   </div>
   <!-- end row -->
-  
-  
+
+
   <!-- row -->
   <div class="row">
-        
+
     <!-- pie-chart -->
     <div class="col-sm-4 col-lg-4">
       <div class="widget widget-default">
         <header class="widget-header">Distribución por perfil</header>
-        
+
         <div class="widget-body">
-          <div style="display: block">            
+          <div style="display: block">
             <canvas baseChart [chartType]="'pie'" [labels]="profileDistPieChart.labels" [data]="profileDistPieChart.data" [options]="profileDistPieChart.options"></canvas>
-          </div>          
+          </div>
         </div>
-        
+
       </div>
     </div>
-    
+
     <!-- bar-chart -->
     <div class="col-sm-8 col-lg-8">
       <div class="widget widget-default">
         <header class="widget-header">Eventos última semana</header>
-        
+
         <div class="widget-body">
           <div style="display: block">
             <canvas baseChart
@@ -91,47 +96,49 @@
                     [labels]="registersPerWeekBarChart.labels"
                     [options]="{ scaleShowVerticalLines: false, responsive: true }"
                     [legend]="true"
-                    [chartType]="'bar'"></canvas>  
+                    [chartType]="'bar'"></canvas>
           </div>
         </div>
       </div>
     </div>
-    
-    
+
+
   </div>
   <!-- end row -->
-    
-  <div class="row">    
+
+  <div class="row">
     <div class="col-lg-12">
-      <div class="panel panel-default">  
-        <div class="panel-heading">Ultimos registros</div>  
-        <table class="table">
-          <thead> 
+      <div class="panel panel-info">
+        <div class="panel-heading">Ultimos registros</div>
+        <table class="table table-hover">
+          <thead>
             <tr>
               <th>Tipo Registro</th>
-              <th>RUT</th>
+              <th>Rut</th>
               <th>Nombre</th>
-              <th>Categoria Persona</th>
-              <th>Hora Registro</th>
-            </tr> 
+              <th>Perfil</th>
+              <th>Registro</th>
+              <th>Sector</th>
+            </tr>
           </thead>
           <tbody>
             <tr *ngFor="let register of registers | orderBy: 'time':'desc'; let i = index">
               <td>
                 <span class="text-success" *ngIf="register.type === 'entry'">Entrada</span>
-                <span class="text-warning" *ngIf="register.type === 'depart'">Salida</span>
+                <span class="text-muted" *ngIf="register.type === 'depart'">Salida</span>
               </td>
               <td>{{ register.person?.rut }}</td>
               <td>{{ register.person?.name }}</td>
               <td>
-                <span class="text-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
-                <span class="text-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
-                <span class="text-muted" *ngIf="register.person?.type === 'visitor'">Visita</span>
+                <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
+                <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
+                <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
               </td>
               <td>{{ register.time | amDateFormat:'DD/MM/YYYY hh:mm:ss' }}</td>
+              <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
             </tr>
-          </tbody> 
-        </table> 
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
