@@ -52,8 +52,10 @@ export class LogbookComponent implements OnInit {
 
     this.socketService.get('register').subscribe((event) => {                        
        // TODO: Replace this by just appending/removing new event instead of requesting all data
-       this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                         .subscribe(registers => {
+      if (event.item.isUnauthorized) { return; }
+      
+      this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
+                        .subscribe(registers => {
                            this.totalPages  = registers.pages;
                            this.currentPage = registers.page;
                            this.registers   = registers.data;
@@ -87,14 +89,16 @@ export class LogbookComponent implements OnInit {
     newRegister.type       = 'depart';
     newRegister.isResolved = true;
     newRegister.time       = moment(new Date()).unix() * 1000;
-    newRegister.sector     = register.sector;
 
-    this.registerService.create(newRegister)
+    this.sectorService.createRegister(register.sector, newRegister)
       .flatMap((newRegister) => {
-        register.isResolved = true;
-        register.resolvedRegister = newRegister._id;
+        
+        register.isResolved       = true;
+        register.resolvedRegister = newRegister;
+
+        
         return this.registerService.patch(register, [
-          { op: 'add', path: '/resolvedRegister', value: newRegister._id },
+          { op: 'add', path: '/resolvedRegister', value: register.resolvedRegister._id },
           { op: 'add', path: '/isResolved', value: true }
         ]);
       })                               
@@ -209,6 +213,4 @@ export class LogbookComponent implements OnInit {
                       });
     
   }
-
-
 }

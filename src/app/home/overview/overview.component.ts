@@ -66,7 +66,8 @@ export class OverviewComponent implements OnInit {
   ngOnInit() {
     this.socketService.get('register')
                       .subscribe((event) => {
-                        // TODO: implement socket.io part of company statistics
+                        if (event.item.isUnauthorized) { return; }
+                        
                         if (event.action == "save")   { }
                         else if (event.action == "remove") { }
                         

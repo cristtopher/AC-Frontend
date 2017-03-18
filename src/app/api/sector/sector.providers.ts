@@ -41,7 +41,20 @@ export class SectorService {
                         .catch(this.handleError);
     
   }
-      
+  
+  createRegister(sector: Sector, register: Register): Observable<Register> {
+    return this.authHttp.post(`${environment.API_BASEURL}/api/sectors/${sector._id}/registers`, {
+      person: register.person._id,
+      time: register.time,
+      type: register.type,
+      comments: register.comments
+    })
+    .map(res => <Register> res.json())
+    .catch(this.handleError);
+  }
+  
+
+  
   getStatistics(sector: Sector): Observable<any> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/statistics`)
                         .map(res => res.json())

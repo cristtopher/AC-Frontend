@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit {
     
     this.socketService.get('register')
                   .subscribe((event) => {
+                    if (event.item.isUnauthorized) { return; }
+                    
                     if (event.action == "save")   { this.dashboardBadge++; }
                   });
     

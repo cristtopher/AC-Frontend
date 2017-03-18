@@ -64,6 +64,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.socketService.get('register')
                       .subscribe((event) => {
+                        if (event.item.isUnauthorized) { return; }
                         if (event.item.sector !== this.currentSector._id) return;
                         
                         if (event.action == "save")   { this.registers.unshift(event.item); this.registers = this.registers.slice(0, 15); }

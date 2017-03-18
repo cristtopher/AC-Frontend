@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
 import { UserService } from '../../api/user/user.providers';
-import { RegisterService } from '../../api/register/register.providers';
+import { SectorService } from '../../api/sector/sector.providers';
 import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../api/person/person.providers';
 import { CompanyService } from '../../api/company/company.providers';
 
@@ -53,7 +53,7 @@ export class ManualRegisterComponent implements OnInit {
   // TODO: replace this with FormControls based solution
   selectedRegisterType: string =  'entry';
 
-  constructor(private userService: UserService, private registerService: RegisterService, private companyService: CompanyService) {
+  constructor(private userService: UserService, private sectorService: SectorService, private companyService: CompanyService) {
   }
 
   ngOnInit() {
@@ -89,14 +89,14 @@ export class ManualRegisterComponent implements OnInit {
     newRegister.type     = this.selectedRegisterType;
     
     if (this.selectedRegisterType === 'entry') {
-      newRegister.sector = this.currentSector;
+      // newRegister.sector = this.currentSector;
       newRegister.time   = moment(this.dateTimeFormControl.value).unix() * 1000;
     } else if (this.selectedRegisterType === 'depart') {
-      newRegister.sector = this.currentSector;
+      // newRegister.sector = this.currentSector;
       newRegister.time   = moment(this.dateTimeFormControl.value).unix() * 1000;
     }
 
-    this.registerService.create(newRegister).subscribe(createdRegister => {      
+    this.sectorService.createRegister(this.currentSector, newRegister).subscribe(createdRegister => {      
       this.manualRegisterForm.reset();
       
       this.selectedPerson       = null;

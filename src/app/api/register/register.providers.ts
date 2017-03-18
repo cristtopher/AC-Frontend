@@ -32,19 +32,6 @@ export class RegisterService {
                         .catch(this.handleError);
   }
   
-  create(register: Register) {
-    return this.authHttp.post(`${environment.API_BASEURL}/api/registers`, {
-      person: register.person._id,
-      sector: register.sector._id,
-      time: register.time,
-      type: register.type,
-      comments: register.comments
-    })
-    .map(res => <Register[]> res.json())
-    .catch(this.handleError);
-    
-  }
-  
   update(register: Register) {
      console.log(`going to update register: ${register}`)
     return  this.authHttp.put(`${environment.API_BASEURL}/api/registers/${register._id}`, register)
