@@ -14,3 +14,7 @@
 .filter-btn: focus {
  outline: 0 !important;
 }
+
+nav {
+  margin-top: -16px;
+}

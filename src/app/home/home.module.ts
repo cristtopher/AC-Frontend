@@ -5,6 +5,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { Ng2DatetimePickerModule } from 'ng2-datetime-picker';
+import { PaginatorModule } from "ngx-paginator";
 
 import { FileSelectDirective } from 'ng2-file-upload';
 
@@ -40,8 +41,9 @@ import { ImportModalComponent } from './people-management/import-modal/import-mo
     ChartsModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-    Ng2DatetimePickerModule,
-    HomeRoutingModule
+    Ng2DatetimePickerModule,    
+    HomeRoutingModule,
+    PaginatorModule
   ],
   exports: [
     HomeComponent

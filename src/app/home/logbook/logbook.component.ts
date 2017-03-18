@@ -21,7 +21,7 @@ import * as fileSaver from 'file-saver';
 export class LogbookComponent implements OnInit {  
   currentSector: Sector;
 
-  registers: Register[];  
+  registers: Register[] = [];
   totalPages  = 1;
   currentPage = 1;
   
@@ -42,7 +42,7 @@ export class LogbookComponent implements OnInit {
   
   // variable to mantain track of currently comments being edited
   editingComments = {};
-  
+      
   constructor(private socketService: SocketService, 
               private userService: UserService, 
               private sectorService: SectorService, 
@@ -197,27 +197,18 @@ export class LogbookComponent implements OnInit {
   //-------------------------
   //    Paging Handling
   //-------------------------
-
-  nextPage() {
-    this.currentFilters["page"]++;
-      
+  
+  goToPage(pageNum) {
+    this.currentFilters["page"] = pageNum;
+    
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
                       .subscribe(registers => {
                         this.totalPages  = registers.pages;
                         this.currentPage = registers.page;
                         this.registers   = registers.data;
                       });
+    
   }
 
-  previousPage() {
-    this.currentFilters["page"] > 1 ? this.currentFilters["page"]-- : this.currentFilters["page"];
-        
-    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                      .subscribe(registers => {
-                        this.totalPages  = registers.pages;
-                        this.currentPage = registers.page;
-                        this.registers   = registers.data;
-                      });
-  }
 
 }

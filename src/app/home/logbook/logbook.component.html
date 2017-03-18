@@ -115,10 +115,12 @@
       </table>
       
       <nav>
-        <ul class="pager">
-          <li class="previous" [class.disabled]="currentPage == 1"           (click)="(currentPage > 1) && previousPage()"><a><span aria-hidden="true">←</span> Anterior</a></li>
-          <li class="next"     [class.disabled]="currentPage == totalPages"  (click)="(currentPage < totalPages) && nextPage()"><a>Siguiente <span aria-hidden="true">→</span></a></li>
-        </ul>
+        <route-paginator 
+            [onPage]="10" 
+            [total]="totalPages * 10" 
+            [maxVisible]="5"
+            (onChange)="goToPage($event)">
+        </route-paginator>        
       </nav>
       
     </div>

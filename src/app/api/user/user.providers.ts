@@ -1,6 +1,7 @@
 import { environment } from '../../../environments/environment';
 
 import { Injectable, Provider } from '@angular/core';
+import { Router } from '@angular/router';
 import { Response } from '@angular/http';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
@@ -80,7 +81,7 @@ export class UserService {
 
 @Injectable()
 export class CurrentUserResolve implements Resolve<User> {
-  constructor(private authService: AuthService, private userService: UserService) {}
+  constructor(private router: Router, private authService: AuthService, private userService: UserService) {}
 
   // before rendering anything, some Subjects are defined: currentUser, currentCompany, currentSector
   resolve(route: ActivatedRouteSnapshot) {
@@ -89,7 +90,17 @@ export class CurrentUserResolve implements Resolve<User> {
                            .flatMap(() => this.userService.getMyCompanies())
                            .do(currentUserCompanies => this.userService.setCurrentCompany(currentUserCompanies[0]))
                            .flatMap(currentUserCompanies => this.userService.getMySectors(currentUserCompanies[0]))
-                           .do(firstCompanySectors => this.userService.setCurrentSector(firstCompanySectors[0]));                             
+                           .do(firstCompanySectors => this.userService.setCurrentSector(firstCompanySectors[0]))
+                           .toPromise().then((user: User) => {
+                              if (!user) { return new User(); }
+                              return user;
+                            })
+                            .catch((response:Response) => {
+                              // TODO: remove redirect from service (create a shared component for error page)
+                              this.router.navigate(['/500']);
+                              return Observable.empty();
+                           })    
+     
   }
 }
 
