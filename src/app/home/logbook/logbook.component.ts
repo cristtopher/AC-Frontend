@@ -25,9 +25,13 @@ export class LogbookComponent implements OnInit {
   totalPages  = 1;
   currentPage = 1;
   
+  fromDate = null;
+  toDate = null;
+  
   currentFilters = {
     type: 'entry',
     from: null,
+    to: null,
     personType: null,
     incomplete: false,
     paging: true,
@@ -149,8 +153,15 @@ export class LogbookComponent implements OnInit {
     if(filterName === this.currentDateTimeFilterName) { 
       // means that the filter will be deactivated...      
       this.currentDateTimeFilterName = null;
-      this.currentFilters['from'] = null;
+      this.currentFilters['from']    = null;
+      this.currentFilters['to']      = null;
     } else {
+      // clear custom date filters
+      this.fromDate               = null;
+      this.toDate                 = null;
+      this.currentFilters['from'] = null;
+      this.currentFilters['to']   = null;
+      
       // means that a filter will be activated...
       this.currentDateTimeFilterName = filterName;
     
@@ -173,6 +184,36 @@ export class LogbookComponent implements OnInit {
                       });
   }
 
+  setFromDateFilter(date) {
+    // deactivate button-based date filters
+    this.currentDateTimeFilterName = null;
+    
+    this.currentFilters.from = moment(date).unix() * 1000;
+    
+    console.log(`setFromDateFilter = ${date}`);
+    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
+                  .subscribe(registers => {
+                    this.totalPages  = registers.pages;
+                    this.currentPage = registers.page;
+                    this.registers   = registers.data;
+                  });
+  }
+  
+  setToDateFilter(date) {
+    // deactivate button-based date filters
+    this.currentDateTimeFilterName = null;
+    
+    this.currentFilters.to = moment(date).unix() * 1000;    
+    
+    console.log(`setToDateFilter = ${date}`);
+    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
+                  .subscribe(registers => {
+                    this.totalPages  = registers.pages;
+                    this.currentPage = registers.page;
+                    this.registers   = registers.data;
+                  });
+  }
+  
 
   //-------------------------
   //    Comment Editing

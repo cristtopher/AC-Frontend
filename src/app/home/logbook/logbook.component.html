@@ -19,51 +19,66 @@
     <div class="panel-heading">Bitácora</div>
 
     <div class="panel-body">
-      <div class="form-inline">
-        <select class="form-control" (change)="changeProfileFilter($event.target.value)" [(ngModel)]="currentProfileFilterControl">
-            <option value="all">-- Seleccione Perfil --</option>
-            <option *ngFor="let profile of humanizedPersonProfiles | mapToIterable" [value]="profile.key">{{profile.val}}</option>
-        </select>
+      <div class="row form-inline">
+        <div class="col-xs-3 col-md-2">
+          <select class="form-control" (change)="changeProfileFilter($event.target.value)" [(ngModel)]="currentProfileFilterControl">
+              <option value="all">-- Seleccione Perfil --</option>
+              <option *ngFor="let profile of humanizedPersonProfiles | mapToIterable" [value]="profile.key">{{profile.val}}</option>
+          </select>          
+        </div>
+        
+        <div class="col-md-6">
+        
+          <button class="btn btn-pill filter-btn"
+            [class.btn-primary]="(currentDateTimeFilterName === 'today')"
+            [class.btn-transparent]="!(currentDateTimeFilterName === 'today')"
+            [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'today')"
+            (click)="toggleDateTimeFilter('today')">
+            Hoy
+          </button>
+          <button class="btn btn-pill filter-btn"
+            [class.btn-primary]="(currentDateTimeFilterName === 'last7days')"
+            [class.btn-transparent]="!(currentDateTimeFilterName === 'last7days')"
+            [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last7days')"
+            (click)="toggleDateTimeFilter('last7days')">
+            7 Días
+          </button>
+          <button class="btn btn-pill filter-btn"
+            [class.btn-primary]="(currentDateTimeFilterName === 'last15days')"
+            [class.btn-transparent]="!(currentDateTimeFilterName === 'last15days')"
+            [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last15days')"
+            (click)="toggleDateTimeFilter('last15days')">
+            15 Días
+          </button>
+          <button class="btn btn-pill filter-btn"
+            [class.btn-primary]="(currentDateTimeFilterName === 'last30days')"
+            [class.btn-transparent]="!(currentDateTimeFilterName === 'last30days')"
+            [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last30days')"
+            (click)="toggleDateTimeFilter('last30days')">
+            30 Días
+          </button>
+          <button class="btn btn-pill filter-btn"
+            [class.btn-warning]="(currentFilters['incomplete'])"
+            [class.btn-transparent]="!(currentFilters['incomplete'])"
+            [class.btn-transparent-warning]="!(currentFilters['incomplete'])"
+            (click)="toggleIncompleteFilter()">
+            Incompletos
+          </button>
+        </div>
 
-        <button class="btn btn-pill filter-btn"
-          [class.btn-primary]="(currentDateTimeFilterName === 'today')"
-          [class.btn-transparent]="!(currentDateTimeFilterName === 'today')"
-          [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'today')"
-          (click)="toggleDateTimeFilter('today')">
-          Hoy
-        </button>
-        <button class="btn btn-pill filter-btn"
-          [class.btn-primary]="(currentDateTimeFilterName === 'last7days')"
-          [class.btn-transparent]="!(currentDateTimeFilterName === 'last7days')"
-          [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last7days')"
-          (click)="toggleDateTimeFilter('last7days')">
-          7 Días
-        </button>
-        <button class="btn btn-pill filter-btn"
-          [class.btn-primary]="(currentDateTimeFilterName === 'last15days')"
-          [class.btn-transparent]="!(currentDateTimeFilterName === 'last15days')"
-          [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last15days')"
-          (click)="toggleDateTimeFilter('last15days')">
-          15 Días
-        </button>
-        <button class="btn btn-pill filter-btn"
-          [class.btn-primary]="(currentDateTimeFilterName === 'last30days')"
-          [class.btn-transparent]="!(currentDateTimeFilterName === 'last30days')"
-          [class.btn-transparent-primary]="!(currentDateTimeFilterName === 'last30days')"
-          (click)="toggleDateTimeFilter('last30days')">
-          30 Días
-        </button>
-        <button class="btn btn-pill filter-btn"
-          [class.btn-warning]="(currentFilters['incomplete'])"
-          [class.btn-transparent]="!(currentFilters['incomplete'])"
-          [class.btn-transparent-warning]="!(currentFilters['incomplete'])"
-          (click)="toggleIncompleteFilter()">
-          Incompletos
-        </button>
+        <div class="col-md-2">
+          <label for="to-datefilter">Desde: 
+          </label><input name="to-datefilter" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="setFromDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Desde" ng2-datetime-picker>
+          <label for="from-datefilter">Hasta: 
+          </label><input name="from-datefilter" class="form-control" [(ngModel)]="toDate" (ngModelChange)="setToDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Hasta" ng2-datetime-picker>
+        </div>
 
-        <button (click)="exportExcel()" class="btn btn-success pull-right"><span class="fa fa-download"></span> Exportar</button>
+        <div class="col-md-2">        
+          <button (click)="exportExcel()" class="btn btn-success pull-right"><span class="fa fa-download"></span> Exportar</button>
+        </div>
       </div>
-
+      
+      
       <table class="table table-condensed table-bordered table-hover logbook-table">
         <thead>
           <tr>
