@@ -25,6 +25,7 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
   context: PersonModalContext;
   
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
+  personExistsErrorMsg = false;
   
   constructor(public dialog: DialogRef<PersonModalContext>, private personService: PersonService, private companyService: CompanyService) {
     this.context = dialog.context;
@@ -35,9 +36,15 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
   ngOnInit() { }
     
   createPerson(){
-    return this.companyService.createPerson(this.context.company, this.context.person)
+    return this.companyService.createPerson(this.context.company, this.context.person)                         
                              .toPromise()
                              .then((person) => this.dialog.close(person))
+                             .catch((error) => {
+                               if(error.code === 11000) {
+                                 this.personExistsErrorMsg = true;
+                                 return;
+                               }
+                             })     
   }
   
   updatePerson(){

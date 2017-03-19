@@ -89,11 +89,9 @@ export class ManualRegisterComponent implements OnInit {
     newRegister.type     = this.selectedRegisterType;
     
     if (this.selectedRegisterType === 'entry') {
-      // newRegister.sector = this.currentSector;
-      newRegister.time   = moment(this.dateTimeFormControl.value).unix() * 1000;
+      newRegister.time = moment(this.dateTimeFormControl.value).unix() * 1000;
     } else if (this.selectedRegisterType === 'depart') {
-      // newRegister.sector = this.currentSector;
-      newRegister.time   = moment(this.dateTimeFormControl.value).unix() * 1000;
+      newRegister.time = moment(this.dateTimeFormControl.value).unix() * 1000;
     }
 
     this.sectorService.createRegister(this.currentSector, newRegister).subscribe(createdRegister => {      
@@ -103,8 +101,6 @@ export class ManualRegisterComponent implements OnInit {
       this.selectedRegisterType = 'entry';
     }, (error) => {
       console.log(`error while creating register: ${error}`);
-    });
-    
+    });    
   }
-
 }

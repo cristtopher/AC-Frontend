@@ -12,11 +12,12 @@
       </span>
 
       <span class="user-panel-logged-in-text">
+        
         <span class="fa fa-circle-o text-success user-panel-status-icon"></span>
         <strong [ngSwitch]="currentUser.role">
           <span class="label btn-transparent label-primary" *ngSwitchCase="'supervisor'">Supervisor</span>
           <span class="label label-success" *ngSwitchCase="'admin'">Administrador</span>
-          <span class="label label-primary" *ngSwitchCase="'!user'">{{currentUser.role}}</span>
+          <span class="label label-primary" *ngSwitchCase="'user'">Usuario</span>
         </strong>
       </span>
 
