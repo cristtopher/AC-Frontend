@@ -1,0 +1,51 @@
+<header class="page-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6 col-lg-8">
+        <h1 class="page-header-heading"><span class="typcn typcn-delete page-header-heading-icon"></span>Registros no-autorizados</h1>
+        <p class="page-header-description">Listado de registros de ingreso no autorizados en
+          <span class="label label-default"><strong>{{currentSector?.name}}</strong></span>
+        </p>
+      </div>
+      <div class="col-sm-3 col-lg-4">
+        <img src="/assets/images/image.png" width="150" alt="Axxezo" class="achievement-image">
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container-fluid">
+  <div class="panel panel-primary">
+    <div class="panel-heading">Registros no-autorizados</div>
+
+    <div class="panel-body">      
+      <table class="table table-condensed table-bordered table-hover logbook-table">
+        <thead>
+          <tr>
+            <th>Rut</th>
+            <th>Fecha</th>
+            <th>Sector</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let register of registers">
+            <td>{{ register.unauthorizedRut }}</td>
+            <td>{{ register.time | amDateFormat:'DD/MM/YY hh:mm:ss' }}</td>
+            <td>{{ register.sector?.name }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <nav>
+        <route-paginator 
+            [onPage]="10" 
+            [total]="totalPages * 10" 
+            [maxVisible]="5"
+            (onChange)="goToPage($event)">
+        </route-paginator>        
+      </nav>
+
+    </div>
+  </div>
+
+</div>

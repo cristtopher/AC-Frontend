@@ -5,6 +5,7 @@ import { HomeComponent }      from './home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PeopleManagementComponent } from './people-management/people-management.component';
 import { LogbookComponent } from './logbook/logbook.component';
+import { UnauthorizedListComponent } from './unauthorized-list/unauthorized-list.component';
 import { ManualRegisterComponent } from './manual-register/manual-register.component';
 import { OverviewComponent } from './overview/overview.component';
 
@@ -36,6 +37,9 @@ import { CurrentUserResolve }   from '../api/user/user.providers';
         }, {
           path: 'manualRegister',
           component: ManualRegisterComponent
+        }, {
+          path: 'unauthorizedList',
+          component: UnauthorizedListComponent
         }]
     }])
   ],

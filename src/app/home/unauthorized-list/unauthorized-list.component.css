@@ -1,0 +1,20 @@
+.container-fluid {
+  padding: 20px;
+}
+
+.logbook-table {
+  margin-top: 10px;
+}
+
+.filter-btn {
+  transition: none; 
+  outline: 0 !important;
+}
+
+.filter-btn: focus {
+ outline: 0 !important;
+}
+
+nav {
+  margin-top: -16px;
+}

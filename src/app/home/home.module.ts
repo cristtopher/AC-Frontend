@@ -20,6 +20,7 @@ import { LogbookComponent } from './logbook/logbook.component';
 import { ManualRegisterComponent } from './manual-register/manual-register.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ImportModalComponent } from './people-management/import-modal/import-modal.component';
+import { UnauthorizedListComponent } from './unauthorized-list/unauthorized-list.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ImportModalComponent } from './people-management/import-modal/import-mo
     ManualRegisterComponent,
     OverviewComponent,
     ImportModalComponent,
-    FileSelectDirective
+    FileSelectDirective,
+    UnauthorizedListComponent
   ],
   imports: [
     CommonModule,
