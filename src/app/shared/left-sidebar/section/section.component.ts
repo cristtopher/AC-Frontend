@@ -2,8 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'sidebar-section',
-  templateUrl: './section.component.html',
-  styleUrls: ['./section.component.css']
+  templateUrl: './section.component.html'
 })
 export class SectionComponent implements OnInit {
   @Input() sectionName: string;

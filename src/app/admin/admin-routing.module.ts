@@ -16,7 +16,8 @@ import { CurrentUserResolve }   from '../api/user/user.providers';
       resolve: { currentUser: CurrentUserResolve },
       children: [{
           path: '',
-          redirectTo: 'users'
+          redirectTo: 'users',
+          pathMatch: 'prefix'
         }, {
           path: 'users',
           component: ListUsersComponent

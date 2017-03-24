@@ -2,15 +2,12 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Rx';
 import { AuthHttp, tokenNotExpired } from 'angular2-jwt';
-
-import { environment } from '../../../environments/environment';
 
 import { User } from '../user/user.model';
 
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/mergeMap';
-
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuthService {
@@ -51,7 +48,8 @@ export class AuthService {
                 let json = res.json();
                 
                 return new User().fromJSON(json);
-              });
-	}
+              })
+              .share();
+ 	}
     
 }

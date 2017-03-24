@@ -21,7 +21,8 @@ import { CurrentUserResolve }   from '../api/user/user.providers';
       resolve: { currentUser: CurrentUserResolve },
       children: [{
           path: '',
-          redirectTo: 'dashboard'
+          redirectTo: 'dashboard',
+          pathMatch: 'prefix'
         }, {
           path: 'overview',
           component: OverviewComponent

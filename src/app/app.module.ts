@@ -3,13 +3,15 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { Http, RequestOptions } from '@angular/http';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
+
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { AdminModule } from './admin/admin.module';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { AUTH_PROVIDERS } from 'angular2-jwt';
 import { USER_PROVIDERS } from './api/user/user.providers';
 import { COMPANY_PROVIDERS } from './api/company/company.providers';
 import { SECTOR_PROVIDERS } from './api/sector/sector.providers';
@@ -23,6 +25,9 @@ import { SocketService } from './api/socket/socket.service';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig({}), http, options);
+}
 
 @NgModule({
   declarations: [
@@ -38,7 +43,12 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule
   ],
   providers: [
-    AUTH_PROVIDERS,
+    // AUTH_PROVIDERS,
+    {
+      provide: AuthHttp,
+      useFactory: authHttpServiceFactory,
+      deps: [ Http, RequestOptions ]
+    },
     AuthService,
     SocketService,
     USER_PROVIDERS,

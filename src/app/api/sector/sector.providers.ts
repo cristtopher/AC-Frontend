@@ -7,9 +7,6 @@ import { AuthHttp } from 'angular2-jwt';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-
 import { AuthService } from '../auth/auth.service';
 
 import { Sector } from './sector.model'
@@ -58,6 +55,7 @@ export class SectorService {
   getStatistics(sector: Sector): Observable<any> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/statistics`)
                         .map(res => res.json())
+                        .share()
                         .catch(this.handleError);
   }
     

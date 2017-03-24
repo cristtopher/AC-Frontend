@@ -65,50 +65,45 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
     this.socketService.get('register')
-                      .subscribe((event) => {
-                        if (event.item.isUnauthorized) { return; }
-                        
-                        if (event.action == "save")   { }
-                        else if (event.action == "remove") { }
-                        
-                        this.recalculateStatistics();
-                      });
+                      .filter(event => event.item.isUnauthorized)
+                      .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
+                      .do(registers => this.registers = registers)                      
+                      .flatMap(() => this.companyService.getStatistics(this.currentCompany))
+                      .do((statisticsData) => this.processStatisticsData(statisticsData))
+                      .subscribe();
     
     this.userService.currentCompany
                     .do(currentCompany => this.currentCompany = currentCompany)
                     .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
-                    .subscribe(registers => {
-                      this.registers = registers;
-                      this.recalculateStatistics();
-                    });
+                    .do(registers => this.registers = registers)
+                    .flatMap(() => this.companyService.getStatistics(this.currentCompany))
+                    .do((statisticsData) => this.processStatisticsData(statisticsData))        
+                    .subscribe();
                                             
   }
     
-  recalculateStatistics() {
-    this.companyService.getStatistics(this.currentCompany).subscribe(statistics => {
-      console.log(`got statistics: ${JSON.stringify(statistics)}`)
-      
-      this.statistics.totalRegisters        = statistics.staffCount + statistics.contractorCount + statistics.visitCount;
-      this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statistics.staffCount / this.statistics.totalRegisters) * 100 : 0;
-      this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statistics.contractorCount / this.statistics.totalRegisters) * 100 : 0;
-      this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
+  processStatisticsData(statisticsData) {
+    console.log(`got statisticsData: ${JSON.stringify(statisticsData)}`)
     
-      this.profileDistPieChart.data = [
-        this.statistics.staffPercentage, 
-        this.statistics.contractorsPercentage, 
-        this.statistics.visitorsPercentage
-      ];
-      
-      let reversedEntryWeeklyHistory = statistics.weeklyHistory.entry.reverse();
-      let reversedDepartWeeklyHistory = statistics.weeklyHistory.depart.reverse();
-      
-      this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
-            
-      this.registersPerWeekBarChart.series = [
-        { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
-        { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
-      ];
-      
-    });
+    this.statistics.totalRegisters        = statisticsData.staffCount + statisticsData.contractorCount + statisticsData.visitCount;
+    this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statisticsData.staffCount / this.statistics.totalRegisters) * 100 : 0;
+    this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statisticsData.contractorCount / this.statistics.totalRegisters) * 100 : 0;
+    this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statisticsData.visitCount / this.statistics.totalRegisters) * 100 : 0;
+  
+    this.profileDistPieChart.data = [
+      this.statistics.staffPercentage, 
+      this.statistics.contractorsPercentage, 
+      this.statistics.visitorsPercentage
+    ];
+    
+    let reversedEntryWeeklyHistory = statisticsData.weeklyHistory.entry.reverse();
+    let reversedDepartWeeklyHistory = statisticsData.weeklyHistory.depart.reverse();
+    
+    this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
+          
+    this.registersPerWeekBarChart.series = [
+      { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
+      { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
+    ];
   }
 }
