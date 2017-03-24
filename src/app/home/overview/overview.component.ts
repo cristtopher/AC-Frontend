@@ -33,7 +33,7 @@ export class OverviewComponent implements OnInit {
   }
 
   profileDistPieChart = {
-    labels: ['Empleado', 'Contratistas', 'Visitas'],
+    labels: ['Empleados', 'Contratistas', 'Visitas'],
     data: [0, 0, 0],
     options: {
       tooltips: {
