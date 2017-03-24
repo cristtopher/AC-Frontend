@@ -19,12 +19,12 @@ import * as moment from 'moment';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.css']
 })
-export class OverviewComponent implements OnInit {  
+export class OverviewComponent implements OnInit {
   currentUser: any;
   registers: Register[];
-  
+
   currentCompany: Company;
-  
+
   statistics = {
     totalRegisters: null,
     staffPercentage: null,
@@ -33,26 +33,26 @@ export class OverviewComponent implements OnInit {
   }
 
   profileDistPieChart = {
-    labels: ['Planta', 'Contratistas', 'Visitas'],
+    labels: ['Empleados', 'Contratistas', 'Visitas'],
     data: [0, 0, 0],
     options: {
       tooltips: {
         callbacks: {
-          label: function(tooltipItem, data) {            
+          label: function(tooltipItem, data) {
             //get the concerned dataset
             let dataset = data.datasets[tooltipItem.datasetIndex];
-          
+
             //get the current items value
             let currentValue = dataset.data[tooltipItem.index];
             let currentLabel = data.labels[tooltipItem.index];
-            
+
             return `${currentLabel}: ${currentValue}%`;
           }
         }
-      } 
+      }
     }
   }
-    
+
   registersPerWeekBarChart = {
     labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'],
     series: [
@@ -60,7 +60,7 @@ export class OverviewComponent implements OnInit {
       {label: 'Salidas', data: [0, 0, 0, 0, 0, 0, 0]}
     ]
   }
-  
+
   constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService, private companyService: CompanyService) { }
 
   ngOnInit() {

@@ -17,12 +17,12 @@ import * as moment from 'moment';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {  
+export class DashboardComponent implements OnInit {
   currentUser: any;
   registers: Register[];
-  
+
   currentSector: Sector;
-  
+
   statistics = {
     totalRegisters: null,
     staffPercentage: null,
@@ -31,26 +31,26 @@ export class DashboardComponent implements OnInit {
   }
 
   profileDistPieChart = {
-    labels: ['Planta', 'Contratistas', 'Visitas'],
+    labels: ['Empleados', 'Contratistas', 'Visitas'],
     data: [0, 0, 0],
     options: {
       tooltips: {
         callbacks: {
-          label: function(tooltipItem, data) {            
+          label: function(tooltipItem, data) {
             //get the concerned dataset
             let dataset = data.datasets[tooltipItem.datasetIndex];
-          
+
             //get the current items value
             let currentValue = dataset.data[tooltipItem.index];
             let currentLabel = data.labels[tooltipItem.index];
-            
+
             return `${currentLabel}: ${currentValue}%`;
           }
         }
-      } 
+      }
     }
   }
-    
+
   registersPerWeekBarChart = {
     labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'],
     series: [
@@ -58,11 +58,12 @@ export class DashboardComponent implements OnInit {
       {label: 'Salidas', data: [0, 0, 0, 0, 0, 0, 0]}
     ]
   }
-  
+
   constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService) { }
 
   ngOnInit() {    
     this.socketService.get('register')
+
                       .filter(event => event.item.isUnauthorized)
                       .filter(event => event.item.sector !== this.currentSector._id)
                       .flatMap(() => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
