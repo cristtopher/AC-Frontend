@@ -108,38 +108,36 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <div class="panel panel-info">
-        <div class="panel-heading">Ultimos registros</div>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>Tipo Registro</th>
-              <th>Rut</th>
-              <th>Nombre</th>
-              <th>Perfil</th>
-              <th>Registro</th>
-              <th>Sector</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let register of registers | orderBy: 'time':'desc'; let i = index">
-              <td>
-                <span class="text-success" *ngIf="register.type === 'entry'">Entrada</span>
-                <span class="text-muted" *ngIf="register.type === 'depart'">Salida</span>
-              </td>
-              <td>{{ register.person?.rut }}</td>
-              <td>{{ register.person?.name }}</td>
-              <td>
-                <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
-                <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
-                <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
-              </td>
-              <td>{{ register.time | amDateFormat:'DD/MM/YYYY HH:mm:ss' }}</td>
-              <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <h4>Últimos 15 registros</h4>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Tipo Registro</th>
+            <th>Rut</th>
+            <th>Nombre</th>
+            <th>Perfil</th>
+            <th>Registro</th>
+            <th>Sector</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let register of registers | orderBy: 'time':'desc'; let i = index">
+            <td>
+              <span class="text-success" *ngIf="register.type === 'entry'">Entrada</span>
+              <span class="text-muted" *ngIf="register.type === 'depart'">Salida</span>
+            </td>
+            <td>{{ register.person?.rut }}</td>
+            <td>{{ register.person?.name }}</td>
+            <td>
+              <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
+              <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
+              <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
+            </td>
+            <td>{{ register.time | amDateFormat:'DD/MM/YYYY HH:mm:ss' }}</td>
+            <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 

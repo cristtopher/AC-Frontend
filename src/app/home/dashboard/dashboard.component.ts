@@ -63,7 +63,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {    
     this.socketService.get('register')
-
                       .filter(event => event.item.isUnauthorized)
                       .filter(event => event.item.sector !== this.currentSector._id)
                       .flatMap(() => this.sectorService.getRegisters(this.currentSector, { top: 15 }))

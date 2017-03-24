@@ -15,20 +15,42 @@
 </header>
 
 <div class="container-fluid">
+
+  <div class="panel panel-faded-blue">
+    <div class="panel-heading">
+      <h3 class="panel-title">Filtros</h3>
+    </div>
+    <div class="panel-body">
+      <div class="col-xs-1">
+        <label for="to-datefilter">Pefil:</label>
+      </div>
+      <div class="col-sm-12 col-md-2 col-lg-3">
+        <select class="form-control" (change)="changeProfileFilter($event.target.value)" [(ngModel)]="currentProfileFilterControl">
+            <option value="all">Todos los Perfiles</option>
+            <option *ngFor="let profile of humanizedPersonProfiles | mapToIterable" [value]="profile.key">{{profile.val}}</option>
+        </select>
+      </div>
+      <div class="col-xs-2">
+        <label for="to-datefilter">Rango de Fecha:</label>
+      </div>
+      <div class="col-sm-12 col-md-2 col-lg-2">
+        <input name="to-datefilter" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="setFromDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Desde" ng2-datetime-picker>
+      </div>
+      <div class="col-sm-12 col-md-2 col-lg-2">
+        <input name="from-datefilter" class="form-control" [(ngModel)]="toDate" (ngModelChange)="setToDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Hasta" ng2-datetime-picker>
+      </div>
+    </div>
+  </div>
+
   <div class="panel panel-primary">
-    <div class="panel-heading">Bitácora</div>
+    <div class="panel-heading">Bitácora<i (click)="exportExcel()" class="typcn typcn-download pull-right"></i></div>
+
 
     <div class="panel-body">
       <div class="row form-inline">
-        <div class="col-xs-3 col-md-2">
-          <select class="form-control" (change)="changeProfileFilter($event.target.value)" [(ngModel)]="currentProfileFilterControl">
-              <option value="all">-- Seleccione Perfil --</option>
-              <option *ngFor="let profile of humanizedPersonProfiles | mapToIterable" [value]="profile.key">{{profile.val}}</option>
-          </select>          
-        </div>
-        
-        <div class="col-md-6">
-        
+
+        <div class="col-md-8">
+
           <button class="btn btn-pill filter-btn"
             [class.btn-primary]="(currentDateTimeFilterName === 'today')"
             [class.btn-transparent]="!(currentDateTimeFilterName === 'today')"
@@ -65,20 +87,8 @@
             Incompletos
           </button>
         </div>
-
-        <div class="col-md-2">
-          <label for="to-datefilter">Desde: 
-          </label><input name="to-datefilter" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="setFromDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Desde" ng2-datetime-picker>
-          <label for="from-datefilter">Hasta: 
-          </label><input name="from-datefilter" class="form-control" [(ngModel)]="toDate" (ngModelChange)="setToDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Hasta" ng2-datetime-picker>
-        </div>
-
-        <div class="col-md-2">        
-          <button (click)="exportExcel()" class="btn btn-success pull-right"><span class="fa fa-download"></span> Exportar</button>
-        </div>
       </div>
-      
-      
+
       <table class="table table-condensed table-bordered table-hover logbook-table">
         <thead>
           <tr>
@@ -134,12 +144,12 @@
       </table>
 
       <nav>
-        <route-paginator 
-            [onPage]="10" 
-            [total]="totalPages * 10" 
+        <route-paginator
+            [onPage]="10"
+            [total]="totalPages * 10"
             [maxVisible]="5"
             (onChange)="goToPage($event)">
-        </route-paginator>        
+        </route-paginator>
       </nav>
 
     </div>
