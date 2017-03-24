@@ -11,6 +11,8 @@ import { Person } from '../../../api/person/person.model';
 import { Company } from '../../../api/company/company.model';
 
 export class PersonModalContext extends BSModalContext {
+    action: String;
+
     constructor(public person: Person, public company: Company) {
       super();
     }
@@ -23,10 +25,10 @@ export class PersonModalContext extends BSModalContext {
 })
 export class PersonModalComponent implements OnInit, ModalComponent<PersonModalContext> {
   context: PersonModalContext;
-  
+
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   personExistsErrorMsg = false;
-  
+
   constructor(public dialog: DialogRef<PersonModalContext>, private personService: PersonService, private companyService: CompanyService) {
     this.context = dialog.context;
     this.context.showClose = true;
@@ -34,9 +36,9 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
   }
 
   ngOnInit() { }
-    
+
   createPerson(){
-    return this.companyService.createPerson(this.context.company, this.context.person)                         
+    return this.companyService.createPerson(this.context.company, this.context.person)
                              .toPromise()
                              .then((person) => this.dialog.close(person))
                              .catch((error) => {
@@ -44,19 +46,19 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
                                  this.personExistsErrorMsg = true;
                                  return;
                                }
-                             })     
+                             })
   }
-  
+
   updatePerson(){
     return this.personService.updatePerson(this.context.person)
                              .toPromise()
                              .then((person) => this.dialog.close(person))
    }
-  
+
   closeModal() {
     return this.dialog.close();
   }
-  
+
   onKeyUp(value) {
   }
 

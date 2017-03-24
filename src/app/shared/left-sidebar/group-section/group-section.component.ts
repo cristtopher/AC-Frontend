@@ -7,9 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class GroupSectionComponent implements OnInit {
   @Input() sectionName: string;
   @Input() iconClass: string;
-  
-  //isOpen: boolean = false;
-  
+
+  isOpen: boolean = false;
+
   constructor() { }
 
   ngOnInit() {
