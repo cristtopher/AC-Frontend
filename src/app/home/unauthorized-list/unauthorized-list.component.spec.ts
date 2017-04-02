@@ -6,7 +6,7 @@ import { DebugElement } from '@angular/core';
 import { UnauthorizedListComponent } from './unauthorized-list.component';
 
 describe('UnauthorizedListComponent', () => {
-  let component: LogbookComponent;
+  let component: UnauthorizedListComponent;
   let fixture: ComponentFixture<UnauthorizedListComponent>;
 
   beforeEach(async(() => {

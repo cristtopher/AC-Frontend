@@ -7,8 +7,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-top-header',
-  templateUrl: './top-header.component.html',
-  styleUrls: ['./top-header.component.css']
+  templateUrl: './top-header.component.html'
 })
 export class TopHeaderComponent implements OnInit {
   @Input() title: string = "";

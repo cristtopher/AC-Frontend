@@ -19,18 +19,22 @@ declare var Chart:any;
 })
 export class HomeComponent implements OnInit {
   currentUser: User;
-  dashboardBadge: number = 0;
   
+  unauthorizedListBadge: number = 0;
+  dashboardBadge: number        = 0;
+
   constructor(private route: ActivatedRoute, private userService: UserService, private socketService: SocketService) { }
 
   ngOnInit() {    
     this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser);
     
     this.socketService.get('register')
+                  .filter(e => e.item.sector == this.userService.currentSector.getValue()._id)
                   .subscribe((event) => {
-                    if (event.item.isUnauthorized) { return; }
-                    
-                    if (event.action == "save")   { this.dashboardBadge++; }
+                    if (event.item.isUnauthorized) { 
+                      this.unauthorizedListBadge++; 
+                    }
+                    else if (event.action == "save")   { this.dashboardBadge++; }
                   });
     
     // TODO: hardcoded locale
@@ -42,8 +46,11 @@ export class HomeComponent implements OnInit {
   }
 
   dashboardSectionClicked(){
-    console.log('Dashboard on Open event called (resetting badge)');
     this.dashboardBadge = 0;
+  }
+
+  unauthorizedListSectionClicked(){
+    this.unauthorizedListBadge = 0;
   }
 
 }

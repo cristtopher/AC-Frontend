@@ -8,9 +8,6 @@ import { FileUploader } from 'ng2-file-upload';
 
 import { Observable } from 'rxjs/Rx';
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-
 import { AuthService } from '../auth/auth.service';
 
 import { Company } from './company.model'
@@ -30,12 +27,13 @@ export class CompanyService {
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/persons${queryString ? '?' + queryString : ''}`)
                         .map(res => <Person[]> res.json())
-                        .catch(this.handleError);    
+                        .catch(this.handleError);
   }
 
   getStatistics(company: Company): Observable<any> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/statistics`)
                         .map(res => res.json())
+                        .share()
                         .catch(this.handleError);
   }
   
@@ -44,7 +42,8 @@ export class CompanyService {
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/registers${queryString ? '?' + queryString : ''}`)
                         .map(res => <Person[]> res.json())
-                        .catch(this.handleError);    
+                        .share()
+                        .catch(this.handleError)
   }
   
   exportExcel(company: Company): Observable<any> {

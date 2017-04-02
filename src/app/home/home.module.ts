@@ -6,8 +6,7 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { Ng2DatetimePickerModule } from 'ng2-datetime-picker';
 import { PaginatorModule } from "ngx-paginator";
-
-import { FileSelectDirective } from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { SharedModule } from '../shared/shared.module';
 import { HomeRoutingModule } from './home-routing.module';
@@ -32,7 +31,6 @@ import { UnauthorizedListComponent } from './unauthorized-list/unauthorized-list
     ManualRegisterComponent,
     OverviewComponent,
     ImportModalComponent,
-    FileSelectDirective,
     UnauthorizedListComponent
   ],
   imports: [
@@ -45,7 +43,8 @@ import { UnauthorizedListComponent } from './unauthorized-list/unauthorized-list
     BootstrapModalModule,
     Ng2DatetimePickerModule,    
     HomeRoutingModule,
-    PaginatorModule
+    PaginatorModule,
+    FileUploadModule
   ],
   exports: [
     HomeComponent

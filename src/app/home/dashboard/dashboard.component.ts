@@ -61,70 +61,49 @@ export class DashboardComponent implements OnInit {
 
   constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService) { }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.socketService.get('register')
-                      .subscribe((event) => {
-                        if (event.item.isUnauthorized) { return; }
-                        if (event.item.sector !== this.currentSector._id) return;
+                      .filter(event => event.item.isUnauthorized)
+                      .filter(event => event.item.sector !== this.currentSector._id)
+                      .flatMap(() => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
+                      .do(registers => this.registers = registers)
+                      .flatMap(() => this.sectorService.getStatistics(this.currentSector))
+                      .do(statisticsData => this.processStatisticsData(statisticsData))
+                      .subscribe();
 
-                        if (event.action == "save")   { this.registers.unshift(event.item); this.registers = this.registers.slice(0, 15); }
-                        else if (event.action == "remove") {  _.remove(this.registers, { _id: event.item._id }); }
-
-                        return this.sectorService.getRegisters(this.currentSector, { top: 15 })
-                          .subscribe(registers => {
-                            this.registers = registers;
-                            this.recalculateStatistics();
-                        });
-                      });
-
-
-    this.userService.currentCompany
-                    .flatMap(() => this.userService.currentSector)
-                    .filter(s => s != null)
-                    .do(currentSector => this.currentSector = currentSector)
-                    .flatMap(currentSector => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
-                    .subscribe(registers => {
-                      this.registers = registers;
-                      this.recalculateStatistics();
-                    });
-
-
+          
     this.userService.currentSector
                       .filter(s => s != null)
                       .do(currentSector => this.currentSector = currentSector)
                       .flatMap(currentSector => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
-                      .subscribe(registers => {
-                        this.registers = registers;
-                        this.recalculateStatistics();
-                      });
-
+                      .do(registers => this.registers = registers)
+                      .flatMap(() => this.sectorService.getStatistics(this.currentSector))
+                      .do(statisticsData => this.processStatisticsData(statisticsData))
+                      .subscribe();
   }
-
-  recalculateStatistics() {
-    this.sectorService.getStatistics(this.currentSector).subscribe(statistics => {
-      console.log(`got statistics: ${JSON.stringify(statistics)}`)
-
-      this.statistics.totalRegisters        = statistics.staffCount + statistics.contractorCount + statistics.visitCount;
-      this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statistics.staffCount / this.statistics.totalRegisters) * 100 : 0;
-      this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statistics.contractorCount / this.statistics.totalRegisters) * 100 : 0;
-      this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
-
-      this.profileDistPieChart.data = [
-        this.statistics.staffPercentage,
-        this.statistics.contractorsPercentage,
-        this.statistics.visitorsPercentage
-      ];
-
-      let reversedEntryWeeklyHistory = statistics.weeklyHistory.entry.reverse();
-      let reversedDepartWeeklyHistory = statistics.weeklyHistory.depart.reverse();
-
-      this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
-
-      this.registersPerWeekBarChart.series = [
-        { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
-        { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
-      ];
-
-    });
+    
+  processStatisticsData(statistics) {
+    console.log(`recalculating statistics from: ${JSON.stringify(statistics)}`)
+    
+    this.statistics.totalRegisters        = statistics.staffCount + statistics.contractorCount + statistics.visitCount;
+    this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statistics.staffCount / this.statistics.totalRegisters) * 100 : 0;
+    this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statistics.contractorCount / this.statistics.totalRegisters) * 100 : 0;
+    this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
+  
+    this.profileDistPieChart.data = [
+      this.statistics.staffPercentage, 
+      this.statistics.contractorsPercentage, 
+      this.statistics.visitorsPercentage
+    ];
+    
+    let reversedEntryWeeklyHistory = statistics.weeklyHistory.entry.reverse();
+    let reversedDepartWeeklyHistory = statistics.weeklyHistory.depart.reverse();
+    
+    this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
+          
+    this.registersPerWeekBarChart.series = [
+      { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
+      { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
+    ];
   }
 }

@@ -2,15 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'sidebar-group-section',
-  templateUrl: './group-section.component.html',
-  styleUrls: ['./group-section.component.css']
+  templateUrl: './group-section.component.html'
 })
 export class GroupSectionComponent implements OnInit {
   @Input() sectionName: string;
   @Input() iconClass: string;
-  
-  //isOpen: boolean = false;
-  
+
+  isOpen: boolean = false;
+
   constructor() { }
 
   ngOnInit() {

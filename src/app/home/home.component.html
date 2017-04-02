@@ -40,8 +40,11 @@
       
       <sidebar-section
         [linkTo]="'unauthorizedList'"
-        [sectionName]="'Registros no-autorizados'" 
-        [iconClass]="'typcn-delete'">
+        [sectionName]="'Accesos denegados'" 
+        [badgeClass]="'badge badge-danger'" 
+        [badgeValue]="unauthorizedListBadge"
+        [iconClass]="'typcn-delete'"
+        (click)="unauthorizedListSectionClicked()">
       </sidebar-section>
       
 

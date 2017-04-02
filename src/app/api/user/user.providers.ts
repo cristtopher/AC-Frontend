@@ -8,9 +8,6 @@ import { AuthHttp } from 'angular2-jwt';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-
 import { AuthService } from '../auth/auth.service';
 
 import { User }    from './user.model';
@@ -45,12 +42,14 @@ export class UserService {
   getMyCompanies(): Observable<Company[]> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/users/me/companies`)
                         .map(res => <Company[]> res.json())
+                        .share()
                         .catch(this.handleError);
   }
   
   getMySectors(company: Company): Observable<Sector[]> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/users/me/companies/${company._id}/sectors`)
                         .map(res => <Sector[]> res.json())
+                        .share()
                         .catch(this.handleError);
   }
       
@@ -91,9 +90,12 @@ export class CurrentUserResolve implements Resolve<User> {
                            .do(currentUserCompanies => this.userService.setCurrentCompany(currentUserCompanies[0]))
                            .flatMap(currentUserCompanies => this.userService.getMySectors(currentUserCompanies[0]))
                            .do(firstCompanySectors => this.userService.setCurrentSector(firstCompanySectors[0]))
-                           .toPromise().then((user: User) => {
-                              if (!user) { return new User(); }
-                              return user;
+                           .toPromise()
+                           .then(() => {
+                              let currentUser = this.userService.currentUser.getValue();
+                              if (!currentUser) { return new User(); }
+                              
+                              return currentUser;
                             })
                             .catch((response:Response) => {
                               // TODO: remove redirect from service (create a shared component for error page)

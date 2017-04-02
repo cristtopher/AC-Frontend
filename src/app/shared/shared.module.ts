@@ -9,6 +9,7 @@ import { SectionComponent } from './left-sidebar/section/section.component';
 import { GroupSectionComponent } from './left-sidebar/group-section/group-section.component';
 import { TypeaheadContainerComponent } from './typeahead/typeahead-container.component';
 import { ComponentsHelper } from './utils/components-helper.service';
+import { NgTranscludeDirective } from './utils/common';
 
 import { TypeaheadDirective } from './typeahead/typeahead.directive';
 
@@ -28,7 +29,8 @@ import { MapToIterablePipe } from './utils/map-to-iterable.pipe';
     CalendarPipe,
     DateFormatPipe,
     OrderByPipe,
-    MapToIterablePipe
+    MapToIterablePipe,
+    NgTranscludeDirective
   ],
   imports: [
     CommonModule,

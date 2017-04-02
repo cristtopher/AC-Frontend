@@ -1207,11 +1207,9 @@ fieldset[disabled] .skin-green .btn-primary.focus {
   color: #6ccb05;
   background-color: #fff;
 }
-.skin-green ::-moz-selection {
+.skin-green::-moz-selection {
   background: rgba(108, 203, 5, 0.45);
 }
-.skin-green ::selection {
+.skin-green::selection {
   background: rgba(108, 203, 5, 0.45);
 }
-
-/*# sourceMappingURL=varello-skins.min.css.map */

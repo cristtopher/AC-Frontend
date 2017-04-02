@@ -6,7 +6,7 @@ import { TypeaheadOptions } from './typeahead-options.class';
 import { TypeaheadUtils } from './typeahead-utils';
 import { TypeaheadDirective } from './typeahead.directive';
 
- 
+
 
 const bs3 = `
   <ul class="dropdown-menu"
@@ -16,23 +16,23 @@ const bs3 = `
     <li *ngFor="let match of matches; let i = index"
         [class.active]="isActive(match)"
         (mouseenter)="selectActive(match)">
-        <a href="#" 
-           *ngIf="!itemTemplate" 
-           (click)="selectMatch(match, $event)" 
-           tabindex="-1" 
+        <a href="#"
+           *ngIf="!itemTemplate"
+           (click)="selectMatch(match, $event)"
+           tabindex="-1"
            [innerHtml]="hightlight(match, query)"></a>
-        <a href="#" 
-           *ngIf="itemTemplate" 
-           (click)="selectMatch(match, $event)" 
+        <a href="#"
+           *ngIf="itemTemplate"
+           (click)="selectMatch(match, $event)"
            tabindex="-1">
-            <template [ngTemplateOutlet]="itemTemplate"
+            <ng-template [ngTemplateOutlet]="itemTemplate"
                       [ngOutletContext]="{item: match, index: i}">
-            </template>
+            </ng-template>
         </a>
     </li>
   </ul>
 `;
- 
+
 
 @Component({
   selector: 'typeahead-container',
