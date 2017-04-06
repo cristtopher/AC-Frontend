@@ -113,7 +113,7 @@
               <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
               <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
             </td>
-            <td>{{ register.time | amDateFormat:'DD/MM/YY hh:mm:ss' }}</td>
+            <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td>{{ register.sector.name }}</td>
             <td>
               <span   *ngIf="!editingComments[register._id]" style="float: left;">{{ register.comments }}</span>
@@ -123,7 +123,7 @@
               <button *ngIf="editingComments[register._id]" (click)="saveEdittedComment(register)" class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
               <button *ngIf="editingComments[register._id]" (click)="closeEditComment(register)" class="btn btn-transparent btn-xs" style="float: right;"><span class="fa fa-times"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
             </td>
-            <td>{{ register.resolvedRegister?.time | amDateFormat:'DD/MM/YY hh:mm:ss' }}</td>
+            <td>{{ register.resolvedRegister?.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td>{{ register.resolvedRegister?.sector?.name }}</td>
             <td>
               <span   *ngIf="register.resolvedRegister && !editingComments[register.resolvedRegister?._id]" style="float: left;">{{ register.resolvedRegister?.comments }}</span>

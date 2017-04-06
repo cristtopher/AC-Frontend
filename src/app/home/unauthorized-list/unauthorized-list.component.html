@@ -15,10 +15,10 @@
 </header>
 
 <div class="container-fluid">
-  <div class="panel panel-primary">
+  <div class="panel panel-default">
     <div class="panel-heading">Accesos denegados</div>
 
-    <div class="panel-body">      
+    <div class="panel-body">
       <table class="table table-condensed table-bordered table-hover logbook-table">
         <thead>
           <tr>
@@ -29,20 +29,20 @@
         </thead>
         <tbody>
           <tr *ngFor="let register of registers">
-            <td>{{ register.unauthorizedRut }}</td>
-            <td>{{ register.time | amDateFormat:'DD/MM/YY hh:mm:ss' }}</td>
+            <td class="text-danger">{{ register.unauthorizedRut }}</td>
+            <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td>{{ register.sector?.name }}</td>
           </tr>
         </tbody>
       </table>
 
       <nav>
-        <route-paginator 
-            [onPage]="10" 
-            [total]="totalPages * 10" 
+        <route-paginator
+            [onPage]="10"
+            [total]="totalPages * 10"
             [maxVisible]="5"
             (onChange)="goToPage($event)">
-        </route-paginator>        
+        </route-paginator>
       </nav>
 
     </div>
