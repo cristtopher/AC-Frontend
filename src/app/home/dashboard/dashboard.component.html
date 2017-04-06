@@ -36,7 +36,7 @@
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.staffCount }}</span>
           <span class="widget-statistic-description">
-            El {{ statistics.staffPercentage | number:'1.0-2' }}% de personas en planta
+            El {{ statistics.staffPercentage | number:'1.0-2' }}% de personas en {{currentSector?.name}}
             son <strong>empleados</strong>
           </span>
           <span class="widget-statistic-icon fa fa-user"></span>
@@ -50,7 +50,7 @@
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.contractorCount }}</span>
           <span class="widget-statistic-description">
-            El {{ statistics.contractorsPercentage | number:'1.0-2' }}% de personas en planta
+            El {{ statistics.contractorsPercentage | number:'1.0-2' }}% de personas en {{currentSector?.name}}
             son <strong>contratistas</strong>
           </span>
           <span class="widget-statistic-icon fa fa-user-o"></span>
@@ -64,7 +64,7 @@
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.visitCount }}</span>
           <span class="widget-statistic-description">
-            El {{ statistics.visitorsPercentage | number:'1.0-2' }}% de personas en planta
+            El {{ statistics.visitorsPercentage | number:'1.0-2' }}% de personas en {{currentSector?.name}}
             son <strong>Vvsitas</strong>
           </span>
           <span class="widget-statistic-icon fa fa-eye"></span>

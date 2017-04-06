@@ -28,6 +28,9 @@ export class OverviewComponent implements OnInit {
   statistics = {
     totalRegisters: null,
     staffPercentage: null,
+    staffCount: null,
+    contractorCount: null,
+    visitCount: null,
     contractorsPercentage: null,
     visitorsPercentage: null
   }
@@ -67,40 +70,43 @@ export class OverviewComponent implements OnInit {
     this.socketService.get('register')
                       .filter(event => event.item.isUnauthorized)
                       .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
-                      .do(registers => this.registers = registers)                      
+                      .do(registers => this.registers = registers)
                       .flatMap(() => this.companyService.getStatistics(this.currentCompany))
                       .do((statisticsData) => this.processStatisticsData(statisticsData))
                       .subscribe();
-    
+
     this.userService.currentCompany
                     .do(currentCompany => this.currentCompany = currentCompany)
                     .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
                     .do(registers => this.registers = registers)
                     .flatMap(() => this.companyService.getStatistics(this.currentCompany))
-                    .do((statisticsData) => this.processStatisticsData(statisticsData))        
+                    .do((statisticsData) => this.processStatisticsData(statisticsData))
                     .subscribe();
-                                            
+
   }
-    
+
   processStatisticsData(statisticsData) {
     console.log(`got statisticsData: ${JSON.stringify(statisticsData)}`)
-    
+
     this.statistics.totalRegisters        = statisticsData.staffCount + statisticsData.contractorCount + statisticsData.visitCount;
     this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statisticsData.staffCount / this.statistics.totalRegisters) * 100 : 0;
+    this.statistics.staffCount            = statisticsData.staffCount;
+    this.statistics.contractorCount       = statisticsData.contractorCount;
+    this.statistics.visitCount            = statisticsData.visitCount;
     this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statisticsData.contractorCount / this.statistics.totalRegisters) * 100 : 0;
     this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statisticsData.visitCount / this.statistics.totalRegisters) * 100 : 0;
-  
+
     this.profileDistPieChart.data = [
-      this.statistics.staffPercentage, 
-      this.statistics.contractorsPercentage, 
+      this.statistics.staffPercentage,
+      this.statistics.contractorsPercentage,
       this.statistics.visitorsPercentage
     ];
-    
+
     let reversedEntryWeeklyHistory = statisticsData.weeklyHistory.entry.reverse();
     let reversedDepartWeeklyHistory = statisticsData.weeklyHistory.depart.reverse();
-    
+
     this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
-          
+
     this.registersPerWeekBarChart.series = [
       { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
       { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
