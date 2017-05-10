@@ -20,7 +20,7 @@ export class AuthService {
                       let json = res.json();
                       
                       if (!json.fail) {
-                        localStorage.setItem("id_token", json.token);
+                        localStorage.setItem("token", json.token);
                       }
                       
                       return json.token;
@@ -29,7 +29,7 @@ export class AuthService {
 
   logout(): Promise<any> {  
     return new Promise(resolve => {
-      localStorage.removeItem("id_token");
+      localStorage.removeItem("token");
       resolve();
     });
   }
@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   getAccessToken() {
-    return localStorage.getItem("id_token");
+    return localStorage.getItem("token");
   }
   
 	getProfile(): Observable<User> {
