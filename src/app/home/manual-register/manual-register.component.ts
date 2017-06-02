@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
@@ -20,6 +20,8 @@ import * as moment from 'moment';
   styleUrls: ['./manual-register.component.css']
 })
 export class ManualRegisterComponent implements OnInit {
+  activeSubscriptions = [];
+  
   currentCompany: Company;
   currentSector: Sector;
 
@@ -61,7 +63,10 @@ export class ManualRegisterComponent implements OnInit {
                                       .do(() => this.userService.currentCompany.subscribe(currentCompany => this.currentCompany = currentCompany))
                                       .mergeMap((currentRut: string) => this.companyService.getPersons(this.currentCompany, { rut: currentRut }));
     
-    this.userService.currentSector.subscribe(currentSector => this.currentSector = currentSector);
+    this.activeSubscriptions.push(
+      this.userService.currentSector
+        .subscribe(currentSector => this.currentSector = currentSector)
+    );
   }
 
   searchBoxLoading(e: boolean): void {
@@ -102,5 +107,9 @@ export class ManualRegisterComponent implements OnInit {
     }, (error) => {
       console.log(`error while creating register: ${error}`);
     });    
+  }
+  
+  ngOnDestroy() {
+    this.activeSubscriptions.forEach(s => s.unsubscribe());
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 
@@ -19,6 +19,8 @@ import * as moment from 'moment';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  activeSubscriptions = [];
+  
   currentUser: any;
   registers: Register[];
 
@@ -68,24 +70,27 @@ export class DashboardComponent implements OnInit {
   constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService) { }
 
   ngOnInit() {
-    this.socketService.get('register')
-                      .filter(event => event.item.isUnauthorized)
-                      .filter(event => event.item.sector !== this.currentSector._id)
-                      .flatMap(() => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
-                      .do(registers => this.registers = registers)
-                      .flatMap(() => this.sectorService.getStatistics(this.currentSector))
-                      .do(statisticsData => this.processStatisticsData(statisticsData))
-                      .subscribe();
+    this.activeSubscriptions.push(
+      this.socketService.get('register')
+        .filter(event => event.item.isUnauthorized)
+        .filter(event => event.item.sector !== this.currentSector._id)
+        .flatMap(() => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
+        .do(registers => this.registers = registers)
+        .flatMap(() => this.sectorService.getStatistics(this.currentSector))
+        .do(statisticsData => this.processStatisticsData(statisticsData))
+        .subscribe()      
+    );
 
-
-    this.userService.currentSector
-                      .filter(s => s != null)
-                      .do(currentSector => this.currentSector = currentSector)
-                      .flatMap(currentSector => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
-                      .do(registers => this.registers = registers)
-                      .flatMap(() => this.sectorService.getStatistics(this.currentSector))
-                      .do(statisticsData => this.processStatisticsData(statisticsData))
-                      .subscribe();
+    this.activeSubscriptions.push(
+      this.userService.currentSector
+        .filter(s => s != null)
+        .do(currentSector => this.currentSector = currentSector)
+        .flatMap(currentSector => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
+        .do(registers => this.registers = registers)
+        .flatMap(() => this.sectorService.getStatistics(this.currentSector))
+        .do(statisticsData => this.processStatisticsData(statisticsData))
+        .subscribe()
+    );
   }
 
   processStatisticsData(statistics) {
@@ -116,4 +121,8 @@ export class DashboardComponent implements OnInit {
       { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
     ];
   }
+  
+  ngOnDestroy() {
+    this.activeSubscriptions.forEach(s => s.unsubscribe());
+  }  
 }

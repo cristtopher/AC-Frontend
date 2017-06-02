@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { RegisterService } from '../../api/register/register.providers';
@@ -20,6 +20,8 @@ import * as moment from 'moment';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
+  activeSubscriptions = [];
+  
   currentUser: any;
   registers: Register[];
 
@@ -67,22 +69,25 @@ export class OverviewComponent implements OnInit {
   constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService, private companyService: CompanyService) { }
 
   ngOnInit() {
-    this.socketService.get('register')
-                      .filter(event => event.item.isUnauthorized)
-                      .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
-                      .do(registers => this.registers = registers)
-                      .flatMap(() => this.companyService.getStatistics(this.currentCompany))
-                      .do((statisticsData) => this.processStatisticsData(statisticsData))
-                      .subscribe();
-
-    this.userService.currentCompany
-                    .do(currentCompany => this.currentCompany = currentCompany)
-                    .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
-                    .do(registers => this.registers = registers)
-                    .flatMap(() => this.companyService.getStatistics(this.currentCompany))
-                    .do((statisticsData) => this.processStatisticsData(statisticsData))
-                    .subscribe();
-
+    this.activeSubscriptions.push(
+      this.socketService.get('register')
+                  .filter(event => event.item.isUnauthorized)
+                  .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
+                  .do(registers => this.registers = registers)                      
+                  .flatMap(() => this.companyService.getStatistics(this.currentCompany))
+                  .do((statisticsData) => this.processStatisticsData(statisticsData))
+                  .subscribe()
+    );
+    
+    this.activeSubscriptions.push(
+      this.userService.currentCompany
+                .do(currentCompany => this.currentCompany = currentCompany)
+                .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
+                .do(registers => this.registers = registers)
+                .flatMap(() => this.companyService.getStatistics(this.currentCompany))
+                .do((statisticsData) => this.processStatisticsData(statisticsData))        
+                .subscribe()
+    );                     
   }
 
   processStatisticsData(statisticsData) {
@@ -111,5 +116,9 @@ export class OverviewComponent implements OnInit {
       { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
       { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
     ];
+  }
+  
+  ngOnDestroy() {
+    this.activeSubscriptions.forEach(s => s.unsubscribe());
   }
 }

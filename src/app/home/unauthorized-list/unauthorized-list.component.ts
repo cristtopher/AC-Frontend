@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { UserService }     from '../../api/user/user.providers';
 import { RegisterService } from '../../api/register/register.providers';
@@ -16,7 +16,9 @@ import * as _ from 'lodash';
   templateUrl: './unauthorized-list.component.html',
   styleUrls: ['./unauthorized-list.component.css']
 })
-export class UnauthorizedListComponent implements OnInit {  
+export class UnauthorizedListComponent implements OnInit, OnDestroy {  
+  activeSubscriptions = [];
+  
   currentSector: Sector;
 
   registers: Register[] = [];
@@ -35,30 +37,30 @@ export class UnauthorizedListComponent implements OnInit {
               private registerService: RegisterService) { }
 
   ngOnInit() {
+    this.activeSubscriptions.push(
+      this.socketService.get('register')
+        .filter(event => event.item.isUnauthorized)
+        .flatMap(event => this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters)))
+        .subscribe(registers => {
+           this.totalPages  = registers.pages;
+           this.currentPage = registers.page;
+           this.registers   = registers.data;
+         })
+    );
+      
+    this.activeSubscriptions.push(
+      this.userService.currentSector
+        .mergeMap(currentSector => {
+          this.currentSector = currentSector;
 
-    this.socketService.get('register').subscribe((event) => {                        
-       // TODO: Replace this by just appending/removing new event instead of requesting all data
-      if (!event.item.isUnauthorized) { return; }
-      
-      this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                        .subscribe(registers => {
-                           this.totalPages  = registers.pages;
-                           this.currentPage = registers.page;
-                           this.registers   = registers.data;
-                         });
-    });  
-                     
-    this.userService.currentSector
-                      .mergeMap(currentSector => {
-                        this.currentSector = currentSector;
-      
-                        return this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters));
-                      })
-                      .subscribe(registers => {                        
-                        this.totalPages  = registers.pages;
-                        this.currentPage = registers.page;
-                        this.registers   = registers.data;
-                      });
+          return this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters));
+        })
+        .subscribe(registers => {                        
+          this.totalPages  = registers.pages;
+          this.currentPage = registers.page;
+          this.registers   = registers.data;
+        })
+    );               
   }
 
   //-------------------------
@@ -75,5 +77,9 @@ export class UnauthorizedListComponent implements OnInit {
                         this.registers   = registers.data;
                       });
     
+  }
+  
+  ngOnDestroy() {
+    this.activeSubscriptions.forEach(s => s.unsubscribe());
   }
 }
