@@ -62,6 +62,16 @@
               </tr>
             </tbody>
           </table>
+          
+          <nav>
+            <route-paginator
+                [onPage]="10"
+                [total]="totalPages * 10"
+                [maxVisible]="5"
+                (onChange)="goToPage($event)">
+            </route-paginator>
+          </nav>
+          
         </div>
       </div>
     </div>

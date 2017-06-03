@@ -28,7 +28,15 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
 
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
   personExistsErrorMsg = false;
-
+  
+  fieldErrorMsg = false;
+  formFieldErrorMapping = {
+    'card': false,
+    'rut': false,
+    'name': false,
+    'profile': false
+  }
+  
   constructor(public dialog: DialogRef<PersonModalContext>, private personService: PersonService, private companyService: CompanyService) {
     this.context = dialog.context;
     this.context.showClose = true;
@@ -42,11 +50,18 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
                              .toPromise()
                              .then((person) => this.dialog.close(person))
                              .catch((error) => {
+                               console.log(`error = ${JSON.stringify(error)}`);
+                               
                                if(error.code === 11000) {
                                  this.personExistsErrorMsg = true;
                                  return;
                                }
-                             })
+
+                               if (error.errors) {
+                                 this.fieldErrorMsg = true;
+                                 Object.keys(error.errors).forEach(e => this.formFieldErrorMapping[e] = true);
+                               }
+                             });
   }
 
   updatePerson(){

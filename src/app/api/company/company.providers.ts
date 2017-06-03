@@ -22,11 +22,19 @@ import { Person } from '../person/person.model';
 export class CompanyService {  
   constructor(private authHttp: AuthHttp, private authService: AuthService) { }
   
-  getPersons(company: Company, query: Object = {}): Observable<Person[]> {
+  getPersons(company: Company, query: Object = {}): Observable<any> {
     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/persons${queryString ? '?' + queryString : ''}`)
-                        .map(res => <Person[]> res.json())
+                        .map(res => {
+                          if (!query['paging']) { return <Person[]> res.json(); }
+                          
+                          return {
+                            page: parseInt(res.headers.get('X-Pagination-Page')),
+                            pages: parseInt(res.headers.get('X-Pagination-Pages')),
+                            data: <Person[]> res.json()                            
+                          } 
+                        })
                         .catch(this.handleError);
   }
 

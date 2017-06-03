@@ -30,6 +30,14 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
   persons: Person[];
 
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
+
+  totalPages  = 1;
+  currentPage = 1;
+ 
+  currentFilters = {
+    paging: true,
+    page: 1
+  };
   
   constructor(private modal: Modal, 
               private userService: UserService,
@@ -40,22 +48,24 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activeSubscriptions.push(
       this.socketService.get('person')
-        .subscribe((event) => {
-          if (event.action == "save")   { return this.persons.push(event.item); }
-          if (event.action == "remove") { return _.remove(this.persons, { _id: event.item._id }); }
-          if (event.action == "update") {
-            let idx = _.indexOf(this.persons, _.find(this.persons, { _id: event.item._id }));
-          
-            return this.persons.splice(idx, 1, event.item);
-          }
+        .flatMap(() => this.companyService.getPersons(this.currentCompany, this.currentFilters))
+        .subscribe(personsData => {
+          console.log(`personsData: ${JSON.stringify(personsData)}`);
+          this.totalPages  = personsData.pages;
+          this.currentPage = personsData.page;
+          this.persons     = personsData.data;
         })
     );
 
     this.activeSubscriptions.push(
       this.userService.currentCompany
         .do(currentCompany => this.currentCompany = currentCompany)
-        .flatMap(currentCompany => this.companyService.getPersons(currentCompany))
-        .subscribe(persons => this.persons = persons)    
+        .flatMap(currentCompany => this.companyService.getPersons(this.currentCompany, this.currentFilters))
+        .subscribe(personsData => {
+          this.totalPages  = personsData.pages;
+          this.currentPage = personsData.page;
+          this.persons     = personsData.data;
+        })
     )
   }
   
@@ -73,9 +83,12 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
       cancelButtonText: 'Cancelar'
     })
     .then(() => {
-      this.personService.deletePerson(person).subscribe(() => {
-        swal('Eliminar Persona', `${person.name} eliminada satisfactoriamente`, 'success');
-      });
+      if (this.persons.length == 1 && this.currentFilters.page > 1) { this.currentFilters.page--; }
+      
+      this.personService.deletePerson(person)
+        .subscribe(() => {
+          swal('Eliminar Persona', `${person.name} eliminada satisfactoriamente`, 'success');
+        });
     }, (dismiss) => {});
   }
 
@@ -92,6 +105,18 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
       .subscribe(data  => fileSaver.saveAs(data, 'people-export.xlsx'),
                  error => console.log("Error downloading the file."),
                  ()    => console.log('Completed file download.'));
+  }
+  
+  goToPage(pageNum) {
+    this.currentFilters["page"] = pageNum;
+    
+    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters))
+                      .subscribe(personsData => {
+                        this.totalPages  = personsData.pages;
+                        this.currentPage = personsData.page;
+                        this.persons     = personsData.data;
+                      });
+    
   }
   
   ngOnDestroy() {
