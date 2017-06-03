@@ -31,12 +31,21 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
 
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
 
+  // paging 
   totalPages  = 1;
   currentPage = 1;
- 
+
+  // filtering
+  currentProfileFilterControl: string = "";
+  currentStatusFilterControl: string = "";
+  
   currentFilters = {
     paging: true,
-    page: 1
+    page: 1,
+    personType: null,
+    rut: null,
+    name: null,
+    status: null
   };
   
   constructor(private modal: Modal, 
@@ -48,9 +57,8 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activeSubscriptions.push(
       this.socketService.get('person')
-        .flatMap(() => this.companyService.getPersons(this.currentCompany, this.currentFilters))
+        .flatMap(() => this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o))))
         .subscribe(personsData => {
-          console.log(`personsData: ${JSON.stringify(personsData)}`);
           this.totalPages  = personsData.pages;
           this.currentPage = personsData.page;
           this.persons     = personsData.data;
@@ -60,7 +68,7 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
     this.activeSubscriptions.push(
       this.userService.currentCompany
         .do(currentCompany => this.currentCompany = currentCompany)
-        .flatMap(currentCompany => this.companyService.getPersons(this.currentCompany, this.currentFilters))
+        .flatMap(currentCompany => this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o))))
         .subscribe(personsData => {
           this.totalPages  = personsData.pages;
           this.currentPage = personsData.page;
@@ -68,6 +76,14 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
         })
     )
   }
+  
+  ngOnDestroy() {
+    this.activeSubscriptions.forEach(s => s.unsubscribe());
+  }
+  
+  // -------------------------
+  //     CRUD operations
+  // -------------------------
   
   updatePerson(person: Person) {
     this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "update", person: new Person().clone(person) }, BSModalContext));
@@ -96,6 +112,11 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
     this.modal.open(PersonModalComponent, overlayConfigFactory({ action: "create", person: new Person(), company: this.currentCompany }, BSModalContext));
   }
   
+  // -------------------------
+  //      Import/Export
+  // -------------------------
+  
+  
   importExcel() {
     this.modal.open(ImportModalComponent, overlayConfigFactory({ company: this.currentCompany }, BSModalContext));
   }
@@ -107,10 +128,15 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
                  ()    => console.log('Completed file download.'));
   }
   
+  // -------------------------
+  //        Paging
+  // -------------------------
+  
+  
   goToPage(pageNum) {
     this.currentFilters["page"] = pageNum;
     
-    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters))
+    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
                       .subscribe(personsData => {
                         this.totalPages  = personsData.pages;
                         this.currentPage = personsData.page;
@@ -118,8 +144,56 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
                       });
     
   }
-  
-  ngOnDestroy() {
-    this.activeSubscriptions.forEach(s => s.unsubscribe());
+
+
+  // -------------------------
+  //        Filtering
+  // -------------------------
+    
+  changeProfileFilter(profile: string) {
+    this.currentFilters.personType = profile;
+    
+    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
+      .subscribe(personsData => {
+        this.totalPages  = personsData.pages;
+        this.currentPage = personsData.page;
+        this.persons     = personsData.data;
+      });
+      
   }
+
+  changeStatusFilter(status: string) {  
+    this.currentFilters.status = status ? JSON.parse(status) : null;
+    
+    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
+      .subscribe(personsData => {
+        this.totalPages  = personsData.pages;
+        this.currentPage = personsData.page;
+        this.persons     = personsData.data;
+      });
+    
+  }
+  
+  changeRutFilter(rut: string) {
+    this.currentFilters.rut = rut;
+    
+    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
+      .subscribe(personsData => {
+        this.totalPages  = personsData.pages;
+        this.currentPage = personsData.page;
+        this.persons     = personsData.data;
+      });
+  }
+  
+  changeNameFilter(name: string) {
+    this.currentFilters.name = name;
+    
+    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
+      .subscribe(personsData => {
+        this.totalPages  = personsData.pages;
+        this.currentPage = personsData.page;
+        this.persons     = personsData.data;
+      });    
+  }
+  
 }

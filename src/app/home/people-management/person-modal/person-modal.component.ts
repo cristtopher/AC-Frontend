@@ -27,9 +27,9 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
   context: PersonModalContext;
 
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
+
   personExistsErrorMsg = false;
-  
-  fieldErrorMsg = false;
+  fieldErrorMsg        = false;
   formFieldErrorMapping = {
     'card': false,
     'rut': false,
@@ -83,4 +83,6 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
   beforeClose(): boolean {
     return false;
   }
+
+  
 }
