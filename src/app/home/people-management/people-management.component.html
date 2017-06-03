@@ -28,6 +28,7 @@
                 <th class="text-muted">#</th>
                 <th>Rut</th>
                 <th>Nombre</th>
+                <th>Compañia</th>
                 <th>Tarjeta</th>
                 <th>Estado</th>
                 <th>Perfil</th>
@@ -39,6 +40,7 @@
                 <th class="text-muted" scope="row">{{i + 1}}</th>
                 <td>{{person.rut}}</td>
                 <td>{{person.name}}</td>
+                <td>{{person.companyInfo}}</td>
                 <td>{{person.card}}</td>
                 <td>
                   <span class="text-success" *ngIf="person.active">Activo</span>

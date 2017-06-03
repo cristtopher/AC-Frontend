@@ -34,7 +34,8 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
     'card': false,
     'rut': false,
     'name': false,
-    'profile': false
+    'profile': false,
+    'companyInfo': false
   }
   
   constructor(public dialog: DialogRef<PersonModalContext>, private personService: PersonService, private companyService: CompanyService) {
@@ -49,9 +50,7 @@ export class PersonModalComponent implements OnInit, ModalComponent<PersonModalC
     return this.companyService.createPerson(this.context.company, this.context.person)
                              .toPromise()
                              .then((person) => this.dialog.close(person))
-                             .catch((error) => {
-                               console.log(`error = ${JSON.stringify(error)}`);
-                               
+                             .catch((error) => {                               
                                if(error.code === 11000) {
                                  this.personExistsErrorMsg = true;
                                  return;

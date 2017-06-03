@@ -5,6 +5,7 @@ export class Person extends Serializable {
   rut: string;
   name: string;
   company: any;
+  companyInfo: string;
   type: string = 'staff';
   card: number;
   active: boolean = true;
