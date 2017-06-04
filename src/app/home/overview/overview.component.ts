@@ -28,13 +28,10 @@ export class OverviewComponent implements OnInit {
   currentCompany: Company;
 
   statistics = {
-    totalRegisters: null,
-    staffPercentage: null,
-    staffCount: null,
-    contractorCount: null,
-    visitCount: null,
-    contractorsPercentage: null,
-    visitorsPercentage: null
+    totalPersonsInCompany: null,
+    staffPercentageInCompany: null,
+    contractorsPercentageInCompany: null,
+    visitorsPercentageInCompany: null
   }
 
   profileDistPieChart = {
@@ -92,19 +89,16 @@ export class OverviewComponent implements OnInit {
 
   processStatisticsData(statisticsData) {
     console.log(`got statisticsData: ${JSON.stringify(statisticsData)}`)
-
-    this.statistics.totalRegisters        = statisticsData.staffCount + statisticsData.contractorCount + statisticsData.visitCount;
-    this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statisticsData.staffCount / this.statistics.totalRegisters) * 100 : 0;
-    this.statistics.staffCount            = statisticsData.staffCount;
-    this.statistics.contractorCount       = statisticsData.contractorCount;
-    this.statistics.visitCount            = statisticsData.visitCount;
-    this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statisticsData.contractorCount / this.statistics.totalRegisters) * 100 : 0;
-    this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statisticsData.visitCount / this.statistics.totalRegisters) * 100 : 0;
-
+    
+    this.statistics.totalPersonsInCompany          = statisticsData.staffCount + statisticsData.contractorCount + statisticsData.visitCount;
+    this.statistics.staffPercentageInCompany       = this.statistics.totalPersonsInCompany ? (statisticsData.staffCount / this.statistics.totalPersonsInCompany) * 100 : 0;
+    this.statistics.contractorsPercentageInCompany = this.statistics.totalPersonsInCompany ? (statisticsData.contractorCount / this.statistics.totalPersonsInCompany) * 100 : 0;
+    this.statistics.visitorsPercentageInCompany    = this.statistics.totalPersonsInCompany ? (statisticsData.visitCount / this.statistics.totalPersonsInCompany) * 100 : 0;
+  
     this.profileDistPieChart.data = [
-      this.statistics.staffPercentage,
-      this.statistics.contractorsPercentage,
-      this.statistics.visitorsPercentage
+      this.statistics.staffPercentageInCompany, 
+      this.statistics.contractorsPercentageInCompany, 
+      this.statistics.visitorsPercentageInCompany
     ];
 
     let reversedEntryWeeklyHistory = statisticsData.weeklyHistory.entry.reverse();

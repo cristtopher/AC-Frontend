@@ -23,9 +23,11 @@
       <div class="widget widget-statistic widget-success">
         <header class="widget-statistic-header">{{currentSector?.name | uppercase}}</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">{{ statistics.totalRegisters }}</span>
-          <span class="widget-statistic-description">Numero <strong>total</strong> de personas en {{currentSector?.name}}</span>
+          <span class="widget-statistic-value">{{ statistics.totalPersonsInSector }}</span>
+          <span class="widget-statistic-description">Numero  <strong>total</strong> de personas en planta</span>
           <span class="widget-statistic-icon fa fa-industry"></span>
+          <br/>
+          <button class="btn btn-sm btn-transparent-white" type="button" (click)="displayWidgetDetails('En Planta')"><span class="fa fa-search"></span> Ver detalle</button>
         </div>
       </div>
     </div>
@@ -34,12 +36,11 @@
       <div class="widget widget-statistic widget-primary">
         <header class="widget-statistic-header">Empleados</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">{{ statistics.staffCount }}</span>
-          <span class="widget-statistic-description">
-            El {{ statistics.staffPercentage | number:'1.0-2' }}% de personas en {{currentSector?.name}}
-            son <strong>empleados</strong>
-          </span>
+          <span class="widget-statistic-value">{{ statistics.staffPercentageInSector | number:'1.0-2' }}%</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>empleados</strong> en planta</span>
           <span class="widget-statistic-icon fa fa-user"></span>
+          <br/>
+          <button class="btn btn-sm btn-transparent-white" type="button" (click)="displayWidgetDetails('Empleados')"><span class="fa fa-search"></span> Ver detalle</button>
         </div>
       </div>
     </div>
@@ -48,12 +49,11 @@
       <div class="widget widget-statistic widget-info">
         <header class="widget-statistic-header">Contratistas</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">{{ statistics.contractorCount }}</span>
-          <span class="widget-statistic-description">
-            El {{ statistics.contractorsPercentage | number:'1.0-2' }}% de personas en {{currentSector?.name}}
-            son <strong>contratistas</strong>
-          </span>
+          <span class="widget-statistic-value">{{ statistics.contractorsPercentageInSector | number:'1.0-2' }}%</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>contratistas</strong> en planta</span>
           <span class="widget-statistic-icon fa fa-user-o"></span>
+          <br/>
+          <button class="btn btn-sm btn-transparent-white" type="button" (click)="displayWidgetDetails('Contratistas')"><span class="fa fa-search"></span> Ver detalle</button>
         </div>
       </div>
     </div>
@@ -62,18 +62,55 @@
       <div class="widget widget-statistic widget-faded-blue">
         <header class="widget-statistic-header">Visitas</header>
         <div class="widget-statistic-body">
-          <span class="widget-statistic-value">{{ statistics.visitCount }}</span>
-          <span class="widget-statistic-description">
-            El {{ statistics.visitorsPercentage | number:'1.0-2' }}% de personas en {{currentSector?.name}}
-            son <strong>Vvsitas</strong>
-          </span>
+          <span class="widget-statistic-value">{{ statistics.visitorsPercentageInSector | number:'1.0-2' }}%</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>visitas</strong> en planta</span>
           <span class="widget-statistic-icon fa fa-eye"></span>
+          <br/>
+          <button class="btn btn-sm btn-transparent-white" type="button" (click)="displayWidgetDetails('Visitas')"><span class="fa fa-search"></span> Ver detalle</button>
         </div>
       </div>
     </div>
-
   </div>
   <!-- end row -->
+
+  <div class="row">
+    <div class="widget widget-default" [hidden]="!currentWidgetTable">
+      <header class="widget-header">
+          <span class="fa fa-search"></span> Detalle: {{ currentWidgetTable }}
+          <div class="widget-header-actions">
+            <span data-close-widget="" class="widget-header-action fa fa-close" (click)="currentWidgetTable = null"></span>
+          </div>
+      </header>
+      <div class="widget-body">
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Rut</th>
+              <th>Nombre</th>
+              <th>Perfil</th>
+              <th>Registro</th>
+              <th>Sector</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let register of widgetregisters | orderBy: 'time':'desc'; let i = index">
+              <td>{{ register.person?.rut }}</td>
+              <td>{{ register.person?.name }}</td>
+              <td>
+                <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
+                <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
+                <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
+              </td>
+              <td>{{ register.time | amDateFormat:'DD/MM/YYYY HH:mm:ss' }}</td>
+              <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
 
 
   <!-- row -->
@@ -104,6 +141,7 @@
                     [datasets]="registersPerWeekBarChart.series"
                     [labels]="registersPerWeekBarChart.labels"
                     [options]="{ scaleShowVerticalLines: false, responsive: true }"
+                    [colors]="[{ backgroundColor: 'rgba(8,237,114,0.8)' }, { backgroundColor: 'rgba(128,128,128,0.8)' }]"
                     [legend]="true"
                     [chartType]="'bar'"></canvas>
           </div>

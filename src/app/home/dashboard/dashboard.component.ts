@@ -13,6 +13,10 @@ import { Register } from '../../api/register/register.model';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
+function rgba(colour:Array<number>, alpha:number):string {
+  return 'rgba(' + colour.concat(alpha).join(',') + ')';
+}
+
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
@@ -22,18 +26,17 @@ export class DashboardComponent implements OnInit {
   activeSubscriptions = [];
   
   currentUser: any;
+  
   registers: Register[];
+  widgetregisters: Register[];
 
   currentSector: Sector;
 
   statistics = {
-    totalRegisters: null,
-    staffPercentage: null,
-    staffCount: null,
-    contractorCount: null,
-    visitCount: null,
-    contractorsPercentage: null,
-    visitorsPercentage: null
+    totalPersonsInSector: null,
+    staffPercentageInSector: null,
+    contractorsPercentageInSector: null,
+    visitorsPercentageInSector: null
   }
 
   profileDistPieChart = {
@@ -56,6 +59,11 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+
+  
+  // widget table details
+  widgetTableVisible = false;
+  currentWidgetTable = null;
 
   @ViewChild('registersPerWeekBarChartComponent') registersPerWeekBarChartVC: BaseChartDirective;
   
@@ -95,19 +103,16 @@ export class DashboardComponent implements OnInit {
 
   processStatisticsData(statistics) {
     console.log(`recalculating statistics from: ${JSON.stringify(statistics)}`)
-
-    this.statistics.totalRegisters        = statistics.staffCount + statistics.contractorCount + statistics.visitCount;
-    this.statistics.staffCount            = statistics.staffCount;
-    this.statistics.contractorCount       = statistics.contractorCount;
-    this.statistics.visitCount            = statistics.visitCount;
-    this.statistics.staffPercentage       = this.statistics.totalRegisters ? (statistics.staffCount / this.statistics.totalRegisters) * 100 : 0;
-    this.statistics.contractorsPercentage = this.statistics.totalRegisters ? (statistics.contractorCount / this.statistics.totalRegisters) * 100 : 0;
-    this.statistics.visitorsPercentage    = this.statistics.totalRegisters ? (statistics.visitCount / this.statistics.totalRegisters) * 100 : 0;
-
+    
+    this.statistics.totalPersonsInSector          = statistics.staffCount + statistics.contractorCount + statistics.visitCount;
+    this.statistics.staffPercentageInSector       = this.statistics.totalPersonsInSector ? (statistics.staffCount / this.statistics.totalPersonsInSector) * 100 : 0;
+    this.statistics.contractorsPercentageInSector = this.statistics.totalPersonsInSector ? (statistics.contractorCount / this.statistics.totalPersonsInSector) * 100 : 0;
+    this.statistics.visitorsPercentageInSector    = this.statistics.totalPersonsInSector ? (statistics.visitCount / this.statistics.totalPersonsInSector) * 100 : 0;
+  
     this.profileDistPieChart.data = [
-      this.statistics.staffPercentage,
-      this.statistics.contractorsPercentage,
-      this.statistics.visitorsPercentage
+      this.statistics.staffPercentageInSector, 
+      this.statistics.contractorsPercentageInSector, 
+      this.statistics.visitorsPercentageInSector
     ];
 
     let reversedEntryWeeklyHistory = statistics.weeklyHistory.entry.reverse();
@@ -120,6 +125,24 @@ export class DashboardComponent implements OnInit {
       { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
       { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
     ];
+  }
+  
+  displayWidgetDetails(widgetName: string) {
+    this.currentWidgetTable = widgetName;
+    
+    (function(widgetName){
+      if (widgetName == 'En Planta') {
+        return this.sectorService.getRegisters(this.currentSector, { incomplete: 1, type: 'entry' })
+      } else if (widgetName == 'Empleados') {
+        return this.sectorService.getRegisters(this.currentSector, { incomplete: 1, type: 'entry', personType: 'staff' })
+      } else if (widgetName == 'Contratistas') {
+        return this.sectorService.getRegisters(this.currentSector, { incomplete: 1, type: 'entry', personType: 'contractor' })
+      } else if (widgetName == 'Visitas') {
+        return this.sectorService.getRegisters(this.currentSector, { incomplete: 1, type: 'entry', personType: 'visitor' })
+      }    
+    })
+    .bind(this, widgetName)()
+    .subscribe(registers => this.widgetregisters = registers);    
   }
   
   ngOnDestroy() {
