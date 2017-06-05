@@ -133,7 +133,7 @@
               <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
               <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
             </td>
-            <td>{{ register.time | amDateFormat:'DD/MM/YYYY HH:mm:ss' }}</td>
+            <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
           </tr>
         </tbody>
