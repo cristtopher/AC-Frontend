@@ -28,7 +28,11 @@ export class DashboardComponent implements OnInit {
   currentUser: any;
   
   registers: Register[];
-  widgetregisters: Register[];
+  
+  widgetTableRegisters: Register[];
+  widgetTableCurrentPage = 1;
+  widgetTableTotalPages  = 1;
+
 
   currentSector: Sector;
 
@@ -127,22 +131,39 @@ export class DashboardComponent implements OnInit {
     ];
   }
   
-  displayWidgetDetails(widgetName: string) {
-    this.currentWidgetTable = widgetName;
+  toggleWidgetDetails(widgetName: string) {
+    if (this.currentWidgetTable == widgetName) {
+      this.currentWidgetTable = null;
+      return;
+    }
     
+    this.currentWidgetTable = widgetName;
+    this._fetchwidgetTableRegisters(this.currentWidgetTable);    
+  }
+  
+  goToWidgetTablePage(pageNum: number) {
+    this.widgetTableCurrentPage = pageNum;    
+    this._fetchwidgetTableRegisters(this.currentWidgetTable)
+  }
+  
+  private _fetchwidgetTableRegisters(widgetName) {
     (function(widgetName){
       if (widgetName == 'En Planta') {
-        return this.sectorService.getRegisters(this.currentSector, { incomplete: 1, type: 'entry' })
+        return this.sectorService.getStatisticsDetails(this.currentSector, { page: this.widgetTableCurrentPage })
       } else if (widgetName == 'Empleados') {
-        return this.sectorService.getRegisters(this.currentSector, { incomplete: 1, type: 'entry', personType: 'staff' })
+        return this.sectorService.getStatisticsDetails(this.currentSector, { page: this.widgetTableCurrentPage, personType: 'staff' })
       } else if (widgetName == 'Contratistas') {
-        return this.sectorService.getRegisters(this.currentSector, { incomplete: 1, type: 'entry', personType: 'contractor' })
+        return this.sectorService.getStatisticsDetails(this.currentSector, { page: this.widgetTableCurrentPage, personType: 'contractor' })
       } else if (widgetName == 'Visitas') {
-        return this.sectorService.getRegisters(this.currentSector, { incomplete: 1, type: 'entry', personType: 'visitor' })
+        return this.sectorService.getStatisticsDetails(this.currentSector, { page: this.widgetTableCurrentPage, personType: 'visitor' })
       }    
     })
     .bind(this, widgetName)()
-    .subscribe(registers => this.widgetregisters = registers);    
+    .subscribe(statisticsDetails => {
+      this.widgetTableTotalPages  = statisticsDetails.pages;
+      this.widgetTableCurrentPage = statisticsDetails.page;
+      this.widgetTableRegisters   = statisticsDetails.data;      
+    }); 
   }
   
   ngOnDestroy() {

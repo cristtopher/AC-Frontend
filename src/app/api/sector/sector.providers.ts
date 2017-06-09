@@ -55,9 +55,24 @@ export class SectorService {
   getStatistics(sector: Sector): Observable<any> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/statistics`)
                         .map(res => res.json())
-                        .share()
                         .catch(this.handleError);
   }
+
+  getStatisticsDetails(sector: Sector, query: Object = {}): Observable<any[]> {
+    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+    
+    return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/statisticsDetails${queryString ? '?' + queryString : ''}`)
+                        .map(res => {                          
+                          return {
+                            page: parseInt(res.headers.get('X-Pagination-Page')),
+                            pages: parseInt(res.headers.get('X-Pagination-Pages')),
+                            data: <Register[]> res.json()                       
+                          }
+                        })
+                        .catch(this.handleError);
+  }
+  
+  
     
   private handleError(error: Response) {
     console.error(error);
