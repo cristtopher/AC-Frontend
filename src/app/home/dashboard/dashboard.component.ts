@@ -101,6 +101,7 @@ export class DashboardComponent implements OnInit {
         .do(registers => this.registers = registers)
         .flatMap(() => this.sectorService.getStatistics(this.currentSector))
         .do(statisticsData => this.processStatisticsData(statisticsData))
+        .do(() => this.currentWidgetTable = null)
         .subscribe()
     );
   }
