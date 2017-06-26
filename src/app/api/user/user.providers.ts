@@ -91,13 +91,18 @@ export class CurrentUserResolve implements Resolve<User> {
   constructor(private router: Router, private authService: AuthService, private userService: UserService) {}
 
   // before rendering anything, some Subjects are defined: currentUser, currentCompany, currentSector
-  resolve(route: ActivatedRouteSnapshot) {
+  resolve(route: ActivatedRouteSnapshot) {    
+    
+    let userdata$ = Observable.empty()
+                      .flatMap(() => this.userService.getMyCompanies())
+                      .do(currentUserCompanies => this.userService.setCurrentCompany(currentUserCompanies[0]))
+                      .flatMap(currentUserCompanies => this.userService.getMySectors(currentUserCompanies[0]))
+                      .do(firstCompanySectors => this.userService.setCurrentSector(firstCompanySectors[0]));
+ 
+    
     return this.authService.getProfile()
                            .do(currentUser => this.userService.setCurrentUser(currentUser))
-                           .flatMap(() => this.userService.getMyCompanies())
-                           .do(currentUserCompanies => this.userService.setCurrentCompany(currentUserCompanies[0]))
-                           .flatMap(currentUserCompanies => this.userService.getMySectors(currentUserCompanies[0]))
-                           .do(firstCompanySectors => this.userService.setCurrentSector(firstCompanySectors[0]))
+                           .map(currentUser => currentUser.role === 'admin' ? Observable.empty() : userdata$)
                            .toPromise()
                            .then(() => {
                               let currentUser = this.userService.currentUser.getValue();

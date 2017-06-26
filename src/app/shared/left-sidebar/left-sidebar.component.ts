@@ -31,25 +31,28 @@ export class LeftSidebarComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() { 
-    
-    this.userService.getMyCompanies()
+        
+    this.userService.currentUser
+      .do(currentUser => this.currentUser = currentUser)
+      // check if user is admin to stop subsequent operations
+      .filter(currentUser => currentUser.role !== 'admin')
+      // if not admin, then get their companies (sorted by name)
+      .flatMap(currentUser => this.userService.getMyCompanies())
       .map(companies => _.sortBy(companies, 'name'))
-      .subscribe((companies: Company[]) => {
+      .do(companies => {
         if (companies.length > 1) {
           this.isMultiCompany = true;
         }
 
         this.companies = companies;
-
-        this.userService.getMySectors(companies[0])
-          .map(sectors => _.sortBy(sectors, 'name'))
-          .subscribe((sectors: Sector[]) => {
-            this.sectors = sectors;
-          });
-      });
-        
-    this.userService.currentUser.subscribe(currentUser => this.currentUser = currentUser);
+      })
+      // after getting all companies, then get all sectors associated to first company
+      .flatMap(companies => this.userService.getMySectors(companies[0]))
+      .map(sectors => _.sortBy(sectors, 'name'))
+      .do(sectors => this.sectors = sectors)
+      .subscribe();
     
+    // change company when user change it in combobox  
     this.userService.currentCompany
       .filter(c => c != null)
       .subscribe(currentCompany => {
@@ -57,12 +60,14 @@ export class LeftSidebarComponent implements OnInit {
           this.currentCompanyId = currentCompany._id;
       });
     
+    // change sector when user change it in combobox  
     this.userService.currentSector
       .filter(s => s != null)
       .subscribe(currentSector => {          
           this.currentSector   = currentSector;
           this.currentSectorId = currentSector._id;
       });
+      
   }
   
   changeCompany(companyId: string) {
