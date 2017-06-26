@@ -12,13 +12,13 @@
         <sidebar-section
           [linkTo]="'overview'"
           [sectionName]="'Estadisticas Globales'" 
-          [iconClass]="'typcn-chart-line'">
+          [iconClass]="'typcn typcn-chart-line'">
         </sidebar-section>
         
         <sidebar-section
           [linkTo]="'peopleManagement'"
           [sectionName]="'Gestion Personal'" 
-          [iconClass]="'typcn-group-outline'">
+          [iconClass]="'typcn typcn-group-outline'">
         </sidebar-section>  
       </div>
         
@@ -26,7 +26,7 @@
       <sidebar-section
         [linkTo]="'dashboard'"
         [sectionName]="'Dashboard'" 
-        [iconClass]="'typcn-chart-pie'" 
+        [iconClass]="'typcn typcn-chart-pie'" 
         [badgeClass]="'badge-primary'" 
         [badgeValue]="dashboardBadge"
         (click)="dashboardSectionClicked()">
@@ -35,7 +35,7 @@
       <sidebar-section
         [linkTo]="'logbook'"
         [sectionName]="'Bitacora'" 
-        [iconClass]="'typcn-contacts'">
+        [iconClass]="'typcn typcn-contacts'">
       </sidebar-section>
       
       <sidebar-section
@@ -43,7 +43,7 @@
         [sectionName]="'Accesos denegados'" 
         [badgeClass]="'badge badge-danger'" 
         [badgeValue]="unauthorizedListBadge"
-        [iconClass]="'typcn-delete'"
+        [iconClass]="'typcn typcn-delete'"
         (click)="unauthorizedListSectionClicked()">
       </sidebar-section>
       
@@ -51,7 +51,7 @@
       <sidebar-section
         [linkTo]="'manualRegister'"
         [sectionName]="'Registro Manual'" 
-        [iconClass]="'typcn-document-add'">
+        [iconClass]="'typcn typcn-document-add'">
       </sidebar-section>
     </app-left-sidebar>
     

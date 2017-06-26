@@ -1,21 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PaginatorModule } from "ngx-paginator";
 
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 
 import { AdminComponent } from './admin.component';
-import { ListUsersComponent } from './list-users/list-users.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
 
 @NgModule({
   declarations: [
     AdminComponent, 
-    ListUsersComponent
+    AdminUsersComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    PaginatorModule
   ],
   exports: [
     AdminComponent

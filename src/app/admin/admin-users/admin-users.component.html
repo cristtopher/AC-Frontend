@@ -1,0 +1,68 @@
+<header class="page-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="page-header-heading"><span class="typcn typcn-group page-header-heading-icon"></span> Administración usuarios</h1>
+                <p class="page-header-description">Gestión de usuarios en el sistema</p>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="widget widget-default">
+          <header class="widget-header">
+              Usuarios
+          </header>
+          <div class="widget-body table-responsive">
+              <table class="table">
+                  <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>RUT</th>
+                        <th>Rol</th>
+                        <th>Compañias</th>
+                        <th class="text-right">Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let user of users$ | async">
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.rut }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>
+                          <span *ngFor="let company of user.companies" class="badge badge-info">{{ company.name }}</span>
+                        </td>
+                        <td class="text-right">
+                          
+                          <button class="btn btn-transparent btn-xs">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-xs hidden-sm hidden-md">Editar</span>
+                          </button>
+                          
+                          <div (click)="deleteUser(user)" class="btn btn-transparent btn-transparent-danger btn-xs">
+                            <span class="fa fa-trash-o"></span>
+                            <span class="hidden-xs hidden-sm hidden-md">Eliminar</span>
+                          </div>
+                          
+                        </td>
+                      </tr>
+                  </tbody>
+              </table>
+              
+              <nav>
+                <route-paginator
+                    [onPage]="10"
+                    [total]="totalPages * 10"
+                    [maxVisible]="5"
+                    (onChange)="goToPage($event)">
+                </route-paginator>
+              </nav>
+              
+          </div>
+      </div>
+    </div>
+</div>

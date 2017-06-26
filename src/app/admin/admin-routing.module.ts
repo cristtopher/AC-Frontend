@@ -2,7 +2,7 @@ import { NgModule }     from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AdminComponent }      from './admin.component';
-import { ListUsersComponent } from './list-users/list-users.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
 
 import { CanActivateAuthGuard } from '../api/auth/auth-guard.service';
 import { CurrentUserResolve }   from '../api/user/user.providers';
@@ -20,7 +20,7 @@ import { CurrentUserResolve }   from '../api/user/user.providers';
           pathMatch: 'prefix'
         }, {
           path: 'users',
-          component: ListUsersComponent
+          component: AdminUsersComponent
         }]
     }])
   ],

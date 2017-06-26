@@ -7,30 +7,18 @@
     
       <app-left-sidebar>
         <li class="sidebar-nav-heading">Administración</li>
-          
-        <sidebar-group-section [sectionName]="'Empresas'" [iconClass]="'typcn-group'">
-          <sidebar-section
-            [linkTo]="'companies'"
-            [sectionName]="'Lista Empresas'" 
-            [iconClass]="'typcn-group'"></sidebar-section>
 
-          <sidebar-section
-            [linkTo]="'addCompany'"
-            [sectionName]="'Crear Empresa'" 
-            [iconClass]="'typcn-user-add'"></sidebar-section>
-        </sidebar-group-section>
-    
-        <sidebar-group-section [sectionName]="'Usuarios'" [iconClass]="'typcn-user-outline'">
-          <sidebar-section
-            [linkTo]="'users'"
-            [sectionName]="'Lista Usuarios'" 
-            [iconClass]="'typcn-user-add-outline'"></sidebar-section>
+        <sidebar-section
+          [linkTo]="'companies'"
+          [sectionName]="'Empresas'" 
+          [iconClass]="'fa fa-building'"></sidebar-section>
+        
+        
+        <sidebar-section
+          [linkTo]="'users'"
+          [sectionName]="'Usuarios'" 
+          [iconClass]="'typcn typcn-group'"></sidebar-section>
 
-          <sidebar-section
-            [linkTo]="'addUser'"
-            [sectionName]="'Crear Usuario'" 
-            [iconClass]="'typcn-user-outline'"></sidebar-section>
-        </sidebar-group-section>
       </app-left-sidebar>
     
     

@@ -8,7 +8,7 @@
 └── ./src
     ├── ./src/app                             -  Application root module
     │   ├── ./src/app/admin                   -  Admin section module (admins will be redirected here after login sucessfully)
-    │   │   └── ./src/app/admin/list-users    -  List users component to list and manage platform users
+    │   │   └── ./src/app/admin/admin-users   -  admin users component to list and manage platform users
     │   ├── ./src/app/home                    -  Home section module (users and supervisors will be redirected here after login sucessfully)
     │   │   └── ./src/app/home/dashboard      -  Dashboard component (holds metrtics and plots)
     │   ├── ./src/app/login                   -  Login component to handle login page

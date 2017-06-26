@@ -54,10 +54,18 @@ export class UserService {
   }
       
   get(query: Object = {}) {
-     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/users${queryString ? '?' + queryString : ''}`)
-                        .map(res => <User[]> res.json())
+                        .map(res => {
+                          if (!query['paging']) { return <User[]> res.json(); }
+                          
+                          return {
+                            page: parseInt(res.headers.get('X-Pagination-Page')),
+                            pages: parseInt(res.headers.get('X-Pagination-Pages')),
+                            users: <User[]> res.json()
+                          } 
+                        })
                         .catch(this.handleError);
   }
   
