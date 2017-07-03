@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 
 import { RegisterService } from '../../api/register/register.providers';
 import { SectorService } from '../../api/sector/sector.providers';
@@ -55,12 +56,27 @@ export class OverviewComponent implements OnInit {
     }
   }
 
+  @ViewChild('registersPerWeekBarChartComponent') registersPerWeekBarChartVC: BaseChartDirective;
+  
+  
   registersPerWeekBarChart = {
-    labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'],
+    labels: [],
     series: [
-      {label: 'Entradas', data: [0, 0, 0, 0, 0, 0, 0]},
-      {label: 'Salidas', data: [0, 0, 0, 0, 0, 0, 0]}
-    ]
+      {label: 'Entradas', data: []},
+      {label: 'Salidas', data: []}
+    ],
+    options: {
+      scaleShowVerticalLines: false, 
+      responsive: true,
+      scales: {
+        yAxes: [{
+          ticks: {
+              beginAtZero: true,
+              callback: function(value) { if (value % 1 === 0) { return value; }}
+          }
+        }]
+      }
+    }
   }
 
   constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService, private companyService: CompanyService) { }
@@ -104,7 +120,11 @@ export class OverviewComponent implements OnInit {
     let reversedEntryWeeklyHistory = statisticsData.weeklyHistory.entry.reverse();
     let reversedDepartWeeklyHistory = statisticsData.weeklyHistory.depart.reverse();
 
-    this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
+    // this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
+    this.registersPerWeekBarChartVC.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);;
+    this.registersPerWeekBarChartVC.ngOnChanges({});
+    
+
 
     this.registersPerWeekBarChart.series = [
       { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },

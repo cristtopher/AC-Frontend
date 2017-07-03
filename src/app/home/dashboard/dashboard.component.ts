@@ -76,7 +76,19 @@ export class DashboardComponent implements OnInit {
     series: [
       {label: 'Entradas', data: []},
       {label: 'Salidas', data: []}
-    ]
+    ],
+    options: {
+      scaleShowVerticalLines: false, 
+      responsive: true,
+      scales: {
+        yAxes: [{
+          ticks: {
+              beginAtZero: true,
+              callback: function(value) { if (value % 1 === 0) { return value; }}
+          }
+        }]
+      }
+    }    
   }
 
   constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService) { }
