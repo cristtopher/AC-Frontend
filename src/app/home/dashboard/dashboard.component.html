@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-6 col-lg-8">
         <h1 class="page-header-heading"><span class="typcn typcn-chart-line page-header-heading-icon"></span>Dashboard</h1>
-        <p class="page-header-description">Este panel de control provee un resumen de los registros de acceso del
+        <p class="page-header-description">Este panel de control provee un resumen de los registros de acceso de
           <span class="label label-default"><strong>{{currentSector?.name}}</strong></span>
         </p>
       </div>
@@ -24,7 +24,7 @@
         <header class="widget-statistic-header">{{currentSector?.name | uppercase}}</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.totalPersonsInSector }}</span>
-          <span class="widget-statistic-description">Numero  <strong>total</strong> de personas en planta</span>
+          <span class="widget-statistic-description">Número  <strong>total</strong> de personas</span>
           <span class="widget-statistic-icon fa fa-industry"></span>
           <br/>
           <button class="btn btn-sm btn-transparent-white" type="button" (click)="toggleWidgetDetails('En Planta')"><span class="fa fa-search"></span> {{ currentWidgetTable == 'En Planta' ? 'Ocultar' : 'Ver' }} detalle</button>
@@ -37,7 +37,7 @@
         <header class="widget-statistic-header">Empleados</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.staffPercentageInSector | number:'1.0-2' }}%</span>
-          <span class="widget-statistic-description">Porcentaje de <strong>empleados</strong> en planta</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>empleados</strong></span>
           <span class="widget-statistic-icon fa fa-user"></span>
           <br/>
           <button class="btn btn-sm btn-transparent-white" type="button" (click)="toggleWidgetDetails('Empleados')"><span class="fa fa-search"></span> {{ currentWidgetTable == 'Empleados' ? 'Ocultar' : 'Ver' }} detalle</button>
@@ -46,11 +46,11 @@
     </div>
 
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-info">
+      <div class="widget widget-statistic widget-warning">
         <header class="widget-statistic-header">Contratistas</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.contractorsPercentageInSector | number:'1.0-2' }}%</span>
-          <span class="widget-statistic-description">Porcentaje de <strong>contratistas</strong> en planta</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>contratistas</strong></span>
           <span class="widget-statistic-icon fa fa-user-o"></span>
           <br/>
           <button class="btn btn-sm btn-transparent-white" type="button" (click)="toggleWidgetDetails('Contratistas')"><span class="fa fa-search"></span> {{ currentWidgetTable == 'Contratistas' ? 'Ocultar' : 'Ver' }} detalle</button>
@@ -59,11 +59,11 @@
     </div>
 
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-faded-blue">
+      <div class="widget widget-statistic widget-purple">
         <header class="widget-statistic-header">Visitas</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.visitorsPercentageInSector | number:'1.0-2' }}%</span>
-          <span class="widget-statistic-description">Porcentaje de <strong>visitas</strong> en planta</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>visitas</strong></span>
           <span class="widget-statistic-icon fa fa-eye"></span>
           <br/>
           <button class="btn btn-sm btn-transparent-white" type="button" (click)="toggleWidgetDetails('Visitas')"><span class="fa fa-search"></span> {{ currentWidgetTable == 'Visitas' ? 'Ocultar' : 'Ver' }} detalle</button>
@@ -99,8 +99,8 @@
               <td>{{ register.person?.name }}</td>
               <td>
                 <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
-                <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
-                <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
+                <span class="badge badge-warning" *ngIf="register.person?.type === 'contractor'">Contratista</span>
+                <span class="badge badge-purple" *ngIf="register.person?.type === 'visitor'">Visita</span>
               </td>
               <td>{{ register.time | amDateFormat:'DD/MM/YYYY HH:mm:ss' }}</td>
               <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
@@ -116,7 +116,7 @@
               (onChange)="goToWidgetTablePage($event)">
           </route-paginator>
         </nav>
-        
+
       </div>
     </div>
   </div>
@@ -186,8 +186,8 @@
             <td>{{ register.person?.name }}</td>
             <td>
               <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
-              <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
-              <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
+              <span class="badge badge-warning" *ngIf="register.person?.type === 'contractor'">Contratista</span>
+              <span class="badge badge-purple" *ngIf="register.person?.type === 'visitor'">Visita</span>
             </td>
             <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
