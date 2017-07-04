@@ -3,62 +3,62 @@
 <div class="wrapper">
   <div class="page-wrapper">
     <app-top-header [title]="'ControlAccess'"></app-top-header>
-    
+
     <app-left-sidebar>
-      
+
       <div *ngIf="currentUser.role === 'supervisor'">
         <li class="sidebar-nav-heading">Administración</li>
 
         <sidebar-section
           [linkTo]="'overview'"
-          [sectionName]="'Estadisticas Globales'" 
+          [sectionName]="'Estadísticas Globales'"
           [iconClass]="'typcn typcn-chart-line'">
         </sidebar-section>
-        
+
         <sidebar-section
           [linkTo]="'peopleManagement'"
-          [sectionName]="'Gestion Personal'" 
+          [sectionName]="'Gestión de Personas'"
           [iconClass]="'typcn typcn-group-outline'">
-        </sidebar-section>  
+        </sidebar-section>
       </div>
-        
-      <li class="sidebar-nav-heading">General</li>    
+
+      <li class="sidebar-nav-heading">General</li>
       <sidebar-section
         [linkTo]="'dashboard'"
-        [sectionName]="'Dashboard'" 
-        [iconClass]="'typcn typcn-chart-pie'" 
-        [badgeClass]="'badge-primary'" 
+        [sectionName]="'Dashboard'"
+        [iconClass]="'typcn typcn-chart-pie'"
+        [badgeClass]="'badge-primary'"
         [badgeValue]="dashboardBadge"
         (click)="dashboardSectionClicked()">
       </sidebar-section>
 
       <sidebar-section
         [linkTo]="'logbook'"
-        [sectionName]="'Bitacora'" 
+        [sectionName]="'Bitácora'"
         [iconClass]="'typcn typcn-contacts'">
       </sidebar-section>
-      
+
       <sidebar-section
         [linkTo]="'unauthorizedList'"
-        [sectionName]="'Accesos denegados'" 
-        [badgeClass]="'badge badge-danger'" 
+        [sectionName]="'Accesos Denegados'"
+        [badgeClass]="'badge badge-danger'"
         [badgeValue]="unauthorizedListBadge"
         [iconClass]="'typcn typcn-delete'"
         (click)="unauthorizedListSectionClicked()">
       </sidebar-section>
-      
+
 
       <sidebar-section
         [linkTo]="'manualRegister'"
-        [sectionName]="'Registro Manual'" 
+        [sectionName]="'Registro Manual'"
         [iconClass]="'typcn typcn-document-add'">
       </sidebar-section>
     </app-left-sidebar>
-    
-    
-    <div class="content-wrapper">    
+
+
+    <div class="content-wrapper">
       <router-outlet></router-outlet>
     </div>
-    
+
   </div>
 </div>
