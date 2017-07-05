@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Observable } from 'rxjs/Observable';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
 
 import { UserService } from '../../api/user/user.providers';
 import { User } from '../../api/user/user.model';
+
+import { AdminUserModalComponent, AdminUserModalContext } from './admin-user-modal/admin-user-modal.component';
 
 import swal from 'sweetalert2';
 
@@ -21,7 +24,7 @@ export class AdminUsersComponent implements OnInit {
   currentPage = 1;
   usersInPage = 0;
 
-  constructor(private userService: UserService) {}
+  constructor(private modal: Modal, private userService: UserService) {}
 
   ngOnInit() {
     this.users$ = this.userService.get({ paging: 1, populate: 1 })
@@ -34,7 +37,14 @@ export class AdminUsersComponent implements OnInit {
       });
   }
 
-
+  addUser() {
+    this.modal.open(AdminUserModalComponent, overlayConfigFactory({ action: "create", user: new User() }, BSModalContext));
+  }
+  
+  editUser(user: User) {
+    this.modal.open(AdminUserModalComponent, overlayConfigFactory({ action: "update", user: user }, BSModalContext));
+  }
+  
   deleteUser(user: User){
     swal({
       title: 'Eliminar Usuario?',

@@ -15,6 +15,17 @@ import { Company } from '../company/company.model';
 import { Sector }  from '../sector/sector.model';
 
 //-------------------------------------------------------
+//                      Constants
+//-------------------------------------------------------
+
+export const HUMANIZED_USER_ROLES = {
+  'admin': 'Administrador',
+  'supervisor': 'supervisor',
+  'user': 'user'
+};
+
+
+//-------------------------------------------------------
 //                      Services
 //-------------------------------------------------------
 
