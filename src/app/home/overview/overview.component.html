@@ -42,7 +42,7 @@
     </div>
 
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-info">
+      <div class="widget widget-statistic widget-warning">
         <header class="widget-statistic-header">Contratistas</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.contractorsPercentageInCompany | number:'1.0-2' }}%</span>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="col-sm-6 col-lg-3">
-      <div class="widget widget-statistic widget-faded-blue">
+      <div class="widget widget-statistic widget-purple">
         <header class="widget-statistic-header">Visitas</header>
         <div class="widget-statistic-body">
           <span class="widget-statistic-value">{{ statistics.visitorsPercentageInCompany | number:'1.0-2' }}%</span>
@@ -110,7 +110,7 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-info">
-        <div class="panel-heading">Ultimos registros</div>
+        <div class="panel-heading">Últimos 15 registros</div>
         <table class="table">
           <thead>
             <tr>
@@ -132,8 +132,8 @@
               <td>{{ register.person?.name }}</td>
               <td>
                 <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
-                <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
-                <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
+                <span class="badge badge-warning" *ngIf="register.person?.type === 'contractor'">Contratista</span>
+                <span class="badge badge-purple" *ngIf="register.person?.type === 'visitor'">Visita</span>
               </td>
               <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
               <td><span class="badge badge-default">{{ register.sector.name }}</span></td>

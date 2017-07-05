@@ -43,7 +43,7 @@
             <option value="">Todos los Estados</option>
             <option *ngFor="let status of { true: 'Activo', false: 'Inactivo' } | mapToIterable" [value]="status.key">{{status.val}}</option>
         </select>
-      </div>      
+      </div>
     </div>
   </div>
 
@@ -80,8 +80,8 @@
                 </td>
                 <td>
                   <span class="badge badge-primary" *ngIf="humanizedPersonProfiles[person.type] === 'Empleado'">Empleado</span>
-                  <span class="badge badge-info" *ngIf="humanizedPersonProfiles[person.type] === 'Contratista'">Contratista</span>
-                  <span class="badge badge-faded-blue" *ngIf="humanizedPersonProfiles[person.type] === 'Visita'">Visita</span>
+                  <span class="badge badge-warning" *ngIf="humanizedPersonProfiles[person.type] === 'Contratista'">Contratista</span>
+                  <span class="badge badge-purple" *ngIf="humanizedPersonProfiles[person.type] === 'Visita'">Visita</span>
                 </td>
                 <td class="text-right">
                   <button (click)="updatePerson(person)" class="btn btn-transparent btn-xs">
@@ -96,7 +96,7 @@
               </tr>
             </tbody>
           </table>
-          
+
           <nav>
             <route-paginator
                 [onPage]="10"
@@ -105,7 +105,7 @@
                 (onChange)="goToPage($event)">
             </route-paginator>
           </nav>
-          
+
         </div>
       </div>
     </div>
