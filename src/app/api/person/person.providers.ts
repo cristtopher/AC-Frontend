@@ -20,7 +20,8 @@ import { Person } from './person.model'
 export const HUMANIZED_PERSON_PROFILES = {
   'staff': 'Empleado',
   'contractor': 'Contratista',
-  'visitor': 'Visita'
+  'visitor': 'Visita',
+  'supplier': 'Supplier'
 };
 
 //-------------------------------------------------------
