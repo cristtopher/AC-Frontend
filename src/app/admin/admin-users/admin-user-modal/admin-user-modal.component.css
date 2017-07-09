@@ -1,3 +1,12 @@
 .container-fluid {
   padding: 20px;
 }
+
+.panel-body {
+  padding: 20px;
+}
+
+:host >>> .ng2-dropdown-menu {  
+    left: inherit !important; 
+    top: inherit !important;
+}

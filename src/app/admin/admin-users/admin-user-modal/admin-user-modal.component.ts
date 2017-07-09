@@ -13,7 +13,7 @@ import { Company } from '../../../api/company/company.model';
 export class AdminUserModalContext extends BSModalContext {
     action: String;
 
-    constructor(public user: User, public company: Company) {
+    constructor(public user: User) {
       super();
     }
 }
@@ -28,32 +28,45 @@ export class AdminUserModalComponent implements OnInit, ModalComponent<AdminUser
   
   humanizedUserRoles = HUMANIZED_USER_ROLES;
   
+  allCompanies: Company[];
+  
+  // Errorvalidation
+  userExists: boolean = false;
+  fieldErrorMsg: boolean = false;
+  
   constructor(public dialog: DialogRef<AdminUserModalContext>, private userService: UserService, private companyService: CompanyService) {
     this.context = dialog.context;
     this.context.showClose = true;
-    dialog.setCloseGuard(this);
+    dialog.setCloseGuard(this);        
   }
 
-  ngOnInit() { }
+  ngOnInit() {    
+    this.companyService.get().subscribe(companies => this.allCompanies = companies);
+  }
 
-  createUser(){
-    // return this.companyService.createPerson(this.context.company, this.context.person)
-    //                          .toPromise()
-    //                          .then((person) => this.dialog.close(person))
-    //                          .catch((error) => {
-    //                            if(error.code === 11000) {
-    //                              this.personExistsErrorMsg = true;
-    //                              return;
-    //                            }
-    //
-    //                            if (error.errors) {
-    //                              this.fieldErrorMsg = true;
-    //                              Object.keys(error.errors).forEach(e => this.formFieldErrorMapping[e] = true);
-    //                            }
-    //                          });
+  createUser() {
+    let newUser = this.context.user;
+    let userCompaniesId = newUser.companies.map(c => c._id);
+
+    return this.userService.createUser(this.context.user)
+                             .toPromise()
+                             .then((person) => this.dialog.close(person))
+                             .catch((error) => {
+                               if(error.code === 11000) {
+                                 this.userExists = true;
+                                 return;
+                               }
+
+                               if (error.errors) {
+                                 this.fieldErrorMsg = true;
+                                 // Object.keys(error.errors).forEach(e => this.formFieldErrorMapping[e] = true);
+                               }
+                             });
   }
 
   updateUser(){
+    console.log(this.context.user);
+    
     // return this.personService.updatePerson(this.context.person)
     //                          .toPromise()
     //                          .then((person) => this.dialog.close(person))
@@ -72,7 +85,5 @@ export class AdminUserModalComponent implements OnInit, ModalComponent<AdminUser
 
   beforeClose(): boolean {
     return false;
-  }
-
-  
+  }  
 }

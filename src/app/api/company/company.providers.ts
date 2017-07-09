@@ -22,6 +22,14 @@ import { Person } from '../person/person.model';
 export class CompanyService {  
   constructor(private authHttp: AuthHttp, private authService: AuthService) { }
   
+  get(query: Object = {}) {
+    let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
+    
+    return this.authHttp.get(`${environment.API_BASEURL}/api/companies${queryString ? '?' + queryString : ''}`)
+                        .map(res => <Company[]> res.json())
+                        .catch(this.handleError);
+  }
+  
   getPersons(company: Company, query: Object = {}): Observable<any> {
     let queryString = Object.keys(query).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(query[k])}`).join('&');
     

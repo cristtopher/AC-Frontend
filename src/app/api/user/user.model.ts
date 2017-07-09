@@ -8,7 +8,7 @@ export class User extends Serializable {
   rut:  string;
   name: string;
   role: string;
-  companies: Company[];
+  companies: Company[] = [];
       
   constructor() {
     super();  

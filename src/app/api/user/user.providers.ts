@@ -80,6 +80,21 @@ export class UserService {
                         .catch(this.handleError);
   }
   
+  createUser(user: User) {
+    return this.authHttp.post(`${environment.API_BASEURL}/api/users`, {
+      name: user.name,
+      rut: user.rut,
+      role: user.role,
+      companies: user.companies.map(c => c._id)
+    })
+    .map(res => <User> res.json())
+    .catch(this.handleError);
+  }
+  
+  updateUser(user: User) {
+    
+  }
+  
   deleteUser(user: User){
     return this.authHttp.delete(`${environment.API_BASEURL}/api/users/${user._id}`)
                         .catch(this.handleError);

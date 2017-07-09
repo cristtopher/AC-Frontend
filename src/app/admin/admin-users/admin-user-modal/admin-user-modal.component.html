@@ -3,31 +3,46 @@
     <div *ngIf="context.action == 'create'" class="panel-heading">Crear Usuario</div>
     <div *ngIf="context.action == 'update'" class="panel-heading">Editar Usuario</div>
     <div class="panel-body">
+
       <div class="form-horizontal">
         <div class="panel">
           <div class="panel-body">
-            <label class="col-sm-2 col-xs-12 control-label">RUT: </label>
-            <div class="col-sm-10 col-xs-12">
-               <input type="text" class="form-control" [(ngModel)]="context.user.rut">
-            </div>
-
-            <label class="col-sm-2 col-xs-12 control-label">Nombre: </label>
-            <div class="col-sm-10 col-xs-12">
-               <input type="text" class="form-control" [(ngModel)]="context.user.name">
-            </div>
-
-            <label class="col-sm-2 col-xs-12 control-label">Nombre: </label>
-            <div class="col-sm-10 col-xs-12">
-               <input type="text" class="form-control" [(ngModel)]="context.user.name">
+                        
+            <div class="form-group">
+              <label class="control-label">RUT: </label>
+              <input type="text" class="form-control" [(ngModel)]="context.user.rut">
             </div>
             
-            <div class="form-group col-sm-10 col-xs-12" style="padding-left: 20px;">
+            <div class="form-group">
+              <label class="control-label">Nombre: </label>
+               <input type="text" class="form-control" [(ngModel)]="context.user.name">
+            </div>
+
+            <div class="form-group">
               <label class=" control-label">Perfil:</label>
               <select class="form-control" (change)="context.user.role = $event.target.value" [(ngModel)]="context.user.role">
                   <option *ngFor="let profile of humanizedUserRoles | mapToIterable" [value]="profile.key">{{profile.val}}</option>
               </select>
             </div>
             
+            <div class="form-group">
+              <label class="control-label">Compañias:</label>
+              <tag-input [(ngModel)]="context.user.companies" 
+                         [identifyBy]="'_id'" 
+                         [displayBy]="'name'"
+                         [onlyFromAutocomplete]="true" 
+                         theme="dark" 
+                         placeholder="+ Compañia" 
+                         secondaryPlaceholder="+ Compañia">
+                  <tag-input-dropdown 
+                          [showDropdownIfEmpty]="true"
+                          [appendToBody]="false"
+                          [identifyBy]="'_id'"
+                          [displayBy]="'name'"
+                          [autocompleteItems]="allCompanies">
+                  </tag-input-dropdown>
+              </tag-input>
+            </div>
           </div>
 
           <div class="panel-footer text-right">
@@ -42,3 +57,7 @@
 
   </div>
 </div>
+
+
+
+
