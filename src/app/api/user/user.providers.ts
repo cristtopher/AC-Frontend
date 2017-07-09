@@ -91,8 +91,10 @@ export class UserService {
     .catch(this.handleError);
   }
   
-  updateUser(user: User) {
-    
+  patchUser(user: User, data) {    
+    return this.authHttp.patch(`${environment.API_BASEURL}/api/users/${user._id}`, data)
+     .map(res => <User> res.json())
+     .catch(this.handleError);
   }
   
   deleteUser(user: User){

@@ -50,8 +50,8 @@ export class AdminUserModalComponent implements OnInit, ModalComponent<AdminUser
 
     return this.userService.createUser(this.context.user)
                              .toPromise()
-                             .then((person) => this.dialog.close(person))
-                             .catch((error) => {
+                             .then(user => this.dialog.close(user))
+                             .catch(error => {
                                if(error.code === 11000) {
                                  this.userExists = true;
                                  return;
@@ -65,11 +65,27 @@ export class AdminUserModalComponent implements OnInit, ModalComponent<AdminUser
   }
 
   updateUser(){
-    console.log(this.context.user);
+    let user = this.context.user;
     
-    // return this.personService.updatePerson(this.context.person)
-    //                          .toPromise()
-    //                          .then((person) => this.dialog.close(person))
+    return this.userService.patchUser(user, [
+        { op: 'add', path: '/rut', value: user.rut },
+        { op: 'add', path: '/name', value: user.name },
+        { op: 'add', path: '/role', value: user.role },
+        { op: 'add', path: '/companies', value: user.companies.map(c => c._id) }
+      ])
+     .toPromise()
+     .then(user => this.dialog.close(user))
+     .catch(error => {
+       if(error.code === 11000) {
+         this.userExists = true;
+         return;
+       }
+
+       if (error.errors) {
+         this.fieldErrorMsg = true;
+
+       }
+     });
    }
 
   closeModal() {
