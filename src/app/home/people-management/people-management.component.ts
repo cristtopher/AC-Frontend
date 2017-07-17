@@ -1,8 +1,9 @@
 import * as _ from 'lodash';
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { RoutePaginator } from 'ngx-paginator';
 
 import { PersonService, HUMANIZED_PERSON_PROFILES } from '../../api/person/person.providers';
 import { UserService } from '../../api/user/user.providers';
@@ -32,6 +33,7 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
 
   // paging 
+  @ViewChild(RoutePaginator) routePaginator: RoutePaginator;
   totalPages  = 1;
   currentPage = 1;
 
@@ -115,8 +117,6 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
   // -------------------------
   //      Import/Export
   // -------------------------
-  
-  
   importExcel() {
     this.modal.open(ImportModalComponent, overlayConfigFactory({ company: this.currentCompany }, BSModalContext));
   }
@@ -134,7 +134,8 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
   
   
   goToPage(pageNum) {
-    this.currentFilters["page"] = pageNum;
+    this.currentFilters.page                  = pageNum;
+    this.routePaginator.paginator.currentPage = pageNum;
     
     this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
                       .subscribe(personsData => {
@@ -152,48 +153,22 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
     
   changeProfileFilter(profile: string) {
     this.currentFilters.personType = profile;
-    
-    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
-      .subscribe(personsData => {
-        this.totalPages  = personsData.pages;
-        this.currentPage = personsData.page;
-        this.persons     = personsData.data;
-      });
-      
+    this.routePaginator.changePage(1);
   }
 
   changeStatusFilter(status: string) {  
-    this.currentFilters.status = status ? JSON.parse(status) : null;
-    
-    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
-      .subscribe(personsData => {
-        this.totalPages  = personsData.pages;
-        this.currentPage = personsData.page;
-        this.persons     = personsData.data;
-      });
-    
+    this.currentFilters.status = status ? JSON.parse(status) : null;    
+    this.routePaginator.changePage(1);
   }
   
   changeRutFilter(rut: string) {
-    this.currentFilters.rut = rut;
-    
-    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
-      .subscribe(personsData => {
-        this.totalPages  = personsData.pages;
-        this.currentPage = personsData.page;
-        this.persons     = personsData.data;
-      });
+    this.currentFilters.rut = rut;    
+    this.routePaginator.changePage(1);
   }
   
   changeNameFilter(name: string) {
     this.currentFilters.name = name;
-    
-    this.companyService.getPersons(this.currentCompany, _.pickBy(this.currentFilters, o => !_.isNil(o)))
-      .subscribe(personsData => {
-        this.totalPages  = personsData.pages;
-        this.currentPage = personsData.page;
-        this.persons     = personsData.data;
-      });    
+    this.routePaginator.changePage(1);
   }
   
 }
