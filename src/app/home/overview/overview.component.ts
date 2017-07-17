@@ -32,12 +32,13 @@ export class OverviewComponent implements OnInit {
     totalPersonsInCompany: null,
     staffPercentageInCompany: null,
     contractorsPercentageInCompany: null,
-    visitorsPercentageInCompany: null
+    visitorsPercentageInCompany: null,
+    suppliersPercentageInCompany: null
   }
 
   profileDistPieChart = {
-    labels: ['Empleados', 'Contratistas', 'Visitas'],
-    data: [0, 0, 0],
+    labels: ['Empleados', 'Contratistas', 'Visitas', 'Proveedores'],
+    data: [0, 0, 0, 0],
     options: {
       tooltips: {
         callbacks: {
@@ -106,26 +107,26 @@ export class OverviewComponent implements OnInit {
   processStatisticsData(statisticsData) {
     console.log(`got statisticsData: ${JSON.stringify(statisticsData)}`)
     
-    this.statistics.totalPersonsInCompany          = statisticsData.staffCount + statisticsData.contractorCount + statisticsData.visitCount;
+    this.statistics.totalPersonsInCompany          = statisticsData.staffCount + statisticsData.contractorCount + statisticsData.visitCount + statisticsData.supplierCount;
     this.statistics.staffPercentageInCompany       = this.statistics.totalPersonsInCompany ? (statisticsData.staffCount / this.statistics.totalPersonsInCompany) * 100 : 0;
     this.statistics.contractorsPercentageInCompany = this.statistics.totalPersonsInCompany ? (statisticsData.contractorCount / this.statistics.totalPersonsInCompany) * 100 : 0;
     this.statistics.visitorsPercentageInCompany    = this.statistics.totalPersonsInCompany ? (statisticsData.visitCount / this.statistics.totalPersonsInCompany) * 100 : 0;
+    this.statistics.suppliersPercentageInCompany   = this.statistics.totalPersonsInCompany ? (statisticsData.visitCount / this.statistics.totalPersonsInCompany) * 100 : 0;
+    
   
     this.profileDistPieChart.data = [
       this.statistics.staffPercentageInCompany, 
       this.statistics.contractorsPercentageInCompany, 
-      this.statistics.visitorsPercentageInCompany
+      this.statistics.visitorsPercentageInCompany,
+      this.statistics.suppliersPercentageInCompany
     ];
 
     let reversedEntryWeeklyHistory = statisticsData.weeklyHistory.entry.reverse();
     let reversedDepartWeeklyHistory = statisticsData.weeklyHistory.depart.reverse();
 
-    // this.registersPerWeekBarChart.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
-    this.registersPerWeekBarChartVC.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment.unix(t.datetime / 1000).utc().day()]);
+    this.registersPerWeekBarChartVC.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
     this.registersPerWeekBarChartVC.ngOnChanges({});
     
-
-
     this.registersPerWeekBarChart.series = [
       { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
       { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }

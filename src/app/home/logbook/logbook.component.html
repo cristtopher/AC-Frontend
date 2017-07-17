@@ -112,7 +112,7 @@
               <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
               <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
               <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'visitor'">Visita</span>
-              <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'supplier'">Supplier</span>
+              <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'supplier'">Proveedor</span>
             </td>
             <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td>{{ register.sector.name }}</td>

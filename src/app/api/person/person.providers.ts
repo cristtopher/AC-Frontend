@@ -21,7 +21,7 @@ export const HUMANIZED_PERSON_PROFILES = {
   'staff': 'Empleado',
   'contractor': 'Contratista',
   'visitor': 'Visita',
-  'supplier': 'Supplier'
+  'supplier': 'Proveedor'
 };
 
 //-------------------------------------------------------

@@ -70,6 +70,20 @@
         </div>
       </div>
     </div>
+    
+    <div class="col-sm-6 col-lg-3">
+      <div class="widget widget-statistic widget-faded-blue">
+        <header class="widget-statistic-header">Proveedores</header>
+        <div class="widget-statistic-body">
+          <span class="widget-statistic-value">{{ statistics.suppliersPercentageInSector | number:'1.0-2' }}%</span>
+          <span class="widget-statistic-description">Porcentaje de <strong>proveedores</strong></span>
+          <span class="widget-statistic-icon fa fa-truck"></span>
+          <br/>
+          <button class="btn btn-sm btn-transparent-white" type="button" (click)="toggleWidgetDetails('Proveedores')"><span class="fa fa-search"></span> {{ currentWidgetTable == 'Proveedores' ? 'Ocultar' : 'Ver' }} detalle</button>
+        </div>
+      </div>
+    </div>
+    
   </div>
   <!-- end row -->
 
@@ -101,6 +115,8 @@
                 <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
                 <span class="badge badge-warning" *ngIf="register.person?.type === 'contractor'">Contratista</span>
                 <span class="badge badge-purple" *ngIf="register.person?.type === 'visitor'">Visita</span>
+                <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'supplier'">Proveedor</span>
+                
               </td>
               <td>{{ register.time | amDateFormat:'DD/MM/YYYY HH:mm:ss' }}</td>
               <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
@@ -188,6 +204,8 @@
               <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
               <span class="badge badge-warning" *ngIf="register.person?.type === 'contractor'">Contratista</span>
               <span class="badge badge-purple" *ngIf="register.person?.type === 'visitor'">Visita</span>
+              <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'supplier'">Proveedor</span>
+              
             </td>
             <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td><span class="badge badge-default">{{ register.sector.name }}</span></td>
