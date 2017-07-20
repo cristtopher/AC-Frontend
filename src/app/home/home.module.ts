@@ -39,7 +39,6 @@ import { UnauthorizedListComponent } from './unauthorized-list/unauthorized-list
     FormsModule,
     ReactiveFormsModule,
     ChartsModule,
-    ModalModule.forRoot(),
     BootstrapModalModule,
     Ng2DatetimePickerModule,    
     HomeRoutingModule,

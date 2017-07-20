@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 
 import { Http, RequestOptions } from '@angular/http';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { ModalModule } from 'angular2-modal';
 
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
@@ -41,7 +42,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     HomeModule,
     AdminModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ModalModule.forRoot()
   ],
   providers: [
     // AUTH_PROVIDERS,
