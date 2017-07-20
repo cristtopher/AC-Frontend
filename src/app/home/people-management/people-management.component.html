@@ -77,9 +77,10 @@
                   <span class="text-muted" *ngIf="!person.active">Inactivo</span>
                 </td>
                 <td>
-                  <span class="badge badge-primary" *ngIf="humanizedPersonProfiles[person.type] === 'Empleado'">Empleado</span>
-                  <span class="badge badge-warning" *ngIf="humanizedPersonProfiles[person.type] === 'Contratista'">Contratista</span>
-                  <span class="badge badge-purple" *ngIf="humanizedPersonProfiles[person.type] === 'Visita'">Visita</span>
+                  <span class="badge badge-primary"    *ngIf="humanizedPersonProfiles[person.type] === 'Empleado'">Empleado</span>
+                  <span class="badge badge-warning"    *ngIf="humanizedPersonProfiles[person.type] === 'Contratista'">Contratista</span>
+                  <span class="badge badge-purple"     *ngIf="humanizedPersonProfiles[person.type] === 'Visita'">Visita</span>
+                  <span class="badge badge-faded-blue" *ngIf="humanizedPersonProfiles[person.type] === 'Proveedor'">Proveedor</span>
                 </td>
                 <td class="text-right">
                   <button (click)="updatePerson(person)" class="btn btn-transparent btn-xs">
