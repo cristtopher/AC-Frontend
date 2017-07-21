@@ -44,12 +44,18 @@ export class LeftSidebarComponent implements OnInit {
           this.isMultiCompany = true;
         }
 
-        this.companies = companies;
+        this.companies        = companies;
+        this.currentCompanyId = companies[0]._id;
+        this.currentCompany   = companies[0];
       })
       // after getting all companies, then get all sectors associated to first company
-      .flatMap(companies => this.userService.getMySectors(companies[0]))
+      .flatMap(companies => this.userService.getMySectors(this.currentCompany))
       .map(sectors => _.sortBy(sectors, 'name'))
-      .do(sectors => this.sectors = sectors)
+      .do(sectors => {
+        this.sectors         = sectors
+        this.currentSectorId = sectors[0]._id;
+        this.currentSector   = sectors[0];        
+      })
       .subscribe();
     
     // change company when user change it in combobox  

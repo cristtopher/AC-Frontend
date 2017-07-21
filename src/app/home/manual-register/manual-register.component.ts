@@ -85,7 +85,6 @@ export class ManualRegisterComponent implements OnInit {
   
 
   createRegister() {
-    console.log('Creating Register from Form...');
     var newRegister = new Register();
     
     // creating new register... 

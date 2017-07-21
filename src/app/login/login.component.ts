@@ -23,7 +23,16 @@ export class LoginComponent implements OnInit {
   }
   
   ngOnInit() {
-    
+    if (this.authService.loggedIn()) {
+      this.authService.getProfile()
+      .subscribe((user: User) => {
+        if(user.role === 'admin'){ 
+          return this.router.navigate(['/admin']); 
+        } else {
+          return this.router.navigate(['/home']); 
+        }
+      });
+    }
   }
 
   login($event, rut, password) {
