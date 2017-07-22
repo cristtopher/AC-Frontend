@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit {
   profileDistPieChart = {
     labels: ['Empleados', 'Contratistas', 'Visitas', 'Proveedores'],
     data: [0, 0, 0, 0],
+    colors: [{ backgroundColor: ['#11627d', '#c3a203', '#5e4578', '#4a7382'] } ],
     options: {
       tooltips: {
         callbacks: {
