@@ -43,18 +43,10 @@ export class LeftSidebarComponent implements OnInit {
         if (companies.length > 1) {
           this.isMultiCompany = true;
         }
-
-        this.companies        = companies;
-        this.currentCompanyId = companies[0]._id;
-        this.currentCompany   = companies[0];
-      })
-      // after getting all companies, then get all sectors associated to first company
-      .flatMap(companies => this.userService.getMySectors(this.currentCompany))
-      .map(sectors => _.sortBy(sectors, 'name'))
-      .do(sectors => {
-        this.sectors         = sectors
-        this.currentSectorId = sectors[0]._id;
-        this.currentSector   = sectors[0];        
+        
+        this.companies = companies;
+        
+        this.changeCompany(companies[0]._id);
       })
       .subscribe();
     
@@ -78,6 +70,7 @@ export class LeftSidebarComponent implements OnInit {
   
   changeCompany(companyId: string) {
     let newCompany = _.find(this.companies, c => c._id === companyId);    
+    
     this.userService.setCurrentCompany(newCompany);
     
     this.userService.getMySectors(newCompany)
