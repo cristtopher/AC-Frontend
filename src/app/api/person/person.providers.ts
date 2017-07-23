@@ -63,6 +63,13 @@ export class PersonService {
   getExcelUploader(): FileUploader {
     return new FileUploader({ url: `${environment.API_BASEURL}/api/persons/import`, authToken: `Bearer ${this.authService.getAccessToken()}` });
   }
+  
+  hasRegisters(person: Person): Observable<boolean> {
+    return this.authHttp.get(`${environment.API_BASEURL}/api/persons/${person._id}/hasRegister`)
+                        .map(res => res.json())
+                        .map(json => json.registers == 1 ? true : false)
+                        .catch(this.handleError);
+  }
 
   private handleError(error: Response) {
     console.error(error);

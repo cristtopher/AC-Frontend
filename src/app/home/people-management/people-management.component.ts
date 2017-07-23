@@ -92,22 +92,53 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
   }
 
   deletePerson(person: Person){
-    swal({
-      title: 'Eliminar Persona?',
-      html: `Estas seguro de eliminar a <strong>${person.name}</strong>?`,
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar'
-    })
-    .then(() => {
-      if (this.persons.length == 1 && this.currentFilters.page > 1) { this.currentFilters.page--; }
+
+    this.personService.hasRegisters(person).toPromise()
+    .then((hasRegister: boolean) => {
       
-      this.personService.deletePerson(person)
-        .subscribe(() => {
-          swal('Eliminar Persona', `${person.name} eliminada satisfactoriamente`, 'success');
-        });
-    }, (dismiss) => {});
+      if (hasRegister) {
+
+        return swal({
+          title: 'Desactivar Persona?',
+          html: `La persona posee registros asociados por lo que solo será desactivada. Estas seguro de deseas desactivar a <strong>${person.name}</strong> ?`,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'Cancelar'
+        })
+        .then(() => {      
+          person.active = false;
+        
+          this.personService.updatePerson(person)
+            .subscribe(() => {
+              swal('Desactivar Persona', `${person.name} desactivada satisfactoriamente`, 'success');
+            });
+        }, (dismiss) => {}); 
+           
+      } else {
+            
+        return swal({
+          title: 'Eliminar Persona?',
+          html: `Estas seguro de eliminar a <strong>${person.name}</strong>?`,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'Cancelar'
+        })
+        .then(() => {
+          if (this.persons.length == 1 && this.currentFilters.page > 1) { this.currentFilters.page--; }
+      
+          this.personService.deletePerson(person)
+            .subscribe(() => {
+              swal('Eliminar Persona', `${person.name} eliminada satisfactoriamente`, 'success');
+            });
+        }, (dismiss) => {});    
+        
+      }
+            
+    })
+
+    
   }
 
   createPerson() {
@@ -117,6 +148,7 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
   // -------------------------
   //      Import/Export
   // -------------------------
+  
   importExcel() {
     this.modal.open(ImportModalComponent, overlayConfigFactory({ company: this.currentCompany }, BSModalContext));
   }
