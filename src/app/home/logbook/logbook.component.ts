@@ -35,6 +35,8 @@ export class LogbookComponent implements OnInit {
     from: null,
     to: null,
     personType: null,
+    personName: null,
+    personRut: null,
     incomplete: false,
     paging: true,
     page: 1
@@ -42,10 +44,10 @@ export class LogbookComponent implements OnInit {
   
   // variables to handle filter controls behavior
   currentDateTimeFilterName: string;
-  currentProfileFilterControl: string = "all";
-  
+  currentProfileFilterControl: string = 'all';
+
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
-  
+    
   // variable to mantain track of currently comments being edited
   editingComments = {};
       
@@ -130,24 +132,12 @@ export class LogbookComponent implements OnInit {
 
   changeProfileFilter(profile: string) {
     this.currentFilters.personType = profile !== "all" ? profile : null;
-    
-    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                      .subscribe(registers => {
-                        this.totalPages  = registers.pages;
-                        this.currentPage = registers.page;
-                        this.registers   = registers.data;
-                      });
+    this._getRegistersWithFilters();
   }
 
   toggleIncompleteFilter() {
       this.currentFilters['incomplete'] = !this.currentFilters['incomplete'];
-      
-      this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                        .subscribe(registers => {
-                          this.totalPages  = registers.pages;
-                          this.currentPage = registers.page;
-                          this.registers   = registers.data;
-                        });
+      this._getRegistersWithFilters();
   }
 
   toggleDateTimeFilter(filterName: string) {    
@@ -177,13 +167,8 @@ export class LogbookComponent implements OnInit {
         this.currentFilters.from = moment().startOf('day').subtract(30, 'days').unix() * 1000;
       }
     }
-        
-    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                      .subscribe(registers => {
-                        this.totalPages  = registers.pages;
-                        this.currentPage = registers.page;
-                        this.registers   = registers.data;
-                      });
+    
+    this._getRegistersWithFilters();
   }
 
   setFromDateFilter(date) {
@@ -191,14 +176,7 @@ export class LogbookComponent implements OnInit {
     this.currentDateTimeFilterName = null;
     
     this.currentFilters.from = moment(date).unix() * 1000;
-    
-    console.log(`setFromDateFilter = ${date}`);
-    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                  .subscribe(registers => {
-                    this.totalPages  = registers.pages;
-                    this.currentPage = registers.page;
-                    this.registers   = registers.data;
-                  });
+    this._getRegistersWithFilters();
   }
   
   setToDateFilter(date) {
@@ -206,17 +184,21 @@ export class LogbookComponent implements OnInit {
     this.currentDateTimeFilterName = null;
     
     this.currentFilters.to = moment(date).unix() * 1000;    
-    
-    console.log(`setToDateFilter = ${date}`);
-    this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
-                  .subscribe(registers => {
-                    this.totalPages  = registers.pages;
-                    this.currentPage = registers.page;
-                    this.registers   = registers.data;
-                  });
+    this._getRegistersWithFilters();
   }
   
-
+  
+  setPersonRutFilter(rut: string) {    
+    this.currentFilters.personRut = rut;
+    this._getRegistersWithFilters();
+  }
+  
+  setPersonNameFilter(personName: string) {    
+    this.currentFilters.personName = personName;
+    this._getRegistersWithFilters();
+  }
+  
+  
   //-------------------------
   //    Comment Editing
   //-------------------------
@@ -248,16 +230,25 @@ export class LogbookComponent implements OnInit {
   goToPage(pageNum) {
     this.currentFilters["page"] = pageNum;
     
+    this._getRegistersWithFilters();
+  }
+  
+  ngOnDestroy() {
+    this.activeSubscriptions.forEach(s => s.unsubscribe());
+  }
+  
+  
+  //------------------------
+  //    Private methods
+  //------------------------
+    
+  private _getRegistersWithFilters() {
     this.sectorService.getRegisters(this.currentSector, _.pickBy(this.currentFilters))
                       .subscribe(registers => {
                         this.totalPages  = registers.pages;
                         this.currentPage = registers.page;
                         this.registers   = registers.data;
                       });
-    
   }
   
-  ngOnDestroy() {
-    this.activeSubscriptions.forEach(s => s.unsubscribe());
-  }
 }
