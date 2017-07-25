@@ -100,10 +100,10 @@ export class PeopleManagementComponent implements OnInit, OnDestroy {
 
         return swal({
           title: 'Desactivar Persona?',
-          html: `La persona posee registros asociados por lo que solo ser√° desactivada. Estas seguro de deseas desactivar a <strong>${person.name}</strong> ?`,
+          html: `La persona posee registros asociados por lo que solo ser· desactivada. Estas seguro de deseas desactivar a <strong>${person.name}</strong> ?`,
           type: 'warning',
           showCancelButton: true,
-          confirmButtonText: 'Eliminar',
+          confirmButtonText: 'Desactivar',
           cancelButtonText: 'Cancelar'
         })
         .then(() => {      
