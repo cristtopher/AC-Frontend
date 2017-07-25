@@ -92,13 +92,15 @@ export class DashboardComponent implements OnInit {
     }    
   }
 
-  constructor(private socketService: SocketService, private userService: UserService, private sectorService: SectorService) { }
+  constructor(private socketService: SocketService, 
+              private userService: UserService, 
+              private sectorService: SectorService) { }
 
   ngOnInit() {
     this.activeSubscriptions.push(
       this.socketService.get('register')
-        .filter(event => event.item.isUnauthorized)
-        .filter(event => event.item.sector !== this.currentSector._id)
+        .filter(event => !event.item.isUnauthorized)
+        .filter(event => event.item.sector === this.currentSector._id)
         .flatMap(() => this.sectorService.getRegisters(this.currentSector, { top: 15 }))
         .do(registers => this.registers = registers)
         .flatMap(() => this.sectorService.getStatistics(this.currentSector))

@@ -86,7 +86,7 @@ export class OverviewComponent implements OnInit {
   ngOnInit() {
     this.activeSubscriptions.push(
       this.socketService.get('register')
-                  .filter(event => event.item.isUnauthorized)
+                  .filter(event => !event.item.isUnauthorized)
                   .flatMap(currentCompany => this.companyService.getRegisters(this.currentCompany, { top: 15 }))
                   .do(registers => this.registers = registers)                      
                   .flatMap(() => this.companyService.getStatistics(this.currentCompany))

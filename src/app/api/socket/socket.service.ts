@@ -39,7 +39,6 @@ export class SocketService {
       this.socket.on(`${modelName}:save`, (item: any) => observer.next({ action: "save", item: item }) );
       this.socket.on(`${modelName}:remove`, (item: any) => observer.next({ action: "remove", item: item }) );
       this.socket.on(`${modelName}:update`, (item: any) => observer.next({ action: "update", item: item }) );
-      return () => this.socket.close();
     });
   }
 }
