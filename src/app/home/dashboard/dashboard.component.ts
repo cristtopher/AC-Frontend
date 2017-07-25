@@ -145,6 +145,13 @@ export class DashboardComponent implements OnInit {
       { label: 'Entradas', data: reversedEntryWeeklyHistory.map(x => x.count) },
       { label: 'Salidas', data: reversedDepartWeeklyHistory.map(x => x.count) }
     ];
+        
+    console.log(`=== UNWP-86`);
+    console.log(` -> NOW IS = ${moment().toISOString()}`);
+    console.log(` -> REGISTERS.TIME = [${JSON.stringify(this.registers.map(r => r.time))}]`);
+    console.log(` -> LABELS = ${JSON.stringify(this.registersPerWeekBarChartVC.labels)}`);
+    console.log(` -> reversedEntryWeeklyHistory = ${JSON.stringify(reversedEntryWeeklyHistory)}`);
+    console.log(`===`);
   }
   
   toggleWidgetDetails(widgetName: string) {
