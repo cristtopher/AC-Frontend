@@ -26,6 +26,12 @@
             </div>
             
             <div class="form-group">
+              <label class="control-label">Contraseña: </label>
+               <input type="password" class="form-control" [(ngModel)]="context.password">
+            </div>
+            
+            
+            <div class="form-group">
               <label class="control-label">Compañias:</label>
               <tag-input [(ngModel)]="context.user.companies" 
                          [identifyBy]="'_id'" 

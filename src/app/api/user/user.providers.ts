@@ -102,6 +102,11 @@ export class UserService {
                         .catch(this.handleError);
   }
   
+  changePassword(user: User, password: string) {
+    return this.authHttp.put(`${environment.API_BASEURL}/api/users/${user._id}/password`, { password: password })
+                        .catch(this.handleError);
+  }
+  
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');

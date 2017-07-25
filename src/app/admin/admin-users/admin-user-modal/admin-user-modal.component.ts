@@ -11,8 +11,9 @@ import { User } from '../../../api/user/user.model';
 import { Company } from '../../../api/company/company.model';
 
 export class AdminUserModalContext extends BSModalContext {
-    action: String;
-
+    action: string;
+    password: string;
+    
     constructor(public user: User) {
       super();
     }
@@ -50,6 +51,15 @@ export class AdminUserModalComponent implements OnInit, ModalComponent<AdminUser
 
     return this.userService.createUser(this.context.user)
                              .toPromise()
+                             .then(user => {
+                               if(this.context.password) {
+                                 return this.userService.changePassword(user, this.context.password)
+                                   .toPromise()
+                                   .then(() => user);
+                               }
+       
+                               return user;
+                             })
                              .then(user => this.dialog.close(user))
                              .catch(error => {
                                if(error.code === 11000) {
@@ -74,6 +84,15 @@ export class AdminUserModalComponent implements OnInit, ModalComponent<AdminUser
         { op: 'add', path: '/companies', value: user.companies.map(c => c._id) }
       ])
      .toPromise()
+     .then(user => {
+       if(this.context.password) {
+         return this.userService.changePassword(user, this.context.password)
+           .toPromise()
+           .then(() => user);
+       }
+       
+       return user;
+     })
      .then(user => this.dialog.close(user))
      .catch(error => {
        if(error.code === 11000) {
