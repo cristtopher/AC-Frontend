@@ -62,7 +62,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="col-sm-6 col-lg-3">
       <div class="widget widget-statistic widget-faded-blue">
         <header class="widget-statistic-header">Proveedores</header>
@@ -128,6 +128,7 @@
               <th>Tipo Registro</th>
               <th>Rut</th>
               <th>Nombre</th>
+              <th>Empresa</th>
               <th>Perfil</th>
               <th>Registro</th>
               <th>Sector</th>
@@ -141,6 +142,7 @@
               </td>
               <td>{{ register.person?.rut }}</td>
               <td>{{ register.person?.name }}</td>
+              <td>{{ register.person?.companyInfo }}</td>
               <td>
                 <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
                 <span class="badge badge-warning" *ngIf="register.person?.type === 'contractor'">Contratista</span>
