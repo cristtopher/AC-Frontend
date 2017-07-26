@@ -21,7 +21,7 @@
       <h3 class="panel-title">Filtros</h3>
     </div>
     <div class="panel-body">
-      
+
       <div class="row">
         <div class="col-md-2">
           <label for="to-datefilter">Perfil:</label>
@@ -30,26 +30,26 @@
               <option *ngFor="let profile of humanizedPersonProfiles | mapToIterable" [value]="profile.key">{{profile.val}}</option>
           </select>
         </div>
-                
+
         <div class="col-md-3">
           <label for="person-name">Nombre Persona:</label>
           <input name="person-name" class="form-control" (ngModelChange)="setPersonNameFilter($event)" [(ngModel)]="currentFilters.personName">
-        </div>        
+        </div>
 
         <div class="col-md-3">
           <label for="person-name">RUT:</label>
           <input name="person-name" class="form-control" (ngModelChange)="setPersonRutFilter($event)" [(ngModel)]="currentFilters.personRut">
-        </div>        
+        </div>
 
         <div class="col-md-3">
           <label for="to-datefilter">Rango de Fecha:</label>
           <input name="to-datefilter" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="setFromDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Desde" ng2-datetime-picker>
           <input name="from-datefilter" class="form-control" [(ngModel)]="toDate" (ngModelChange)="setToDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Hasta" ng2-datetime-picker>
         </div>
-        
-        
+
+
       </div>
-      
+
     </div>
   </div>
 
@@ -105,6 +105,7 @@
           <tr>
             <th>Rut</th>
             <th>Nombre</th>
+            <th>Empresa</th>
             <th>Perfil</th>
             <th>Entrada</th>
             <th>Sector Entrada</th>
@@ -119,6 +120,7 @@
           <tr *ngFor="let register of registers">
             <td>{{ register.person?.rut }}</td>
             <td>{{ register.person?.name }}</td>
+            <td>{{ register.person?.companyInfo }}</td>
             <td>
               <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
               <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
