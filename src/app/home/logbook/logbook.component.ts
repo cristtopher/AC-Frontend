@@ -37,6 +37,7 @@ export class LogbookComponent implements OnInit {
     personType: null,
     personName: null,
     personRut: null,
+    personCompany: null,
     incomplete: false,
     paging: true,
     page: 1
@@ -198,6 +199,10 @@ export class LogbookComponent implements OnInit {
     this._getRegistersWithFilters();
   }
   
+  setPersonCompanyFilter(personCompany: string) {    
+    this.currentFilters.personCompany = personCompany;
+    this._getRegistersWithFilters();
+  }
   
   //-------------------------
   //    Comment Editing

@@ -31,17 +31,23 @@
           </select>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label for="person-name">Nombre Persona:</label>
           <input name="person-name" class="form-control" (ngModelChange)="setPersonNameFilter($event)" [(ngModel)]="currentFilters.personName">
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label for="person-name">RUT:</label>
           <input name="person-name" class="form-control" (ngModelChange)="setPersonRutFilter($event)" [(ngModel)]="currentFilters.personRut">
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
+          <label for="person-name">Empresa:</label>
+          <input name="person-name" class="form-control" (ngModelChange)="setPersonCompanyFilter($event)" [(ngModel)]="currentFilters.personCompany">
+        </div>
+        
+
+        <div class="col-md-2">
           <label for="to-datefilter">Rango de Fecha:</label>
           <input name="to-datefilter" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="setFromDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Desde" ng2-datetime-picker>
           <input name="from-datefilter" class="form-control" [(ngModel)]="toDate" (ngModelChange)="setToDateFilter($event)" date-format="YYYY-MM-DD hh:mm" placeholder="Hasta" ng2-datetime-picker>
@@ -120,7 +126,7 @@
           <tr *ngFor="let register of registers">
             <td>{{ register.person?.rut }}</td>
             <td>{{ register.person?.name }}</td>
-            <td>{{ register.person?.companyInfo }}</td>
+            <td>{{ register.personCompanyInfo }}</td>
             <td>
               <span class="badge badge-primary" *ngIf="register.person?.type === 'staff'">Empleado</span>
               <span class="badge badge-info" *ngIf="register.person?.type === 'contractor'">Contratista</span>
