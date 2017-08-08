@@ -11,6 +11,7 @@ import { CompanyService } from '../../../api/company/company.providers';
 
 import { Company } from '../../../api/company/company.model';
 
+import * as fileSaver from 'file-saver';
 import swal from 'sweetalert2';
 
 export class ImportModalContext extends BSModalContext {
@@ -36,8 +37,10 @@ export class ImportModalComponent implements OnInit, ModalComponent<ImportModalC
     dialog.setCloseGuard(this);
     
     this.uploader = this.companyService.getExcelUploader(this.context.company);
-    
-    this.uploader.onSuccessItem = (item:FileItem, response:string, status:number, headers:ParsedResponseHeaders) => {
+        
+    this.uploader.onSuccessItem = (item:FileItem, response:any, status:number, headers:ParsedResponseHeaders) => {
+      fileSaver.saveAs(response, 'people-import-result.xlsx');
+      
       return swal('Importar Excel', 'Importación de personas finalizada satisfactoriamente', 'success')
         .then(() => this.closeModal());
     }

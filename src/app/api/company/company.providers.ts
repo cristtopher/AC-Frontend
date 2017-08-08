@@ -69,7 +69,16 @@ export class CompanyService {
   }
 
   getExcelUploader(company: Company): FileUploader {
-    return new FileUploader({ url: `${environment.API_BASEURL}/api/companies/${company._id}/persons/import`, authToken: `Bearer ${this.authService.getAccessToken()}` });
+    let uploader = new FileUploader({ 
+      url: `${environment.API_BASEURL}/api/companies/${company._id}/persons/import`, 
+      authToken: `Bearer ${this.authService.getAccessToken()}`
+    });
+    
+    uploader.onBeforeUploadItem = item => {
+      item._xhr.responseType = 'blob';
+    }    
+    
+    return uploader;
   }
   
   
