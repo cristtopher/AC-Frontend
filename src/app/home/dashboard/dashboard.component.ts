@@ -138,7 +138,7 @@ export class DashboardComponent implements OnInit {
     let reversedEntryWeeklyHistory = statistics.weeklyHistory.entry.reverse();
     let reversedDepartWeeklyHistory = statistics.weeklyHistory.depart.reverse();
     
-    this.registersPerWeekBarChartVC.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).day()]);
+    this.registersPerWeekBarChartVC.labels = reversedEntryWeeklyHistory.map(t => moment.weekdays()[moment(t.datetime).utc().day()]);
     this.registersPerWeekBarChartVC.ngOnChanges({});
 
     this.registersPerWeekBarChart.series = [
