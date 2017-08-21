@@ -12,6 +12,11 @@ import { AuthService } from '../auth/auth.service';
 
 import { Company } from './company.model'
 import { Person } from '../person/person.model';
+import { Register } from '../register/register.model';
+
+import * as moment from 'moment';
+import * as _      from 'lodash';
+
 
 //-------------------------------------------------------
 //                      Services
@@ -49,7 +54,37 @@ export class CompanyService {
   getStatistics(company: Company): Observable<any> {
     return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/statistics`)
                         .map(res => res.json())
-                        .share()
+                        .map(statisticsData => {
+                          const now: Date = new Date();
+                          const weeklyRegisters: Register[] = statisticsData.weeklyRegisters;
+                              
+                          statisticsData.weeklyHistory = {
+                            entry: [],
+                            depart: []
+                          };
+
+                          for(let i = 0; i <= 6; i++) {
+                            let upperDate = i == 0 ? now : moment(now).startOf('day').subtract(i - 1, 'days');
+                            let lowerDate = i == 0 ? moment(now).startOf('day') : moment(now).startOf('day').subtract(i, 'days');
+
+                            let timeFilteredRegisters = _.filter(weeklyRegisters, r => moment(r.time) < upperDate && moment(r.time) > lowerDate);
+
+                            let entriesFound = _.filter(timeFilteredRegisters, r => r.type === 'entry');
+                            let departsFound = _.filter(timeFilteredRegisters, r => r.type === 'depart');
+
+                            statisticsData.weeklyHistory.entry.push({ 
+                              datetime: lowerDate.unix() * 1000, 
+                              count: _.size(entriesFound) 
+                            });
+      
+                            statisticsData.weeklyHistory.depart.push({ 
+                              datetime: lowerDate.unix() * 1000, 
+                              count: _.size(departsFound) 
+                            });
+                          }
+    
+                          return statisticsData;
+                        })                        
                         .catch(this.handleError);
   }
   
@@ -58,7 +93,6 @@ export class CompanyService {
     
     return this.authHttp.get(`${environment.API_BASEURL}/api/companies/${company._id}/registers${queryString ? '?' + queryString : ''}`)
                         .map(res => <Person[]> res.json())
-                        .share()
                         .catch(this.handleError)
   }
   
