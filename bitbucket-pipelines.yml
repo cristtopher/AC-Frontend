@@ -1,0 +1,19 @@
+# Autor: Cristtopher Quintana T. <cquintana@axxezo.com>
+image: node:boron
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+            - node -v
+            - npm install -g @angular/cli
+            - npm install
+            - ng build -aot -e prod
+            #- npm test
+            - docker login axxezo.azurecr.io -u axxezo -p Gp/THWeHCoql15kUZdig88PFf5oRWM8g
+            - docker build -t axxezo.azurecr.io/unwp-frontend:v1 .
+            - docker push axxezo.azurecr.io/unwp-frontend:v1
+options:
+  docker: true
