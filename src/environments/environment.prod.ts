@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  API_BASEURL: 'http://axxezocloud.brazilsouth.cloudapp.azure.com:5001'
+  API_BASEURL: 'http://13.93.166.140:5001'
 };
