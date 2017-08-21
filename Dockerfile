@@ -10,6 +10,7 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app
 
 # Install dependecies
+RUN npm install -g @angular/cli
 RUN npm install
 
 # Get all the code needed to run the app
@@ -17,6 +18,9 @@ COPY . /usr/src/app
 
 # Expose the port the app runs in
 EXPOSE 8080
+
+# Build app
+CMD ["ng","build -aot -e prod"]
 
 # Serve the app
 CMD ["npm", "start"]
