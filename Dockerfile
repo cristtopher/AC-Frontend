@@ -1,4 +1,4 @@
-FROM node:boron-alpine as builder
+FROM node:boron as builder
 MAINTAINER Cristtopher Quintana T. <cquintana@axxezo.com>
 
 COPY package.json .
