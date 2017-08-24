@@ -8,10 +8,9 @@ pipelines:
           - node
         script:
             - node -v
-            - npm install -g @angular/cli
+            - npm install -g @angular/cli@1.1.1
             - npm install
-            - ng build -aot -e prod
-            #- npm test
+            #- ng lint
             - docker login axxezo.azurecr.io -u axxezo -p Gp/THWeHCoql15kUZdig88PFf5oRWM8g
             - docker build -t axxezo.azurecr.io/unwp-frontend:v1 .
             - docker push axxezo.azurecr.io/unwp-frontend:v1
