@@ -1,4 +1,4 @@
-FROM node:boron as builder
+FROM node:boron-alpine
 MAINTAINER Cristtopher Quintana T. <cquintana@axxezo.com>
 
 COPY package.json .
@@ -21,6 +21,6 @@ COPY nginx/unwp-frontend.conf /etc/nginx/conf.d/
 RUN rm -rf /usr/share/nginx/html/*
 
 ## From ‘builder’ stage copy over the artifacts in dist folder to default nginx public folder
-COPY --from=builder /unwp-frontend/dist /usr/share/nginx/html
+COPY --from=0 /unwp-frontend/dist /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
