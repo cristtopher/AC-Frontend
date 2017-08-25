@@ -1,26 +1,27 @@
-FROM node:boron-alpine
+FROM node:boron
 MAINTAINER Cristtopher Quintana T. <cquintana@axxezo.com>
+# Create a directory where our app will be placed
+RUN mkdir -p /usr/src/app
 
-COPY package.json .
-RUN npm install -g @angular/cli@1.1.1
-RUN npm i && mkdir /unwp-frontend && cp -R ./node_modules ./unwp-frontend
+# Change directory so that our commands run inside this new directory
+WORKDIR /usr/src/app
 
-WORKDIR /unwp-frontend
+# Copy dependency definitions
+COPY package.json /usr/src/app
 
-COPY . .
+# Install dependecies
+RUN npm install -g @angular/cli
+RUN npm install
 
-## Build the angular app in production mode and store the artifacts in dist folder
-RUN $(npm bin)/ng build -aot -e prod
+# Get all the code needed to run the app
+COPY . /usr/src/app
 
-FROM nginx:1.13.3-alpine
+# Expose the port the app runs in
+EXPOSE 8080
 
-## Copy our default nginx config
-COPY nginx/unwp-frontend.conf /etc/nginx/conf.d/
+# Build app
+CMD ["ng","build -aot -e prod"]
+RUN mv /usr/src/app/node_modules /usr/src/app/dist
 
-## Remove default nginx website
-RUN rm -rf /usr/share/nginx/html/*
-
-## From ‘builder’ stage copy over the artifacts in dist folder to default nginx public folder
-COPY --from=0 /unwp-frontend/dist /usr/share/nginx/html
-
-CMD ["nginx", "-g", "daemon off;"]
+# Serve the app
+CMD ["npm", "start"]
