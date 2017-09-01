@@ -46,6 +46,13 @@ export class ImportModalComponent implements OnInit, ModalComponent<ImportModalC
     }
     
     this.uploader.onErrorItem = (item:FileItem, response:string, status:number, headers:ParsedResponseHeaders) => {
+      if (status == 422) {
+        fileSaver.saveAs(response, 'people-import-result.xlsx');
+      
+        return swal('Importar Excel', 'Importación de personas finalizada con errores', 'warning')
+          .then(() => this.closeModal());
+      }
+
       return swal('Importar Excel', 'Error al intentar importar personas', 'error')
         .then(() => this.closeModal());
     }
