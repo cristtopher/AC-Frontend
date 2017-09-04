@@ -112,7 +112,7 @@ export class OverviewComponent implements OnInit {
     this.statistics.staffPercentageInCompany       = this.statistics.totalPersonsInCompany ? (statisticsData.staffCount / this.statistics.totalPersonsInCompany) * 100 : 0;
     this.statistics.contractorsPercentageInCompany = this.statistics.totalPersonsInCompany ? (statisticsData.contractorCount / this.statistics.totalPersonsInCompany) * 100 : 0;
     this.statistics.visitorsPercentageInCompany    = this.statistics.totalPersonsInCompany ? (statisticsData.visitCount / this.statistics.totalPersonsInCompany) * 100 : 0;
-    this.statistics.suppliersPercentageInCompany   = this.statistics.totalPersonsInCompany ? (statisticsData.visitCount / this.statistics.totalPersonsInCompany) * 100 : 0;
+    this.statistics.suppliersPercentageInCompany   = this.statistics.totalPersonsInCompany ? (statisticsData.supplierCount / this.statistics.totalPersonsInCompany) * 100 : 0;
     
   
     this.profileDistPieChart.data = [
