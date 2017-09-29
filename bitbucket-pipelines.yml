@@ -7,9 +7,7 @@ pipelines:
         caches:
           - node
         script:
-            - node -v
-            - npm install -g @angular/cli@1.1.1
-            - npm install
+            #- npm install
             #- ng lint
             - docker login $CONTAINER_REGISTRY_URI -u $CONTAINER_REGISTRY_USERNAME -p $CONTAINER_REGISTRY_PASSWORD
             - VERSION=v1
