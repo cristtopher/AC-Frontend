@@ -10,7 +10,8 @@ pipelines:
             #- npm install
             #- ng lint
             - docker login $CONTAINER_REGISTRY_URI -u $CONTAINER_REGISTRY_USERNAME -p $CONTAINER_REGISTRY_PASSWORD
-            - VERSION=v1
+            - declare -x VERSION=$(jq -r '.version' package.json)
+            - echo $VERSION
             - docker build -t $CONTAINER_REGISTRY_URI/$IMAGE_NAME:$VERSION -t $CONTAINER_REGISTRY_URI/$IMAGE_NAME:latest .
             - docker push $CONTAINER_REGISTRY_URI/$IMAGE_NAME:$VERSION
             - docker push $CONTAINER_REGISTRY_URI/$IMAGE_NAME:latest
