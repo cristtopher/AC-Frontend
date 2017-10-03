@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  API_BASEURL: 'http://backend.access-control.svc.cluster-local:5001'
+  API_BASEURL: '10.0.171.239:5001'
 };
