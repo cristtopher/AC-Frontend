@@ -1,4 +1,6 @@
+######################
 ### STAGE 1: Build ###
+######################
 
 # We label our stage as 'builder'
 FROM node:boron as builder
@@ -8,18 +10,24 @@ COPY package.json package-lock.json ./
 RUN npm set progress=false && npm config set depth 0 && npm cache clean --force
 
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
+RUN npm i -g @angular/cli@1.1.1
 RUN npm i && mkdir /ng-app && cp -R ./node_modules ./ng-app
 
 WORKDIR /ng-app
 
+# Bundle app source
 COPY . .
 
+# Define ENVs to setup at image build time
+ARG NODE_ENV
+ENV NODE_ENV ${NODE_ENV}
+
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN $(npm bin)/ng build --prod --build-optimizer
+RUN $(npm bin)/ng build -aot -e ${NODE_ENV}
 
-
+######################
 ### STAGE 2: Setup ###
-
+######################
 FROM nginx:1.13.3-alpine
 
 ## Copy our default nginx config
