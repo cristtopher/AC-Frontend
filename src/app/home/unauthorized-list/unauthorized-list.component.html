@@ -23,6 +23,7 @@
         <thead>
           <tr>
             <th>Rut</th>
+            <th>Vehículo</th>
             <th>Fecha</th>
             <th>Sector</th>
           </tr>
@@ -30,6 +31,7 @@
         <tbody>
           <tr *ngFor="let register of registers">
             <td class="text-danger">{{ register.unauthorizedRut }}</td>
+            <td>{{ register.patent }}</td>
             <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td>{{ register.sector?.name }}</td>
           </tr>
