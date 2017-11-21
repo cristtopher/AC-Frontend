@@ -17,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { USER_PROVIDERS } from './api/user/user.providers';
 import { COMPANY_PROVIDERS } from './api/company/company.providers';
 import { SECTOR_PROVIDERS } from './api/sector/sector.providers';
+import { VEHICLE_PROVIDERS } from './api/vehicle/vehicle.providers';
 import { REGISTER_PROVIDERS } from './api/register/register.providers';
 import { PERSON_PROVIDERS } from './api/person/person.providers';
 
@@ -58,6 +59,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     USER_PROVIDERS,
     COMPANY_PROVIDERS,
     SECTOR_PROVIDERS,
+    VEHICLE_PROVIDERS,
     REGISTER_PROVIDERS,
     PERSON_PROVIDERS,
     CanActivateAuthGuard

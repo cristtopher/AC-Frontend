@@ -109,22 +109,25 @@
       <table class="table table-condensed table-bordered table-hover logbook-table">
         <thead>
           <tr>
-            <th>Rut</th>
-            <th>Nombre</th>
-            <th>Empresa</th>
-            <th>Perfil</th>
-            <th>Entrada</th>
-            <th>Sector Entrada</th>
-            <th>Comentario Entrada</th>
-            <th>Salida</th>
-            <th>Sector Salida</th>
-            <th>Comentario Salida</th>
-            <th>Estado</th>
+            <th rowspan="2">Nombre</th>
+            <th rowspan="2">Empresa</th>
+            <th rowspan="2">Perfil</th>
+            <th colspan="3" class="text-center">Entrada</th>
+            <th colspan="4" class="text-center">Salida</th>
+            <th rowspan="2" class="text-center">Opción</th>
+          </tr>
+          <tr>
+            <td>Fecha</td>
+            <td>Patente</td>
+            <td>Comentario</td>
+            <td>Fecha</td>
+            <td>Sector</td>
+            <td>Patente</td>
+            <td>Comentario</td>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let register of registers">
-            <td>{{ register.person?.rut }}</td>
             <td>{{ register.person?.name }}</td>
             <td>{{ register.personCompanyInfo }}</td>
             <td>
@@ -134,7 +137,17 @@
               <span class="badge badge-faded-blue" *ngIf="register.person?.type === 'supplier'">Proveedor</span>
             </td>
             <td>{{ register.time | date:'dd/MM/yy HH:mm:ss' }}</td>
-            <td>{{ register.sector.name }}</td>
+            <td>
+              <span style="float: left;" *ngIf="register.vehicle != undefined">
+                <i class="fa fa-car" aria-hidden="true" *ngIf="register.vehicle.type == 'car'"> </i>
+                <i class="fa fa-truck" aria-hidden="true" *ngIf="register.vehicle.type == 'truck'"> </i>
+                <i class="fa fa-motorcycle" aria-hidden="true" *ngIf="register.vehicle.type == 'motorcycle'"> </i>
+                <i class="fa fa-bus" aria-hidden="true" *ngIf="register.vehicle.type == 'bus'"> </i>
+                <i class="fa fa-car" aria-hidden="true" *ngIf="register.vehicle.type == 'pickup'"> </i>
+                {{ register.vehicle.patent }}
+              </span>
+              <span style="float: left;" *ngIf="register.vehicle == undefined"></span>
+            </td>
             <td>
               <span   *ngIf="!editingComments[register._id]" style="float: left;">{{ register.comments }}</span>
               <button *ngIf="!editingComments[register._id]" (click)="editComment(register)"class="btn btn-transparent btn-xs" style="float: right;"><span class="fa fa-pencil"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
@@ -146,16 +159,25 @@
             <td>{{ register.resolvedRegister?.time | date:'dd/MM/yy HH:mm:ss' }}</td>
             <td>{{ register.resolvedRegister?.sector?.name }}</td>
             <td>
+              <span style="float: left;" *ngIf="register.resolvedRegister != undefined && register.resolvedRegister.vehicle != undefined && register.isResolved">
+                <i class="fa fa-car" aria-hidden="true" *ngIf="register.vehicle.type == 'car'"> </i>
+                <i class="fa fa-truck" aria-hidden="true" *ngIf="register.vehicle.type == 'truck'"> </i>
+                <i class="fa fa-motorcycle" aria-hidden="true" *ngIf="register.vehicle.type == 'motorcycle'"> </i>
+                <i class="fa fa-bus" aria-hidden="true" *ngIf="register.vehicle.type == 'bus'"> </i>
+                <i class="fa fa-car" aria-hidden="true" *ngIf="register.vehicle.type == 'pickup'"> </i>
+                {{ register.resolvedRegister.vehicle.patent }}
+              </span>
+              <span style="float: left;" *ngIf="register.resolvedRegister != undefined && register.resolvedRegister.vehicle == undefined && !register.isResolved"></span>
+            </td>
+            <td>
               <span   *ngIf="register.resolvedRegister && !editingComments[register.resolvedRegister?._id]" style="float: left;">{{ register.resolvedRegister?.comments }}</span>
               <button *ngIf="register.resolvedRegister && !editingComments[register.resolvedRegister?._id]" (click)="editComment(register.resolvedRegister)"class="btn btn-transparent btn-xs" style="float: right;"><span class="fa fa-pencil"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
 
               <input  *ngIf="register.resolvedRegister && editingComments[register.resolvedRegister?._id]" [(ngModel)]="register.resolvedRegister.comments" type="text" class="form-control" style="float: left;">
               <button *ngIf="register.resolvedRegister && editingComments[register.resolvedRegister?._id]" (click)="saveEdittedComment(register.resolvedRegister)" class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
               <button *ngIf="register.resolvedRegister && editingComments[register.resolvedRegister?._id]" (click)="closeEditComment(register.resolvedRegister)" class="btn btn-transparent btn-xs" style="float: right;"><span class="fa fa-times"></span> <span class="hidden-xs hidden-sm hidden-md"></span></button>
-
             </td>
             <td *ngIf="!register.isResolved">
-              <span class="text-warning" style="float: left;">Incompleto</span>
               <button (click)="resolveRegister(register)" class="btn btn-transparent btn-transparent-success btn-xs" style="float: right;"><span class="fa fa-check"></span> <span class="hidden-xs hidden-sm hidden-md">Resolver</span></button>
             </td>
             <td *ngIf="register.isResolved"><span class="text-success">Resuelto</span></td>
