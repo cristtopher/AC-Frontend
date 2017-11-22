@@ -74,6 +74,13 @@
         </div>
 
         <div class="form-group">
+          <label class="col-sm-2 col-xs-12 control-label">Patente</label>
+          <div class="col-sm-10 col-xs-12">
+            <input formControlName="patent" placeholder="Ingrese Patente vehiclo..." class="form-control" style='text-transform:uppercase'>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label class="col-sm-2 col-xs-12 control-label">Fecha</label>
           <div class="col-sm-10 col-xs-12">
             <input class="form-control" [(ngModel)]="registerDateTime" date-format="YYYY-MM-DD hh:mm" formControlName="dateTime"  ng2-datetime-picker>

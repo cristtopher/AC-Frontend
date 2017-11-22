@@ -21,35 +21,37 @@ import * as moment from 'moment';
 })
 export class ManualRegisterComponent implements OnInit {
   activeSubscriptions = [];
-  
+
   currentCompany: Company;
   currentSector: Sector;
 
   humanizedPersonProfiles = HUMANIZED_PERSON_PROFILES;
-  
+
   // ngModel var for datepicker
-  registerDateTime: any = moment().format("YYYY-MM-DD hh:mm");
+  registerDateTime: any = moment().format('YYYY-MM-DD hh:mm');
 
   // list of candidates in searchBox and some searchBox statuses
-  candidatePersons:Observable<Person[]>;
+  candidatePersons: Observable<Person[]>;
   selectedPerson: Person;
-  isSearchBoxLoading:boolean = false;
-  hasSearchBoxNoResults:boolean = false;
-  
+  isSearchBoxLoading: boolean = false;
+  hasSearchBoxNoResults: boolean = false;
+
   searchBoxFormControl: FormControl    = new FormControl();
   rutFormControl: FormControl          = new FormControl({ value: '', disabled: true }, Validators.required);
   nameFormControl: FormControl         = new FormControl({ value: '', disabled: true }, Validators.required);
   personTypeFormControl: FormControl   = new FormControl({ value: '', disabled: true }, Validators.required);
   dateTimeFormControl: FormControl     = new FormControl({ value: null }, Validators.required);
   commentsFormControl: FormControl     = new FormControl('');
-  
+  patentFormControl: FormControl       = new FormControl('');
+
   manualRegisterForm: FormGroup = new FormGroup({
     searchBox:    this.searchBoxFormControl,
     rut:          this.rutFormControl,
     name:         this.nameFormControl,
     personType:   this.personTypeFormControl,
     dateTime:     this.dateTimeFormControl,
-    comments:     this.commentsFormControl
+    comments:     this.commentsFormControl,
+    patent:       this.patentFormControl
   });
 
   // TODO: replace this with FormControls based solution
@@ -77,37 +79,38 @@ export class ManualRegisterComponent implements OnInit {
     console.log(`searchBoxNoResults: ${this.hasSearchBoxNoResults}`);
     this.hasSearchBoxNoResults = e;
   }
-  
+
   searchBoxOnSelect(e: any): void {
     console.log(`Selected Person: ${e.item}`);
     this.selectedPerson = <Person> e.item;
   }
-  
 
   createRegister() {
     var newRegister = new Register();
-    
-    // creating new register... 
+
+    // creating new register...
     newRegister.person   = this.selectedPerson;
     newRegister.comments = this.commentsFormControl.value;
+    newRegister.patent   = this.patentFormControl.value;
     newRegister.type     = this.selectedRegisterType;
-    
-    if (this.selectedRegisterType === 'entry') {
-      newRegister.time = moment(this.dateTimeFormControl.value).unix() * 1000;
-    } else if (this.selectedRegisterType === 'depart') {
+    // newRegister.patent   = this.
+
+    if (this.selectedRegisterType === 'entry' || this.selectedRegisterType === 'depart') {
       newRegister.time = moment(this.dateTimeFormControl.value).unix() * 1000;
     }
 
-    this.sectorService.createRegister(this.currentSector, newRegister).subscribe(createdRegister => {      
+    console.log('creting register', newRegister);
+
+    this.sectorService.createRegister(this.currentSector, newRegister).subscribe(createdRegister => {
       this.manualRegisterForm.reset();
-      
+
       this.selectedPerson       = null;
       this.selectedRegisterType = 'entry';
     }, (error) => {
       console.log(`error while creating register: ${error}`);
-    });    
+    });
   }
-  
+
   ngOnDestroy() {
     this.activeSubscriptions.forEach(s => s.unsubscribe());
   }

@@ -32,7 +32,6 @@ export class SectorService {
     return this.authHttp.get(`${environment.API_BASEURL}/api/sectors/${sector._id}/registers${queryString ? '?' + queryString : ''}`)
                         .map(res => {
                           if (!query['paging']) { return <Register[]> res.json(); }
-                          console.log('-----res-----', res.json());
 
                           return {
                             page: parseInt(res.headers.get('X-Pagination-Page')),
@@ -64,7 +63,8 @@ export class SectorService {
       person: register.person._id,
       time: register.time,
       type: register.type,
-      comments: register.comments
+      comments: register.comments,
+      patent: register.patent
     })
     .map(res => <Register> res.json())
     .catch(this.handleError);
